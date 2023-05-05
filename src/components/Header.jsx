@@ -1,0 +1,120 @@
+import logo from '../assets/img/icon-logo.svg';
+import { Link } from 'react-router-dom';
+import { FiHome, FiPlusSquare, FiList, FiHeart, FiUnlock, FiSettings, FiLogOut, FiAlignJustify } from 'react-icons/fi';
+const Header = () => {
+	return (
+		<>
+			<nav className="flex justify-between items-center w-[100%] h-24 px-9 lg:px-14 bg-white">
+				<div className="flex justify-start items-center gap-2 lg:gap-3.5">
+					<div>
+						<img src={logo} alt="" />
+					</div>
+					<div>
+						<Link to="/">
+							<p className="text-2xl font-semibold text-[#3366FF] tracking-[1px]">
+								We<span className="text-[#FF3D71]">tick</span>
+							</p>
+						</Link>
+					</div>
+				</div>
+				<div className="hidden md:block">
+					<ul className="flex gap-5 lg:gap-12 text-sm text-[#373a42] font-semibold tracking-[1px]">
+						<li className="cursor-pointer hover:border-b-2 border-[#4c3f91]">
+							<Link to="/">Home</Link>
+						</li>
+						<li className="cursor-pointer hover:border-b-2 border-[#4c3f91]">
+							<Link to="/user/create-event">Create Event</Link>
+						</li>
+						<li className="cursor-pointer hover:border-b-2 border-[#4c3f91]">
+							<Link to="/">Location</Link>
+						</li>
+					</ul>
+				</div>
+				<div className="hidden md:block">
+					<div className="flex justify-start items-center gap-[10px] lg:gap-[15px]">
+						<div className="inline-block rounded-full p-[2px] bg-gradient-to-tr from-[#3366FF] to-[#884DFF]">
+							<img className="w-12 h-12 border-4 border-white rounded-full" src="https://i.pravatar.cc/48" alt="nav-img-profile" />
+						</div>
+						<div className="text-sm text-[#373a42] font-semibold tracking-[1px] object-cover">
+							<Link to="/user/edit-profile">John Tompson</Link>
+						</div>
+					</div>
+				</div>
+				<div className="block md:hidden">
+					<div>
+						<button id="btnShowNavMobile">
+							<i className="">
+								<FiAlignJustify size={25} />
+							</i>
+						</button>
+					</div>
+				</div>
+			</nav>
+
+			<div className="hidden justify-between items-center w-full px-7 md:px-9 lg:px-14 relative">
+				<div className="absolute flex flex-col items-center gap-7 z-40 bg-white w-full overflow-scroll left-0 top-0 py-7 rounded-b-2xl shadow-xl">
+					<div className="w-[85%] border-b-2 py-3">
+						<div className="flex flex-col justify-center items-center gap-3">
+							<div className="rounded-full object-cover overflow-hidden">
+								<img src="https://i.pravatar.cc/90" alt="" />
+							</div>
+							<div className="text-base text-[#373a42] font-semibold tracking-[1px]">
+								<Link to="./edit-profile.html">John Tompson</Link>
+							</div>
+						</div>
+					</div>
+					<div className="w-full px-7">
+						<div className="flex justify-start items-center gap-[1px]">
+							<ul className="flex flex-col justify-center items-start gap-7 w-full text-sm text-[#373a42] font-semibold tracking-[1px] capitalize">
+								<li className="flex items-center justify-start gap-3.5">
+									<i className="">
+										<FiHome />
+									</i>
+									<Link to="/">Home</Link>
+								</li>
+								<li className="flex items-center justify-start gap-3.5">
+									<i className="">
+										<FiPlusSquare />
+									</i>
+									<Link to="/user/create-event">Create Event</Link>
+								</li>
+								<li className="flex items-center justify-start gap-3.5">
+									<i className="">
+										<FiList />
+									</i>
+									<Link to="/user/my-booking">my booking</Link>
+								</li>
+								<li className="flex items-center justify-start gap-3.5">
+									<i className="">
+										<FiHeart />
+									</i>
+									<Link to="/user/my-wishlist">my wishlist</Link>
+								</li>
+								<li className="flex items-center justify-start gap-3.5">
+									<i className="">
+										<FiUnlock />
+									</i>
+									<Link to="/user/change-password">Change Password</Link>
+								</li>
+								<li className="flex items-center justify-start gap-3.5">
+									<i className="">
+										<FiSettings />
+									</i>
+									<Link to="#">setting</Link>
+								</li>
+								<li className="self-center text-[#F03800] my-7 flex items-center justify-start gap-3.5">
+									<i className="">
+										<FiLogOut />
+									</i>
+									<Link to="./auth-login.html">Logout</Link>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</>
+	);
+};
+
+export default Header;
