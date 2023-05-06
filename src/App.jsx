@@ -5,6 +5,7 @@ import DetailEvent from './pages/DetailEvent';
 import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
 import ForgotPassword from './pages/auth/ForgotPassword';
+import Reservation from './pages/Reservation';
 
 const App = () => {
 	return (
@@ -15,6 +16,7 @@ const App = () => {
 				<Route path="/auth/register" element={<SignUp />} />
 				<Route path="/auth/forgot-password" element={<ForgotPassword />} />
 				<Route path="/event/detail" element={<DetailEvent />} />
+				<Route path="/event/reservation" element={<Reservation />} />
 			</Routes>
 		</BrowserRouter>
 	);
