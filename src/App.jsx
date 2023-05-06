@@ -6,6 +6,12 @@ import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import Reservation from './pages/Reservation';
+import Payment from './pages/Payment';
+import EditProfile from './pages/EditProfile';
+import ChangePassword from './pages/ChangePassword';
+import MyReservation from './pages/MyReservation';
+import MyWishlist from './pages/MyWishlist';
+import ManageEvent from './pages/ManageEvent';
 
 const App = () => {
 	return (
@@ -17,6 +23,12 @@ const App = () => {
 				<Route path="/auth/forgot-password" element={<ForgotPassword />} />
 				<Route path="/event/detail" element={<DetailEvent />} />
 				<Route path="/event/reservation" element={<Reservation />} />
+				<Route path="/event/reservation/payment" element={<Payment />} />
+				<Route path="/user/edit-profile" element={<EditProfile />} />
+				<Route path="/user/change-password" element={<ChangePassword />} />
+				<Route path="/user/reservation" element={<MyReservation />} />
+				<Route path="/user/wishlist" element={<MyWishlist />} />
+				<Route path="/user/manage-event" element={<ManageEvent />} />
 			</Routes>
 		</BrowserRouter>
 	);
