@@ -42,7 +42,11 @@ const SignUp = () => {
 							</div>
 							<form className="flex flex-col gap-3.5">
 								<div className="text-sm tracking[0.5]">
-									<input className="w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl" type="text" name="email" placeholder="Email" />
+									<input className="w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl" type="text" name="fullname" placeholder="Full Name" />
+								</div>
+								<div className="hidden items-center justify-start text-sm text-red-500 font-medium tracking[0.5]"></div>
+								<div className="text-sm tracking[0.5]">
+									<input className="w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl" type="email" name="email" placeholder="Email" />
 								</div>
 								<div className="hidden items-center justify-start text-sm text-red-500 font-medium tracking[0.5]"></div>
 								<div className="text-sm tracking[0.5] relative">

@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'head-pattern': "url('./src/assets/img/image-transparent.png')",
+      }
+    },
   },
   daishyui:{
     themes:[
