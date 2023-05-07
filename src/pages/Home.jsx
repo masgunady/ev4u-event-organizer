@@ -3,12 +3,25 @@ import Footer from '../components/Footer';
 
 import male from '../assets/img/male.png';
 import female from '../assets/img/female.png';
-import event from '../assets/img/event-1.png';
+// import event from '../assets/img/event-1.png';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 import { FiSearch, FiMapPin, FiArrowRight } from 'react-icons/fi';
 import { HiArrowLongLeft, HiArrowLongRight } from 'react-icons/hi2';
 
+import React from 'react';
+import axios from 'axios';
+
 const Home = () => {
+	const [events, setEvent] = React.useState([]);
+	React.useEffect(() => {
+		async function getData() {
+			const { data } = await axios.get('http://localhost:8888/event');
+			setEvent(data.results);
+		}
+		getData();
+	}, []);
 	return (
 		<>
 			<div className="bg-white md:bg-[#F4F7FF]">
@@ -93,30 +106,36 @@ const Home = () => {
 
 						<div className="w-full flex items-center justify-end">
 							<div className="w-[90%] flex justify-start items-center gap-[30px] object-cover overflow-scroll overflow-y-hidden px-0 py-[50px]">
-								<div className="w-[260px] min-w-[260px] h-[376px] overflow-hidden relative rounded-[35px]">
-									<img src={event} alt="" className="w-full h-full object-cover" />
-									<div className="absolute w-full z-20 px-5 py-[0pc] bottom-[25px]">
-										<div className="font-medium text-sm leading-[27px] flex items-center tracking-[1px] text-white">Wed, 15 Nov, 4:00 PM</div>
-										<div className="font-semibold text-[22px] leading-[30px] flex items-center tracking-[2px] text-white pb-5">
-											<a href="./event-detail.html">Sights & Sounds Exhibition</a>
-										</div>
-										<div className="flex justify-start items-center ml-2.5">
-											<div className="w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white">
-												<img src="https://i.pravatar.cc/28" alt="" />
+								{events.map((event) => {
+									return (
+										<React.Fragment key={event.id}>
+											<div className="w-[260px] min-w-[260px] h-[376px] overflow-hidden relative rounded-[35px]">
+												<img src={`http://localhost:8888/uploads/${event.picture}`} alt="" className="w-full h-full object-cover" />
+												<div className="absolute w-full z-20 px-5 py-[0pc] bottom-[25px]">
+													<div className="font-medium text-sm leading-[27px] flex items-center tracking-[1px] text-white">{moment(event.date).format('LLLL')}</div>
+													<div className="font-semibold capitalize text-[22px] leading-[30px] flex items-center tracking-[2px] text-white pb-5">
+														<Link to="">{event.title}</Link>
+													</div>
+													<div className="flex justify-start items-center ml-2.5">
+														<div className="w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white">
+															<img src="https://i.pravatar.cc/28" alt="" />
+														</div>
+														<div className="w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white">
+															<img src="https://i.pravatar.cc/28" alt="" />
+														</div>
+														<div className="w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white">
+															<img src="https://i.pravatar.cc/28" alt="" />
+														</div>
+														<div className="w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white">
+															<img src="https://i.pravatar.cc/28" alt="" />
+														</div>
+													</div>
+												</div>
+												<div className="w-full h-[350px] absolute z-10 bottom-0 bg-gradient-to-t from-[#000000] from-5%"></div>
 											</div>
-											<div className="w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white">
-												<img src="https://i.pravatar.cc/28" alt="" />
-											</div>
-											<div className="w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white">
-												<img src="https://i.pravatar.cc/28" alt="" />
-											</div>
-											<div className="w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white">
-												<img src="https://i.pravatar.cc/28" alt="" />
-											</div>
-										</div>
-									</div>
-									<div className="w-full h-[200px] absolute z-10 bottom-0 bg-gradient-to-t from-[#000000] from-5%"></div>
-								</div>
+										</React.Fragment>
+									);
+								})}
 							</div>
 						</div>
 						<div className="btn-see-event">
