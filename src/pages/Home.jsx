@@ -17,6 +17,8 @@ import axios from 'axios';
 const Home = () => {
 	const [events, setEvent] = React.useState([]);
 	const [locations, setLocation] = React.useState([]);
+	const [partners, setPartner] = React.useState([]);
+	const [categories, setCategory] = React.useState([]);
 
 	React.useEffect(() => {
 		async function getData() {
@@ -32,6 +34,22 @@ const Home = () => {
 			setLocation(data.results);
 		}
 		getLocation();
+	}, []);
+
+	React.useEffect(() => {
+		async function getPartner() {
+			const { data } = await axios.get('http://localhost:8888/partner');
+			setPartner(data.results);
+		}
+		getPartner();
+	}, []);
+
+	React.useEffect(() => {
+		async function getCategory() {
+			const { data } = await axios.get('http://localhost:8888/category');
+			setCategory(data.results);
+		}
+		getCategory();
 	});
 
 	return (
@@ -155,8 +173,8 @@ const Home = () => {
 						</div>
 					</div>
 					<div className="dsp-locaion w-full flex flex-col items-center justify-center px-0 py-[70px]">
-						<div className="dsp-locaion-cont max-w-[1340px] flex flex-col items-start overflow-hidden bg-[#4c3f91] bg-location-pattern bg-no-repeat bg-cover px-20 py-[70px] rounded-[50px]">
-							<div className="h-[70px]">
+						<div className="dsp-locaion-cont w-[90%] max-w-[1340px] flex flex-col items-center overflow-hidden bg-[#4c3f91] bg-location-pattern bg-no-repeat bg-cover px-11 md:px-20 py-[70px] rounded-[50px]">
+							<div className="h-[70px] self-start">
 								<div className="w-40 h-[30px] flex justify-center items-center cursor-pointer bg-[#FFFFFF40] font-semibold text-xs leading-[18px] tracking-[3px] text-white rounded-[30px] border-[none] uppercase">
 									<i className="">
 										<FiMinus />
@@ -164,13 +182,12 @@ const Home = () => {
 									location
 								</div>
 							</div>
-							<div className="grid grid-cols-4 gap-16">
+							<div className="h-[600px] lg:h-auto overflow-hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 lg:gap-12 xl:gap-16 ">
 								<div className="">
 									<div className="w-[200px] h-[180px] text-[36px] trackong-[1px] text-white font-semibold">
 										<div>Discover Events Near You</div>
 									</div>
 								</div>
-
 								{locations.map((location) => {
 									return (
 										<>
@@ -187,14 +204,50 @@ const Home = () => {
 							</div>
 						</div>
 					</div>
+					<div className="dsp-category flex flex-col items-center justify-center">
+						<div className="w-[150px] h-[30px] flex justify-center items-center font-semibold text-xs leading-[18px] tracking-[3px] uppercase text-[#ff3d71] rounded-[30px] border-[none] left-[609px] top-[925px] outline-none bg-[#FF3D7140]">
+							<i>
+								<FiMinus />
+							</i>
+							categories
+						</div>
+						<div className="font-semibold text-4xl leading-[177.78%] tracking-[1px] text-[#373a42] flex items-center text-center mt-[25px]">Browse Event By Category</div>
+
+						<div className="w-full flex items-center justify-end mt-[50px]">
+							<div className="w-full h-[50px] object-cover overflow-scroll scrollbar-hide flex items-center justify-center">
+								<ul className="flex justify-center items-center gap-24">
+									{categories.map((category) => {
+										return (
+											<>
+												<li className="font-medium text-base leading-6 text-[#c1c5d0] cursor-pointer capitalize list-none hover:text-[#373a42]" key={category.id}>
+													<div>{category.name}</div>
+												</li>
+											</>
+										);
+									})}
+								</ul>
+							</div>
+						</div>
+					</div>
 					<div className="dsp-partner flex flex-col justify-center items-center bg-partner-pattern bg-no-repeat bg-cover mt-[120px] px-[30px] py-[90px] bg-[#373a42]">
 						<div className="btns-partner">
 							<div className="flex justify-center items-center font-semibold text-xs leading-[18px] tracking-[3px] text-white w-[150px] h-[30px] cursor-pointer bg-[#FFFFFF40] mb-[25px] rounded-[30px] border-[none] uppercase">
 								<i className="">
 									<FiMinus />
-								</i>{' '}
+								</i>
 								partner
 							</div>
+						</div>
+						<div className="font-semibold text-4xl leading-[54px] tracking-[1px] text-white text-center mb-[15px]">Our Trusted Partners</div>
+						<div className="font-normal text-xs leading-[233.33%] tracking-[0.5px] text-[#c1c5d0] text-center mb-[50px]">By companies like :</div>
+						<div className="w-full flex flex-wrap justify-center items-center gap-14">
+							{partners.map((partner) => {
+								return (
+									<div key={partner.id}>
+										<img src={`http://localhost:8888/uploads/${partner.picture}`} alt="" />
+									</div>
+								);
+							})}
 						</div>
 					</div>
 				</div>
