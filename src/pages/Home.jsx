@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import male from '../assets/img/male.png';
 import female from '../assets/img/female.png';
 // import yogya from '../assets/img/yogyakarta.png';
-// import event from '../assets/img/event-1.png';
+// import eventImg from '../assets/img/event-1.png';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
@@ -19,6 +19,7 @@ const Home = () => {
 	const [locations, setLocation] = React.useState([]);
 	const [partners, setPartner] = React.useState([]);
 	const [categories, setCategory] = React.useState([]);
+	const [eventCategories, setEventCategory] = React.useState([]);
 
 	React.useEffect(() => {
 		async function getData() {
@@ -51,6 +52,15 @@ const Home = () => {
 		}
 		getCategory();
 	});
+
+	React.useEffect(() => {
+		async function getEventCategory() {
+			const { data } = await axios.get(`http://localhost:8888/event?searchCategory=sport&page=1&limit=3`);
+			setEventCategory(data.results);
+			console.log(data.results);
+		}
+		getEventCategory();
+	}, []);
 
 	return (
 		<>
@@ -212,20 +222,58 @@ const Home = () => {
 							categories
 						</div>
 						<div className="font-semibold text-4xl leading-[177.78%] tracking-[1px] text-[#373a42] flex items-center text-center mt-[25px]">Browse Event By Category</div>
-
 						<div className="w-full flex items-center justify-end mt-[50px]">
 							<div className="w-full h-[50px] object-cover overflow-scroll scrollbar-hide flex items-center justify-center">
-								<ul className="flex justify-center items-center gap-24">
+								<div className="flex justify-center items-center gap-24">
 									{categories.map((category) => {
 										return (
 											<>
-												<li className="font-medium text-base leading-6 text-[#c1c5d0] cursor-pointer capitalize list-none hover:text-[#373a42]" key={category.id}>
-													<div>{category.name}</div>
-												</li>
+												<div className="font-medium text-base leading-6 text-[#c1c5d0]  cursor-pointer capitalize list-none hover:text-[#373a42]" key={category.id}>
+													<button className="capitalize">{category.name}</button>
+												</div>
 											</>
 										);
 									})}
-								</ul>
+								</div>
+							</div>
+						</div>
+
+						<div className="w-full flex items-center justify-end mt-[50px]">
+							<div className="w-full flex justify-center items-center gap-[30px] object-cover overflow-scroll scrollbar-hide">
+								<button className="w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] flex items-center justify-center cursor-pointer mr-[50px] rounded-[10px] border-[none] bg-white">Prev</button>
+
+								{eventCategories.map((eventCategory) => {
+									return (
+										<React.Fragment key={eventCategory.id}>
+											<div className="relative overflow-hidden min-w-[300px] h-[350px] rounded-[40px]">
+												<img src={`http://localhost:8888/uploads/${eventCategory.picture}`} alt="" className="absolute bottom-24 w-full" />
+												<div className="w-full h-[45%] absolute bottom-0 bg-[#4c3f91]">
+													<div className="px-11">
+														<div className="absolute flex z-[1] ml-2.5 mb-5 bottom-[125px]">
+															<div className="w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white">
+																<img src="https://i.pravatar.cc/28" alt="" />
+															</div>
+															<div className="w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white">
+																<img src="https://i.pravatar.cc/28" alt="" />
+															</div>
+															<div className="w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white">
+																<img src="https://i.pravatar.cc/28" alt="" />
+															</div>
+															<div className="w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white">
+																<img src="https://i.pravatar.cc/28" alt="" />
+															</div>
+														</div>
+														<div className="font-medium text-sm leading-[27px] w-[70%] tracking-[1px] text-white absolute z-10 mb-[5px] bottom-20">{moment(eventCategory.date).format('LLLL')}</div>
+														<div className="font-semibold text-[22px] leading-[30px] tracking-[2px] text-white absolute z-10 pr-[30px] bottom-[25px]">
+															<a href="./event-detail.html">{eventCategory.title}</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</React.Fragment>
+									);
+								})}
+								<button className="w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] flex items-center justify-center cursor-pointer mr-[50px] rounded-[10px] border-[none] bg-white">Prev</button>
 							</div>
 						</div>
 					</div>
