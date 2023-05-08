@@ -7,7 +7,9 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'head-pattern': "url('./src/assets/img/image-transparent.png')",
+        'head-pattern': "url('/src/assets/img/head-pattern.png')",
+        'location-pattern': "url('/src/assets/img/location-pattern.png')",
+        'partner-pattern': "url('/src/assets/img/partner-pattern.png')",
       }
     },
   },

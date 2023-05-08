@@ -3,11 +3,12 @@ import Footer from '../components/Footer';
 
 import male from '../assets/img/male.png';
 import female from '../assets/img/female.png';
+// import yogya from '../assets/img/yogyakarta.png';
 // import event from '../assets/img/event-1.png';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
-import { FiSearch, FiMapPin, FiArrowRight } from 'react-icons/fi';
+import { FiSearch, FiMapPin, FiArrowRight, FiMinus } from 'react-icons/fi';
 import { HiArrowLongLeft, HiArrowLongRight } from 'react-icons/hi2';
 
 import React from 'react';
@@ -15,6 +16,8 @@ import axios from 'axios';
 
 const Home = () => {
 	const [events, setEvent] = React.useState([]);
+	const [locations, setLocation] = React.useState([]);
+
 	React.useEffect(() => {
 		async function getData() {
 			const { data } = await axios.get('http://localhost:8888/event');
@@ -22,6 +25,15 @@ const Home = () => {
 		}
 		getData();
 	}, []);
+
+	React.useEffect(() => {
+		async function getLocation() {
+			const { data } = await axios.get('http://localhost:8888/city');
+			setLocation(data.results);
+		}
+		getLocation();
+	});
+
 	return (
 		<>
 			<div className="bg-white md:bg-[#F4F7FF]">
@@ -90,7 +102,7 @@ const Home = () => {
 								<p>&bull;</p>
 							</div>
 							<div className="flex flex-col justify-center items-center font-medium text-xs leading-[18px] tracking-[0.0003375px] text-[#c1c5d0]">
-								<p>1 5</p>
+								<p>15</p>
 								<p>Wed</p>
 							</div>
 							<div className="flex flex-col justify-center items-center font-medium text-xs leading-[18px] tracking-[0.0003375px] text-[#c1c5d0]">
@@ -105,7 +117,7 @@ const Home = () => {
 						</div>
 
 						<div className="w-full flex items-center justify-end">
-							<div className="w-[90%] flex justify-start items-center gap-[30px] object-cover overflow-scroll overflow-y-hidden px-0 py-[50px]">
+							<div className="w-[90%] flex justify-start items-center gap-[30px] object-cover scrollbar-hide overflow-scroll overflow-y-hidden px-0 py-[50px]">
 								{events.map((event) => {
 									return (
 										<React.Fragment key={event.id}>
@@ -131,7 +143,7 @@ const Home = () => {
 														</div>
 													</div>
 												</div>
-												<div className="w-full h-[350px] absolute z-10 bottom-0 bg-gradient-to-t from-[#000000] from-5%"></div>
+												<div className="w-full h-[400px] absolute z-10 bottom-0 bg-gradient-to-t from-[#000000] from-5%"></div>
 											</div>
 										</React.Fragment>
 									);
@@ -139,7 +151,50 @@ const Home = () => {
 							</div>
 						</div>
 						<div className="btn-see-event">
-							<button>See All</button>
+							<button className="w-[255px] h-10 border font-semibold text-sm leading-[21px] text-center tracking-[1px] bg-white text-[#4c3f91] cursor-pointer rounded-[10px] border-solid border-[#4c3f91]">See All</button>
+						</div>
+					</div>
+					<div className="dsp-locaion w-full flex flex-col items-center justify-center px-0 py-[70px]">
+						<div className="dsp-locaion-cont max-w-[1340px] flex flex-col items-start overflow-hidden bg-[#4c3f91] bg-location-pattern bg-no-repeat bg-cover px-20 py-[70px] rounded-[50px]">
+							<div className="h-[70px]">
+								<div className="w-40 h-[30px] flex justify-center items-center cursor-pointer bg-[#FFFFFF40] font-semibold text-xs leading-[18px] tracking-[3px] text-white rounded-[30px] border-[none] uppercase">
+									<i className="">
+										<FiMinus />
+									</i>
+									location
+								</div>
+							</div>
+							<div className="grid grid-cols-4 gap-16">
+								<div className="">
+									<div className="w-[200px] h-[180px] text-[36px] trackong-[1px] text-white font-semibold">
+										<div>Discover Events Near You</div>
+									</div>
+								</div>
+
+								{locations.map((location) => {
+									return (
+										<>
+											<div className="flex flex-col items-center gap-[15px] font-medium text-base leading-6 tracking-[1px] text-white" key={location.id}>
+												<img src={`http://localhost:8888/uploads/${location.picture}`} alt="" className="rounded-2xl overflow-hidden" />
+												<div className="capitalize">{location.name}</div>
+											</div>
+										</>
+									);
+								})}
+							</div>
+							<div className="self-center pt-[50px]">
+								<button className="w-[255px] h-10 border font-semibold text-sm leading-[21px] text-center tracking-[1px] text-[#4c3f91] cursor-pointer rounded-[10px] border-solid border-[#4c3f91] bg-white">See All</button>
+							</div>
+						</div>
+					</div>
+					<div className="dsp-partner flex flex-col justify-center items-center bg-partner-pattern bg-no-repeat bg-cover mt-[120px] px-[30px] py-[90px] bg-[#373a42]">
+						<div className="btns-partner">
+							<div className="flex justify-center items-center font-semibold text-xs leading-[18px] tracking-[3px] text-white w-[150px] h-[30px] cursor-pointer bg-[#FFFFFF40] mb-[25px] rounded-[30px] border-[none] uppercase">
+								<i className="">
+									<FiMinus />
+								</i>{' '}
+								partner
+							</div>
 						</div>
 					</div>
 				</div>
