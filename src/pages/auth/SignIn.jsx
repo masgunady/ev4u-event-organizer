@@ -1,12 +1,47 @@
 import imgFemale from '../../assets/img/female.png';
 import imgMale from '../../assets/img/male.png';
 import logo from '../../assets/img/icon-logo.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+
+import http from '../../helpers/http';
+import React from 'react';
 
 import { FiEye } from 'react-icons/fi';
 import { FcGoogle } from 'react-icons/fc';
 import { FaFacebook } from 'react-icons/fa';
 const SignIn = () => {
+	const location = useLocation();
+	const navigate = useNavigate();
+	const [errorMessage, setErrorMessage] = React.useState('');
+	const [warningMessage, setWarningMessage] = React.useState(location.state?.warningMessage);
+	const [token, setToken] = React.useState('');
+	const doLogin = async (event) => {
+		event.preventDefault();
+		setErrorMessage('');
+		setWarningMessage('');
+		try {
+			const { value: email } = event.target.email;
+			const { value: password } = event.target.password;
+			const body = new URLSearchParams({ email, password }).toString();
+			const { data } = await http().post('http://localhost:8888/auth/login', body);
+			window.localStorage.setItem('token', data.results.token);
+			setToken(data.results.token);
+		} catch (error) {
+			const message = error?.response?.data?.message;
+			setErrorMessage(message);
+		}
+	};
+
+	const removeMessage = () => {
+		setErrorMessage('');
+		setWarningMessage('');
+	};
+
+	React.useEffect(() => {
+		if (token) {
+			navigate('/');
+		}
+	}, [token, navigate]);
 	return (
 		<>
 			<main>
@@ -36,17 +71,15 @@ const SignIn = () => {
 							</div>
 							<div className="text-2xl font-semibold tracking-[1px] text-[#373A42]">Sign In</div>
 							<div className="text-sm font-semibold tracking-[0.5px] text-[#373A42] mb-8">Hi, Welcome back to Urticket!</div>
-							<form className="flex flex-col gap-3.5">
+							{errorMessage && <div className="alert alert-error">{errorMessage}</div>}
+							{warningMessage && <div className="alert alert-warning">{warningMessage}</div>}
+							<form onSubmit={doLogin} className="flex flex-col gap-3.5">
 								<div className="text-sm tracking[0.5]">
-									<input className="w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl" type="text" name="username" placeholder="Username" />
-								</div>
-								<div className="hidden items-center justify-start text-sm text-red-500 font-medium tracking[0.5]"></div>
-								<div className="text-sm tracking[0.5]">
-									<input className="w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl" type="text" name="email" placeholder="Email" />
+									<input onFocus={removeMessage} className="w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl" type="text" name="email" placeholder="Email" />
 								</div>
 								<div className="hidden items-center justify-start text-sm text-red-500 font-medium tracking[0.5]"></div>
 								<div className="text-sm tracking[0.5] relative">
-									<input className="w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl" type="password" name="password" placeholder="Password" />
+									<input onFocus={removeMessage} className="w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl" type="password" name="password" placeholder="Password" />
 									<div className="absolute top-[18px] right-4 text-[#4c3f91]">
 										<i className="">
 											<FiEye size={20} />

@@ -1,7 +1,30 @@
 import logo from '../assets/img/icon-logo.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiHome, FiPlusSquare, FiList, FiHeart, FiUnlock, FiSettings, FiLogOut, FiAlignJustify } from 'react-icons/fi';
+
+import http from '../helpers/http';
+import React from 'react';
 const Header = () => {
+	const navigate = useNavigate();
+	const [profile, setProfile] = React.useState({});
+	const [token, setToken] = React.useState('');
+	React.useEffect(() => {
+		async function getProfileData() {
+			const token = window.localStorage.getItem('token');
+			const { data } = await http(token).get('/profile');
+			setProfile(data.results);
+		}
+
+		getProfileData();
+		if (window.localStorage.getItem('token')) {
+			setToken(window.localStorage.getItem('token'));
+		}
+	}, []);
+
+	const doLogout = () => {
+		window.localStorage.removeItem('token');
+		navigate('/auth/login');
+	};
 	return (
 		<>
 			<nav className="flex justify-between items-center w-[100%] h-24 px-9 lg:px-14 bg-white">
@@ -30,16 +53,40 @@ const Header = () => {
 						</li>
 					</ul>
 				</div>
-				<div className="hidden md:block">
-					<div className="flex justify-start items-center gap-[10px] lg:gap-[15px]">
-						<div className="inline-block rounded-full p-[2px] bg-gradient-to-tr from-[#3366FF] to-[#884DFF]">
-							<img className="w-12 h-12 border-4 border-white rounded-full" src="https://i.pravatar.cc/48" alt="nav-img-profile" />
+
+				{token ? (
+					<>
+						<div className="hidden md:block">
+							<div className="flex justify-start items-center gap-[10px] lg:gap-[15px]">
+								<div className="inline-block rounded-full p-[2px] bg-gradient-to-tr from-[#3366FF] to-[#884DFF]">
+									<img className="w-12 h-12 border-4 border-white rounded-full" src={`http://localhost:8888/uploads/${profile?.picture}`} alt="nav-img-profile" />
+								</div>
+								<div className="text-sm text-[#373a42] font-semibold tracking-[1px] object-cover capitalize">
+									<Link to="/user/edit-profile">{profile?.fullName}</Link>
+								</div>
+								<div>
+									<button onClick={doLogout} className="btn btn-primary">
+										Logout
+									</button>
+								</div>
+							</div>
 						</div>
-						<div className="text-sm text-[#373a42] font-semibold tracking-[1px] object-cover">
-							<Link to="/user/edit-profile">John Tompson</Link>
+					</>
+				) : (
+					<>
+						<div className="hidden md:block basis-1/4">
+							<div className="flex justify-end items-center gap-[1px] lg:gap-[15px]">
+								<div className="md:w-[90px] lg:w-[169px] h-[40px] flex items-center justify-center text-sm text-[#373a42] font-semibold cursor-pointer">
+									<Link to="/auth/login">Sign In</Link>
+								</div>
+								<div className="shadow-for-all-button md:w-[90px] lg:w-[169px] h-[40px] flex items-center justify-center text-sm text-[#fff] font-semibold cursor-pointer bg-[#4c3f91] rounded-lg">
+									<Link to="/auth/register">Sign Up</Link>
+								</div>
+							</div>
 						</div>
-					</div>
-				</div>
+					</>
+				)}
+
 				<div className="block md:hidden">
 					<div>
 						<button id="btnShowNavMobile">

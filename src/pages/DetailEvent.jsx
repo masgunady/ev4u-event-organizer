@@ -1,26 +1,41 @@
-import event from '../assets/img/event-1.png';
+// import event from '../assets/img/event-1.png';
 import maps from '../assets/img/map.png';
 import { FiHeart, FiMapPin, FiClock } from 'react-icons/fi';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import http from '../helpers/http';
+import moment from 'moment';
 const DetailEvent = () => {
+	const { id } = useParams();
+	const [eventDetail, setEventDetail] = React.useState({});
+	React.useEffect(() => {
+		const getEventData = async (id) => {
+			const { data } = await http().get(`/event/${id}`);
+			setEventDetail(data.results);
+		};
+		if (id) {
+			getEventData(id);
+		}
+	}, [id]);
+
 	return (
 		<>
 			<div className="bg-white md:bg-[#F4F7FF]">
 				<div className="headers">
 					<Header />
 				</div>
-
 				<main className="flex justify-center lg:mt-12">
 					<div className="container flex flex-col md:flex-row justify-between items-center md:items-start bg-white px-7 lg:px-24 py-24 lg:rounded-3xl">
 						<div className="flex flex-col items-center gap-11 flex-1">
 							<div className="md:w-[260px] lg:w-[320px] object-cover rounded-3xl overflow-hidden relative">
-								<img className="w-full" src={event} alt="" />
+								<img className="w-full h-[450px] object-cover" src={`http://localhost:8888/uploads/${eventDetail?.picture}`} alt="" />
 								<div className="block md:hidden">
 									<div className="flex flex-col items-center justify-center w-full h-full absolute z-20 bottom-0">
 										<div className="flex flex-col gap-3 px-5">
-											<div className="flex items-start justify-between text-white text-[24px] font-semibold tracking-[2px]">
-												<div>Sights & Sounds Exhibition</div>
+											<div className="flex items-start justify-between text-white text-[24px] font-semibold tracking-[2px] capitalize">
+												<div>{eventDetail?.title} </div>
 												<div>
 													<i className="">
 														<FiHeart size={25} />
@@ -33,7 +48,7 @@ const DetailEvent = () => {
 														<FiMapPin size={20} />
 													</i>
 												</div>
-												<div className="text-white">Jakarta, Indonesia</div>
+												<div className="text-white capitalize">{eventDetail?.location}</div>
 											</div>
 											<div className="flex items-center justify-start gap-2.5 text-sm font-medium tracking-[1px]">
 												<div className="text-[red]">
@@ -41,7 +56,7 @@ const DetailEvent = () => {
 														<FiClock size={20} />
 													</i>
 												</div>
-												<div className="text-white">Sights & Sounds Exhibition</div>
+												<div className="text-white">{moment(eventDetail.date).format('LLLL')}</div>
 											</div>
 											<div>
 												<div className="text-white mt-4">Attendees</div>
@@ -79,15 +94,15 @@ const DetailEvent = () => {
 						<div className="mt-11 md:mt-0 flex flex-col flex-1 gap-7">
 							<div className="hidden md:block">
 								<div className="flex flex-col gap-9 border-b-[1px]">
-									<div className="text-2xl text-[#373a42] font-semibold tracking-[2px] w-[50%]">Sights & Sounds Exhibition</div>
+									<div className="text-2xl text-[#373a42] font-semibold tracking-[2px] w-[50%] capitalize">{eventDetail?.title}</div>
 									<div className="flex items-center justify-start gap-4">
-										<div className="flex-1 flex items-center gap-3 text-sm text-[#373a42] font-medium tracking-[1px]">
+										<div className="flex-1 flex items-center gap-3 text-sm text-[#373a42] font-medium tracking-[1px] capitalize">
 											<div className="text-[red]">
 												<i className="">
 													<FiMapPin size={20} />
 												</i>
 											</div>
-											<div>Jakarta, Indonesia</div>
+											<div>{eventDetail.location}</div>
 										</div>
 										<div className="flex-1 flex items-center gap-3 text-sm text-[#373a42] font-medium tracking-[1px]">
 											<div className="text-[red]">
@@ -95,7 +110,7 @@ const DetailEvent = () => {
 													<FiClock size={20} />
 												</i>
 											</div>
-											<div>Wed, 15 Nov, 4:00 PM</div>
+											<div>{moment(eventDetail.date).format('LLLL')}</div>
 										</div>
 									</div>
 									<div className="flex flex-col gap-2 text-sm text-[#373a42] font-medium tracking-[0.5px] mb-7">

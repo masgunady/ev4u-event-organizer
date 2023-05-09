@@ -2,7 +2,27 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import UserSidebar from '../components/UserSidebar';
 
+import { useNavigate } from 'react-router-dom';
+import React from 'react';
+
 const Reservation = () => {
+	const navigate = useNavigate();
+	const [token, setToken] = React.useState('');
+	const [initToken, setInitToken] = React.useState(false);
+	React.useEffect(() => {
+		if (window.localStorage.getItem('token')) {
+			setToken(window.localStorage.getItem('token'));
+		}
+		setInitToken(true);
+	}, []);
+
+	React.useEffect(() => {
+		if (initToken) {
+			if (!token) {
+				navigate('/auth/login', { state: { warningMessage: 'please login first!' } });
+			}
+		}
+	}, [token, initToken, navigate]);
 	return (
 		<>
 			<div className="bg-white md:bg-[#F4F7FF]">

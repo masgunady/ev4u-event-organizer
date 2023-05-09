@@ -51,13 +51,12 @@ const Home = () => {
 			setCategory(data.results);
 		}
 		getCategory();
-	});
+	}, []);
 
 	React.useEffect(() => {
 		async function getEventCategory() {
 			const { data } = await axios.get(`http://localhost:8888/event?searchCategory=sport&page=1&limit=3`);
 			setEventCategory(data.results);
-			console.log(data.results);
 		}
 		getEventCategory();
 	}, []);
@@ -148,13 +147,13 @@ const Home = () => {
 							<div className="w-[90%] flex justify-start items-center gap-[30px] object-cover scrollbar-hide overflow-scroll overflow-y-hidden px-0 py-[50px]">
 								{events.map((event) => {
 									return (
-										<React.Fragment key={event.id}>
+										<Link to={`/event/detail/${event.id}`} key={`event-${event.id}`}>
 											<div className="w-[260px] min-w-[260px] h-[376px] overflow-hidden relative rounded-[35px]">
 												<img src={`http://localhost:8888/uploads/${event.picture}`} alt="" className="w-full h-full object-cover" />
 												<div className="absolute w-full z-20 px-5 py-[0pc] bottom-[25px]">
 													<div className="font-medium text-sm leading-[27px] flex items-center tracking-[1px] text-white">{moment(event.date).format('LLLL')}</div>
 													<div className="font-semibold capitalize text-[22px] leading-[30px] flex items-center tracking-[2px] text-white pb-5">
-														<Link to="">{event.title}</Link>
+														<div>{event.title}</div>
 													</div>
 													<div className="flex justify-start items-center ml-2.5">
 														<div className="w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white">
@@ -173,7 +172,7 @@ const Home = () => {
 												</div>
 												<div className="w-full h-[400px] absolute z-10 bottom-0 bg-gradient-to-t from-[#000000] from-5%"></div>
 											</div>
-										</React.Fragment>
+										</Link>
 									);
 								})}
 							</div>
@@ -200,12 +199,12 @@ const Home = () => {
 								</div>
 								{locations.map((location) => {
 									return (
-										<>
-											<div className="flex flex-col items-center gap-[15px] font-medium text-base leading-6 tracking-[1px] text-white" key={location.id}>
+										<React.Fragment key={`location-${location.id}`}>
+											<div className="flex flex-col items-center gap-[15px] font-medium text-base leading-6 tracking-[1px] text-white">
 												<img src={`http://localhost:8888/uploads/${location.picture}`} alt="" className="rounded-2xl overflow-hidden" />
 												<div className="capitalize">{location.name}</div>
 											</div>
-										</>
+										</React.Fragment>
 									);
 								})}
 							</div>
@@ -227,11 +226,11 @@ const Home = () => {
 								<div className="flex justify-center items-center gap-24">
 									{categories.map((category) => {
 										return (
-											<>
-												<div className="font-medium text-base leading-6 text-[#c1c5d0]  cursor-pointer capitalize list-none hover:text-[#373a42]" key={category.id}>
+											<React.Fragment key={`category-${category.id}`}>
+												<div className="font-medium text-base leading-6 text-[#c1c5d0]  cursor-pointer capitalize list-none hover:text-[#373a42]">
 													<button className="capitalize">{category.name}</button>
 												</div>
-											</>
+											</React.Fragment>
 										);
 									})}
 								</div>
@@ -244,7 +243,7 @@ const Home = () => {
 
 								{eventCategories.map((eventCategory) => {
 									return (
-										<React.Fragment key={eventCategory.id}>
+										<React.Fragment key={`eventCategory-${eventCategory.id}`}>
 											<div className="relative overflow-hidden min-w-[300px] h-[350px] rounded-[40px]">
 												<img src={`http://localhost:8888/uploads/${eventCategory.picture}`} alt="" className="absolute bottom-24 w-full" />
 												<div className="w-full h-[45%] absolute bottom-0 bg-[#4c3f91]">
