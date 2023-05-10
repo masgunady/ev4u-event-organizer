@@ -30,7 +30,7 @@ const DetailEvent = () => {
 					<div className="container flex flex-col md:flex-row justify-between items-center md:items-start bg-white px-7 lg:px-24 py-24 lg:rounded-3xl">
 						<div className="flex flex-col items-center gap-11 flex-1">
 							<div className="md:w-[260px] lg:w-[320px] object-cover rounded-3xl overflow-hidden relative">
-								<img className="w-full h-[450px] object-cover" src={`http://localhost:8888/uploads/${eventDetail?.picture}`} alt="" />
+								{eventDetail?.picture && <img className="w-full h-[450px] object-cover" src={`http://localhost:8888/uploads/${eventDetail?.picture}`} alt="" />}
 								<div className="block md:hidden">
 									<div className="flex flex-col items-center justify-center w-full h-full absolute z-20 bottom-0">
 										<div className="flex flex-col gap-3 px-5">
