@@ -13,6 +13,7 @@ module.exports = {
         'react-refresh/only-export-components': 'warn',
         indent: ['error', 4],
         quotes: ['error', 'single'],
-        semi: ['error', 'never']
+        semi: ['error', 'never'],
+        'jsx-quotes': ['error', 'prefer-single']
     },
 }
