@@ -13,7 +13,7 @@ const DetailEvent = () => {
     React.useEffect(() => {
         const getEventData = async (id) => {
             const { data } = await http().get(`/event/${id}`)
-            console.log(data)
+            // console.log(data)
             setEventDetail(data.results)
         }
         if (id) {
@@ -34,7 +34,13 @@ const DetailEvent = () => {
                                 {eventDetail?.picture && (
                                     <img
                                         className='w-full h-[450px] object-cover'
-                                        src={`http://localhost:8888/uploads/${eventDetail?.picture}`}
+                                        src={
+                                            eventDetail.picture.startsWith(
+                                                'https'
+                                            )
+                                                ? eventDetail.picture
+                                                : `http://localhost:8888/uploads/${eventDetail?.picture}`
+                                        }
                                         alt=''
                                     />
                                 )}

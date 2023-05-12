@@ -17,6 +17,7 @@ import ManageEvent from './pages/ManageEvent'
 import { store, persistor } from './redux/store'
 import PrivateRoute from './components/PrivateRoute'
 import { PersistGate } from 'redux-persist/lib/integration/react'
+import SearchResults from './pages/SearchResults'
 
 const App = () => {
     return (
@@ -34,6 +35,10 @@ const App = () => {
                         <Route
                             path='/event/detail/:id'
                             element={<DetailEvent />}
+                        />
+                        <Route
+                            path='/event/search'
+                            element={<SearchResults />}
                         />
                         <Route
                             path='/event/reservation'

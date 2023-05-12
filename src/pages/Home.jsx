@@ -13,6 +13,8 @@ import { HiArrowLongLeft, HiArrowLongRight } from 'react-icons/hi2'
 import React from 'react'
 import axios from 'axios'
 
+import { Formik } from 'formik'
+
 const Home = () => {
     const [events, setEvent] = React.useState([])
     const [locations, setLocation] = React.useState([])
@@ -176,11 +178,19 @@ const Home = () => {
                                             key={`event-${event.id}`}
                                         >
                                             <div className='w-[260px] min-w-[260px] h-[376px] overflow-hidden relative rounded-[35px]'>
-                                                <img
-                                                    src={`http://localhost:8888/uploads/${event.picture}`}
-                                                    alt=''
-                                                    className='w-full h-full object-cover'
-                                                />
+                                                {event?.picture && (
+                                                    <img
+                                                        className='w-full h-full object-cover'
+                                                        src={
+                                                            event.picture.startsWith(
+                                                                'https'
+                                                            )
+                                                                ? event.picture
+                                                                : `http://localhost:8888/uploads/${event.picture}`
+                                                        }
+                                                        alt=''
+                                                    />
+                                                )}
                                                 <div className='absolute w-full z-20 px-5 py-[0pc] bottom-[25px]'>
                                                     <div className='font-medium text-sm leading-[27px] flex items-center tracking-[1px] text-white'>
                                                         {moment(
@@ -252,11 +262,19 @@ const Home = () => {
                                             key={`location-${location.id}`}
                                         >
                                             <div className='flex flex-col items-center gap-[15px] font-medium text-base leading-6 tracking-[1px] text-white'>
-                                                <img
-                                                    src={`http://localhost:8888/uploads/${location.picture}`}
-                                                    alt=''
-                                                    className='rounded-2xl overflow-hidden'
-                                                />
+                                                {location?.picture && (
+                                                    <img
+                                                        className='rounded-2xl overflow-hidden'
+                                                        src={
+                                                            location.picture.startsWith(
+                                                                'https'
+                                                            )
+                                                                ? location.picture
+                                                                : `http://localhost:8888/uploads/${location.picture}`
+                                                        }
+                                                        alt=''
+                                                    />
+                                                )}
                                                 <div className='capitalize'>
                                                     {location.name}
                                                 </div>
@@ -314,11 +332,19 @@ const Home = () => {
                                             key={`eventCategory-${eventCategory.id}`}
                                         >
                                             <div className='relative overflow-hidden min-w-[300px] h-[350px] rounded-[40px]'>
-                                                <img
-                                                    src={`http://localhost:8888/uploads/${eventCategory.picture}`}
-                                                    alt=''
-                                                    className='absolute bottom-24 w-full'
-                                                />
+                                                {eventCategory?.picture && (
+                                                    <img
+                                                        src={
+                                                            eventCategory.picture.startsWith(
+                                                                'https'
+                                                            )
+                                                                ? eventCategory.picture
+                                                                : `http://localhost:8888/uploads/${eventCategory.picture}`
+                                                        }
+                                                        alt=''
+                                                        className='absolute bottom-24 w-full'
+                                                    />
+                                                )}
                                                 <div className='w-full h-[45%] absolute bottom-0 bg-[#4c3f91]'>
                                                     <div className='px-11'>
                                                         <div className='absolute flex z-[1] ml-2.5 mb-5 bottom-[125px]'>
@@ -390,10 +416,18 @@ const Home = () => {
                             {partners.map((partner) => {
                                 return (
                                     <div key={partner.id}>
-                                        <img
-                                            src={`http://localhost:8888/uploads/${partner.picture}`}
-                                            alt=''
-                                        />
+                                        {partner?.picture && (
+                                            <img
+                                                src={
+                                                    partner.picture.startsWith(
+                                                        'https'
+                                                    )
+                                                        ? partner.picture
+                                                        : `http://localhost:8888/uploads/${partner.picture}`
+                                                }
+                                                alt=''
+                                            />
+                                        )}
                                     </div>
                                 )
                             })}
