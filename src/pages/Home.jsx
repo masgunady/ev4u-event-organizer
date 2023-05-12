@@ -12,15 +12,21 @@ import { HiArrowLongLeft, HiArrowLongRight } from 'react-icons/hi2'
 
 import React from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 import { Formik } from 'formik'
 
 const Home = () => {
     const [events, setEvent] = React.useState([])
+    const [eventCategories, setEventCategory] = React.useState([])
     const [locations, setLocation] = React.useState([])
     const [partners, setPartner] = React.useState([])
     const [categories, setCategory] = React.useState([])
-    const [eventCategories, setEventCategory] = React.useState([])
+    const [tabEvent, setTabEvent] = React.useState(1)
+    const [totalPage, setTotalPage] = React.useState()
+    const [activeTabCategory, setActiveTabCategory] = React.useState('music')
+
+    const navigate = useNavigate()
 
     React.useEffect(() => {
         async function getData() {
@@ -57,12 +63,48 @@ const Home = () => {
     React.useEffect(() => {
         async function getEventCategory() {
             const { data } = await axios.get(
-                'http://localhost:8888/event?searchCategory=sport&page=1&limit=3'
+                `http://localhost:8888/event?searchCategory=${activeTabCategory}&page=1&limit=3`
             )
+            setTotalPage(data.totalPage)
             setEventCategory(data.results)
         }
         getEventCategory()
-    }, [])
+    }, [activeTabCategory])
+
+    React.useEffect(() => {
+        async function getEventCategoryNext() {
+            const { data } = await axios.get(
+                `http://localhost:8888/event?searchCategory=${activeTabCategory}&page=${tabEvent}&limit=3`
+            )
+
+            setEventCategory(data.results)
+        }
+        getEventCategoryNext()
+    }, [tabEvent, activeTabCategory])
+
+    const handleTabClicked = (category) => {
+        setTabEvent(1)
+        setActiveTabCategory(category)
+    }
+
+    const handlePrev = () => {
+        if (tabEvent > 1) {
+            setTabEvent(tabEvent - 1)
+        }
+    }
+
+    const handleNext = () => {
+        if (tabEvent + 1 <= totalPage) {
+            setTabEvent(tabEvent + 1)
+        }
+    }
+
+    const onSearch = (values) => {
+        const qStrings = new URLSearchParams(values).toString()
+        navigate(`/event/search?${qStrings}`)
+
+        // setSearchParams(values, '/event/search')
+    }
 
     return (
         <>
@@ -72,38 +114,87 @@ const Home = () => {
                 </div>
                 <div className='prt-main'>
                     <div className='flex flex-col-reverse lg:flex-row justify-between w-full h-[750px] bg-[#4c3f91] bg-head-pattern bg-no-repeat bg-cover  items-center gap-2.5 overflow-hidden pt-[140px] pb-[50px] px-[30px] md:px-[50px]'>
-                        <div className='w-[90%] h-[55%] absolute z-10 sm:static md:w-full lg:w-[45%] lg:max-w-[650px]'>
-                            <div className='w-full h-full relative sm:static flex flex-col gap-[30px]'>
-                                <div className='font-semibold text-[36px] md:text-[64px] absolute top-0 sm:static text-center sm:text-start leading-[54px] lg:leading-[54px] xl:leading-[94px] tracking-[2px] text-white'>
+                        <div className='w-[90%] h-[500px] absolute z-10 sm:static md:w-full lg:w-[45%] lg:max-w-[650px]'>
+                            <div className='w-full h-full relative sm:static flex flex-col gap-[50px]'>
+                                <div className='font-semibold text-[36px] md:text-[64px] absolute top-0 sm:static text-center sm:text-start leading-[54px] lg:leading-[95px] tracking-[2px] text-white'>
                                     Find events you love with our
                                 </div>
                                 <div className='absolute bottom-0 sm:static w-full h-[75px] bg-white shadow-[0px_4px_10px_rgba(255,255,255,0.1)] flex flex-row items-center justify-between px-[15px] py-0 rounded-[20px]'>
-                                    <form
-                                        action=''
-                                        className='w-full flex items-center justify-between gap-[3px]'
+                                    <Formik
+                                        initialValues={{
+                                            searchName: '',
+                                            searchLocation: '',
+                                        }}
+                                        onSubmit={onSearch}
                                     >
-                                        <i className=''>
-                                            <FiSearch size={20} />
-                                        </i>
-                                        <input
-                                            type='text'
-                                            placeholder='Search event...'
-                                            className='w-[45%] h-[45px] px-2.5 py-0 border-0 outline-none'
-                                        />
-                                        <i className=''>
-                                            <FiMapPin size={20} />
-                                        </i>
-                                        <input
-                                            type='text'
-                                            placeholder='Where?'
-                                            className='w-[45%] h-[45px] px-2.5 py-0 border-0 outline-none'
-                                        />
-                                        <button className='w-[45px] h-[45px] shadow-[0px_8px_10px_rgba(51,102,255,0.15)] cursor-pointer flex items-center justify-center rounded-[10px] border-[none] bg-[#ff3d71]'>
-                                            <i className='text-white'>
-                                                <FiArrowRight size={25} />
-                                            </i>
-                                        </button>
-                                    </form>
+                                        {({
+                                            handleBlur,
+                                            handleChange,
+                                            handleSubmit,
+                                        }) => (
+                                            <form
+                                                onSubmit={handleSubmit}
+                                                className='w-full flex items-center justify-between gap-[3px]'
+                                            >
+                                                <i className=''>
+                                                    <FiSearch size={20} />
+                                                </i>
+                                                <div className='form-control w-[45%] h-[45px]'>
+                                                    <input
+                                                        type='text'
+                                                        name='searchName'
+                                                        onBlur={handleBlur}
+                                                        onChange={handleChange}
+                                                        placeholder='Search event...'
+                                                        className='w-full h-full px-2.5 py-0 border-0 outline-none'
+                                                    />
+                                                </div>
+                                                <i className=''>
+                                                    <FiMapPin size={20} />
+                                                </i>
+                                                <div className='form-control w-[45%] h-[45px]'>
+                                                    <select
+                                                        name='searchLocation'
+                                                        onBlur={handleBlur}
+                                                        onChange={handleChange}
+                                                        className='select  w-full h-full text-secondary capitalize px-2.5 py-0 border-0 outline-none'
+                                                        id=''
+                                                    >
+                                                        <option value=''>
+                                                            Select Location
+                                                        </option>
+                                                        {locations.map(
+                                                            (location) => {
+                                                                return (
+                                                                    <option
+                                                                        key={`location-select-${location.id}`}
+                                                                        value={
+                                                                            location.name
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            location.name
+                                                                        }
+                                                                    </option>
+                                                                )
+                                                            }
+                                                        )}
+                                                    </select>
+                                                </div>
+
+                                                <button
+                                                    type='submit'
+                                                    className='w-[45px] h-[45px] shadow-[0px_8px_10px_rgba(51,102,255,0.15)] cursor-pointer flex items-center justify-center rounded-[10px] border-[none] bg-[#ff3d71]'
+                                                >
+                                                    <i className='text-white'>
+                                                        <FiArrowRight
+                                                            size={25}
+                                                        />
+                                                    </i>
+                                                </button>
+                                            </form>
+                                        )}
+                                    </Formik>
                                 </div>
                             </div>
                         </div>
@@ -300,35 +391,53 @@ const Home = () => {
                         <div className='font-semibold text-4xl leading-[177.78%] tracking-[1px] text-[#373a42] flex items-center text-center mt-[25px]'>
                             Browse Event By Category
                         </div>
-                        <div className='w-full flex items-center justify-end mt-[50px]'>
-                            <div className='w-full h-[50px] object-cover overflow-scroll scrollbar-hide flex items-center justify-center'>
-                                <div className='flex justify-center items-center gap-24 w-[80%] bg-red-200'>
-                                    {categories.map((category) => {
-                                        return (
-                                            <React.Fragment
-                                                key={`category-${category.id}`}
-                                            >
-                                                <div className='font-medium text-base leading-6 text-[#c1c5d0]  cursor-pointer capitalize list-none hover:text-[#373a42]'>
-                                                    <button className='capitalize'>
-                                                        {category.name}
-                                                    </button>
-                                                </div>
-                                            </React.Fragment>
-                                        )
-                                    })}
-                                </div>
+                        <div className='w-full flex items-center justify-center'>
+                            <div className='w-[85%] md:max-w-[900px] flex justify-between items-center gap-20 object-cover scrollbar-hide overflow-scroll overflow-y-hidden px-0 py-[50px]'>
+                                {categories.map((category) => {
+                                    return (
+                                        <React.Fragment
+                                            key={`category-${category.id}`}
+                                        >
+                                            <div className='font-medium text-base leading-6 text-secondary  cursor-pointer capitalize list-none hover:text-[#373a42]'>
+                                                <button
+                                                    onClick={() =>
+                                                        handleTabClicked(
+                                                            category.name
+                                                        )
+                                                    }
+                                                    className={`capitalize ${
+                                                        activeTabCategory ===
+                                                        category.name
+                                                            ? 'border-b-2 font-semibold border-primary'
+                                                            : 'opacity-60'
+                                                    }`}
+                                                >
+                                                    {category.name}
+                                                </button>
+                                            </div>
+                                        </React.Fragment>
+                                    )
+                                })}
                             </div>
                         </div>
 
-                        <div className='w-full flex items-center justify-end mt-[50px]'>
-                            <div className='w-full flex justify-center items-center gap-[30px] object-cover overflow-scroll scrollbar-hide'>
-                                <button className='w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] flex items-center justify-center cursor-pointer mr-[50px] rounded-[10px] border-[none] bg-white'>
-                                    Prev
-                                </button>
+                        <div className='w-full flex items-center justify-center'>
+                            <div className='w-[90%] md:max-w-[85%] flex justify-between items-center gap-11 object-cover scrollbar-hide overflow-scroll overflow-y-hidden px-0 py-[50px]'>
+                                <div>
+                                    <button
+                                        onClick={handlePrev}
+                                        className='hidden w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] md:flex items-center justify-center cursor-pointer mr-[50px] rounded-[10px] border-[none] bg-white'
+                                    >
+                                        <i className='text-secondary'>
+                                            <HiArrowLongLeft size={25} />
+                                        </i>
+                                    </button>
+                                </div>
 
                                 {eventCategories.map((eventCategory) => {
                                     return (
-                                        <React.Fragment
+                                        <Link
+                                            to={`/event/detail/${eventCategory.id}`}
                                             key={`eventCategory-${eventCategory.id}`}
                                         >
                                             <div className='relative overflow-hidden min-w-[300px] h-[350px] rounded-[40px]'>
@@ -388,13 +497,40 @@ const Home = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </React.Fragment>
+                                        </Link>
                                     )
                                 })}
-                                <button className='w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] flex items-center justify-center cursor-pointer mr-[50px] rounded-[10px] border-[none] bg-white'>
-                                    Prev
-                                </button>
+                                <div>
+                                    <button
+                                        onClick={handleNext}
+                                        className='hidden btn btn-primary w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] md:flex items-center justify-center cursor-pointer mr-[50px] rounded-[10px] border-[none]'
+                                    >
+                                        <i className='text-white'>
+                                            <HiArrowLongRight size={25} />
+                                        </i>
+                                    </button>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                    <div className='w-full  flex flex-col items-center justify-center'>
+                        <div className='flex  justify-between items-between gap-16'>
+                            <button
+                                onClick={handlePrev}
+                                className='w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] flex flex-row md:hidden items-center justify-center cursor-pointer rounded-[10px] border-[none] bg-white'
+                            >
+                                <i className='text-secondary'>
+                                    <HiArrowLongLeft size={25} />
+                                </i>
+                            </button>
+                            <button
+                                onClick={handleNext}
+                                className='btn btn-primary w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] flex md:hidden items-center justify-center cursor-pointer rounded-[10px] border-[none]'
+                            >
+                                <i className='text-white'>
+                                    <HiArrowLongRight size={25} />
+                                </i>
+                            </button>
                         </div>
                     </div>
                     <div className='dsp-partner flex flex-col justify-center items-center bg-partner-pattern bg-no-repeat bg-cover mt-[120px] px-[30px] py-[90px] bg-[#373a42]'>
