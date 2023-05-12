@@ -1,47 +1,116 @@
 import imgFemale from '../../assets/img/female.png';
 import imgMale from '../../assets/img/male.png';
 import logo from '../../assets/img/icon-logo.svg';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-
-import http from '../../helpers/http';
 import React from 'react';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { Formik } from 'formik';
 import { FiEye } from 'react-icons/fi';
 import { FcGoogle } from 'react-icons/fc';
 import { FaFacebook } from 'react-icons/fa';
-const SignIn = () => {
-	const location = useLocation();
-	const navigate = useNavigate();
-	const [errorMessage, setErrorMessage] = React.useState('');
-	const [warningMessage, setWarningMessage] = React.useState(location.state?.warningMessage);
-	const [token, setToken] = React.useState('');
-	const doLogin = async (event) => {
-		event.preventDefault();
-		setErrorMessage('');
-		setWarningMessage('');
-		try {
-			const { value: email } = event.target.email;
-			const { value: password } = event.target.password;
-			const body = new URLSearchParams({ email, password }).toString();
-			const { data } = await http().post('http://localhost:8888/auth/login', body);
-			window.localStorage.setItem('token', data.results.token);
-			setToken(data.results.token);
-		} catch (error) {
-			const message = error?.response?.data?.message;
-			setErrorMessage(message);
-		}
-	};
+import propTypes from 'prop-types';
 
-	const removeMessage = () => {
-		setErrorMessage('');
-		setWarningMessage('');
-	};
+import { useDispatch, useSelector } from 'react-redux';
+import { clearMessage } from '../../redux/reducers/auth';
+
+import { asyncLoginAction } from '../../redux/action/auth';
+
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object({
+	email: Yup.string().required('Email is Required!').email('Email is invalid!'),
+	password: Yup.string().required('Password is invalid'),
+});
+
+const FormLogin = ({ values, errors, touched, handleBlur, handleChange, handleSubmit, isSubmitting }) => {
+	const errorMessage = useSelector((state) => state.auth.errorMessage);
+	const warningMessage = useSelector((state) => state.auth.warningMessage);
+	return (
+		<form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
+			{warningMessage && <div className="alert alert-warning">{warningMessage}</div>}
+			<div className="form-control text-sm tracking[0.5]">
+				<input
+					onChange={handleChange}
+					onBlur={handleBlur}
+					value={values.email}
+					className={`input input-bordered ${errors.email && touched.email && 'input-error'} w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl`}
+					type="text"
+					name="email"
+					placeholder="Email"
+				/>
+				{errors.email && touched.email && (
+					<label htmlFor="email" className="label">
+						<span className="label-text-alt text-error">{errors.email}</span>
+					</label>
+				)}
+			</div>
+
+			<div className="form-control text-sm tracking[0.5] relative">
+				<input
+					onChange={handleChange}
+					onBlur={handleBlur}
+					value={values.password}
+					className={`input input-bordered ${errors.password && touched.password && 'input-error'} w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl`}
+					type="password"
+					name="password"
+					placeholder="Password"
+				/>
+				{errors.password && touched.password && (
+					<label htmlFor="password" className="label">
+						<span className="label-text-alt text-error">{errors.password}</span>
+					</label>
+				)}
+
+				<div className="absolute top-[18px] right-4 text-[#4c3f91]">
+					<i className="">
+						<FiEye size={20} />
+					</i>
+				</div>
+			</div>
+			{errorMessage && <div className="alert alert-error">{errorMessage}</div>}
+			<div className="self-end text-sm text-[#4c3f91] font-semibold tracking[0.5] my-3">
+				<Link to="/auth/forgot-password">Forgot Password ?</Link>
+			</div>
+			<div>
+				<button disabled={isSubmitting} type="submit" className="btn shadow-for-all-button w-full h-14 rounded-xl bg-[#4c3f91] text-base font-semibold tracking-[1px] text-white">
+					Sign In
+				</button>
+			</div>
+		</form>
+	);
+};
+
+FormLogin.propTypes = {
+	values: propTypes.objectOf(propTypes.string),
+	errors: propTypes.objectOf(propTypes.string),
+	touched: propTypes.objectOf(propTypes.bool),
+	handleBlur: propTypes.func,
+	handleChange: propTypes.func,
+	handleSubmit: propTypes.func,
+	isSubmitting: propTypes.bool,
+};
+
+const SignIn = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const token = useSelector((state) => state.auth.token);
+	const formError = useSelector((state) => state.auth.formError);
 
 	React.useEffect(() => {
 		if (token) {
 			navigate('/');
 		}
 	}, [token, navigate]);
+	const doLogin = async (values, { setSubmitting, setErrors }) => {
+		dispatch(clearMessage());
+		dispatch(asyncLoginAction(values));
+		if (formError.length) {
+			setErrors({
+				email: formError.filter((item) => item.param === 'email')[0].message,
+				password: formError.filter((item) => item.param === 'password')[0].message,
+			});
+		}
+		setSubmitting(false);
+	};
 	return (
 		<>
 			<main>
@@ -71,32 +140,10 @@ const SignIn = () => {
 							</div>
 							<div className="text-2xl font-semibold tracking-[1px] text-[#373A42]">Sign In</div>
 							<div className="text-sm font-semibold tracking-[0.5px] text-[#373A42] mb-8">Hi, Welcome back to Urticket!</div>
-							{errorMessage && <div className="alert alert-error">{errorMessage}</div>}
-							{warningMessage && <div className="alert alert-warning">{warningMessage}</div>}
-							<form onSubmit={doLogin} className="flex flex-col gap-3.5">
-								<div className="text-sm tracking[0.5]">
-									<input onFocus={removeMessage} className="w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl" type="text" name="email" placeholder="Email" />
-								</div>
-								<div className="hidden items-center justify-start text-sm text-red-500 font-medium tracking[0.5]"></div>
-								<div className="text-sm tracking[0.5] relative">
-									<input onFocus={removeMessage} className="w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl" type="password" name="password" placeholder="Password" />
-									<div className="absolute top-[18px] right-4 text-[#4c3f91]">
-										<i className="">
-											<FiEye size={20} />
-										</i>
-									</div>
-								</div>
-								<div className="hidden items-center justify-start text-sm text-red-500 font-medium tracking[0.5]"></div>
-								<div className="hidden items-center justify-center text-sm text-red-500 font-medium tracking[0.5]"></div>
-								<div className="self-end text-sm text-[#4c3f91] font-semibold tracking[0.5] my-3">
-									<Link to="/auth/forgot-password">Forgot Password ?</Link>
-								</div>
-								<div>
-									<button type="submit" className="shadow-for-all-button w-full h-14 rounded-xl bg-[#4c3f91] text-base font-semibold tracking-[1px] text-white">
-										Sign In
-									</button>
-								</div>
-							</form>
+
+							<Formik initialValues={{ email: '', password: '' }} validationSchema={validationSchema} onSubmit={doLogin}>
+								{(props) => <FormLogin {...props} />}
+							</Formik>
 							<div className="flex flex-col items-center justify-center gap-4 mt-12">
 								<div className="text-sm tracking[0.5] text-[#373A42]">or sign in with</div>
 								<div className="flex items-center justify-center gap-4">

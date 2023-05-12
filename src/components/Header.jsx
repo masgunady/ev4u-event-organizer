@@ -4,25 +4,26 @@ import { FiHome, FiPlusSquare, FiList, FiHeart, FiUnlock, FiSettings, FiLogOut, 
 
 import http from '../helpers/http';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout as logoutAction } from '../redux/reducers/auth';
 const Header = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const [profile, setProfile] = React.useState({});
-	const [token, setToken] = React.useState('');
+	const token = useSelector((state) => state.auth.token);
 	React.useEffect(() => {
 		async function getProfileData() {
-			const token = window.localStorage.getItem('token');
-			const { data } = await http(token).get('/profile');
-			setProfile(data.results);
+			if (token) {
+				const { data } = await http(token).get('/profile');
+				setProfile(data.results);
+			}
 		}
 
 		getProfileData();
-		if (window.localStorage.getItem('token')) {
-			setToken(window.localStorage.getItem('token'));
-		}
 	}, []);
 
 	const doLogout = () => {
-		window.localStorage.removeItem('token');
+		dispatch(logoutAction());
 		navigate('/auth/login');
 	};
 	return (

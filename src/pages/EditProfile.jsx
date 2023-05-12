@@ -1,28 +1,23 @@
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import UserSidebar from '../components/UserSidebar';
-
-import { useNavigate } from 'react-router-dom';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import http from '../helpers/http';
 
 const Reservation = () => {
-	const navigate = useNavigate();
-	const [token, setToken] = React.useState('');
-	const [initToken, setInitToken] = React.useState(false);
-	React.useEffect(() => {
-		if (window.localStorage.getItem('token')) {
-			setToken(window.localStorage.getItem('token'));
-		}
-		setInitToken(true);
-	}, []);
+	const token = useSelector((state) => state.auth.token);
+
+	const [userProfile, setUserProfile] = React.useState({});
 
 	React.useEffect(() => {
-		if (initToken) {
-			if (!token) {
-				navigate('/auth/login', { state: { warningMessage: 'please login first!' } });
-			}
-		}
-	}, [token, initToken, navigate]);
+		const getDataProfile = async () => {
+			const { data } = await http(token).get('/profile');
+			setUserProfile(data.results);
+		};
+		getDataProfile();
+	}, []);
+
 	return (
 		<>
 			<div className="bg-white md:bg-[#F4F7FF]">
@@ -43,7 +38,7 @@ const Reservation = () => {
 											<label className="lg:w-32 text-sm text-[#373A42] tracking-[1px]" htmlFor="name">
 												Name
 											</label>
-											<input className="w-full px-3 h-[55px] border rounded-xl" type="text" id="name" placeholder="Username" />
+											<input className="w-full px-3 h-[55px] border rounded-xl" type="text" id="name" placeholder="Username" value={userProfile?.fullName} />
 										</div>
 										<div className="flex flex-col items-start lg:flex-row lg-items-center gap-5 xl:gap-12 justify-start">
 											<label className="lg:w-32 text-sm text-[#373A42] tracking-[1px]" htmlFor="name">

@@ -3,8 +3,7 @@ import Footer from '../components/Footer';
 
 import male from '../assets/img/male.png';
 import female from '../assets/img/female.png';
-// import yogya from '../assets/img/yogyakarta.png';
-// import eventImg from '../assets/img/event-1.png';
+
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
@@ -71,7 +70,9 @@ const Home = () => {
 					<div className="flex flex-col-reverse lg:flex-row justify-between w-full h-[750px] bg-[#4c3f91] bg-head-pattern bg-no-repeat bg-cover  items-center gap-2.5 overflow-hidden pt-[140px] pb-[50px] px-[30px] md:px-[50px]">
 						<div className="w-[90%] h-[55%] absolute z-10 sm:static md:w-full lg:w-[45%] lg:max-w-[650px]">
 							<div className="w-full h-full relative sm:static flex flex-col gap-[30px]">
-								<div className="font-semibold text-[36px] sm:text-[64px] absolute top-0 sm:static text-center sm:text-start leading-[54px] lg:leading-[96px] tracking-[2px] text-white">Find events you love with our</div>
+								<div className="font-semibold text-[36px] md:text-[64px] absolute top-0 sm:static text-center sm:text-start leading-[54px] lg:leading-[54px] xl:leading-[94px] tracking-[2px] text-white">
+									Find events you love with our
+								</div>
 								<div className="absolute bottom-0 sm:static w-full h-[75px] bg-white shadow-[0px_4px_10px_rgba(255,255,255,0.1)] flex flex-row items-center justify-between px-[15px] py-0 rounded-[20px]">
 									<form action="" className="w-full flex items-center justify-between gap-[3px]">
 										<i className="">
@@ -223,7 +224,7 @@ const Home = () => {
 						<div className="font-semibold text-4xl leading-[177.78%] tracking-[1px] text-[#373a42] flex items-center text-center mt-[25px]">Browse Event By Category</div>
 						<div className="w-full flex items-center justify-end mt-[50px]">
 							<div className="w-full h-[50px] object-cover overflow-scroll scrollbar-hide flex items-center justify-center">
-								<div className="flex justify-center items-center gap-24">
+								<div className="flex justify-center items-center gap-24 w-[80%] bg-red-200">
 									{categories.map((category) => {
 										return (
 											<React.Fragment key={`category-${category.id}`}>
