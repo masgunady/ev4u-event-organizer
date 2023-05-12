@@ -1,8 +1,8 @@
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import UserSidebar from "../components/UserSidebar";
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import UserSidebar from '../components/UserSidebar'
 
-import { FiHeart } from "react-icons/fi";
+import { FiHeart } from 'react-icons/fi'
 const MyWishlist = () => {
     return (
         <>
@@ -187,7 +187,7 @@ const MyWishlist = () => {
                 </footer>
             </div>
         </>
-    );
-};
+    )
+}
 
-export default MyWishlist;
+export default MyWishlist

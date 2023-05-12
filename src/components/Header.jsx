@@ -1,5 +1,5 @@
-import logo from "../assets/img/icon-logo.svg";
-import { Link, useNavigate } from "react-router-dom";
+import logo from '../assets/img/icon-logo.svg'
+import { Link, useNavigate } from 'react-router-dom'
 import {
     FiHome,
     FiPlusSquare,
@@ -9,32 +9,32 @@ import {
     FiSettings,
     FiLogOut,
     FiAlignJustify,
-} from "react-icons/fi";
+} from 'react-icons/fi'
 
-import http from "../helpers/http";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { logout as logoutAction } from "../redux/reducers/auth";
+import http from '../helpers/http'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout as logoutAction } from '../redux/reducers/auth'
 const Header = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const [profile, setProfile] = React.useState({});
-    const token = useSelector((state) => state.auth.token);
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const [profile, setProfile] = React.useState({})
+    const token = useSelector((state) => state.auth.token)
     React.useEffect(() => {
         async function getProfileData() {
             if (token) {
-                const { data } = await http(token).get("/profile");
-                setProfile(data.results);
+                const { data } = await http(token).get('/profile')
+                setProfile(data.results)
             }
         }
 
-        getProfileData();
-    }, []);
+        getProfileData()
+    }, [token])
 
     const doLogout = () => {
-        dispatch(logoutAction());
-        navigate("/auth/login");
-    };
+        dispatch(logoutAction())
+        navigate('/auth/login')
+    }
     return (
         <>
             <nav className="flex justify-between items-center w-[100%] h-24 px-9 lg:px-14 bg-white">
@@ -192,7 +192,7 @@ const Header = () => {
                 </div>
             </div>
         </>
-    );
-};
+    )
+}
 
-export default Header;
+export default Header

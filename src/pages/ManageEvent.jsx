@@ -1,8 +1,8 @@
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import UserSidebar from "../components/UserSidebar";
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import UserSidebar from '../components/UserSidebar'
 
-import { FiPlusCircle } from "react-icons/fi";
+import { FiPlusCircle } from 'react-icons/fi'
 
 const ManageEvent = () => {
     return (
@@ -191,7 +191,7 @@ const ManageEvent = () => {
                 </footer>
             </div>
         </>
-    );
-};
+    )
+}
 
-export default ManageEvent;
+export default ManageEvent

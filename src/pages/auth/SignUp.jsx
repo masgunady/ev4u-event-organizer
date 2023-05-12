@@ -1,9 +1,9 @@
-import imgFemale from "../../assets/img/female.png";
-import imgMale from "../../assets/img/male.png";
-import logo from "../../assets/img/icon-logo.svg";
-import { Link } from "react-router-dom";
+import imgFemale from '../../assets/img/female.png'
+import imgMale from '../../assets/img/male.png'
+import logo from '../../assets/img/icon-logo.svg'
+import { Link } from 'react-router-dom'
 
-import { FiEye } from "react-icons/fi";
+import { FiEye } from 'react-icons/fi'
 const SignUp = () => {
     return (
         <>
@@ -47,7 +47,7 @@ const SignUp = () => {
                                 Sign Up
                             </div>
                             <div className="text-sm font-semibold tracking-[0.5px] text-[#373A42] mb-8">
-                                Already have an account?{" "}
+                                Already have an account?{' '}
                                 <Link class="text-[#4c3f91]" to="/auth/login">
                                     Log In
                                 </Link>
@@ -129,7 +129,7 @@ const SignUp = () => {
                 </div>
             </main>
         </>
-    );
-};
+    )
+}
 
-export default SignUp;
+export default SignUp

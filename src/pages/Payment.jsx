@@ -1,12 +1,12 @@
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Footer from '../components/Footer'
+import Header from '../components/Header'
 
-import creditCard from "../assets/img/card-display.png";
+import creditCard from '../assets/img/card-display.png'
 
-import { FiChevronUp, FiChevronDown } from "react-icons/fi";
-import { BsCreditCardFill, BsBank2 } from "react-icons/bs";
-import { IoStorefront } from "react-icons/io5";
-import { FaDollarSign } from "react-icons/fa";
+import { FiChevronUp, FiChevronDown } from 'react-icons/fi'
+import { BsCreditCardFill, BsBank2 } from 'react-icons/bs'
+import { IoStorefront } from 'react-icons/io5'
+import { FaDollarSign } from 'react-icons/fa'
 
 const Reservation = () => {
     return (
@@ -194,7 +194,7 @@ const Reservation = () => {
                 </footer>
             </div>
         </>
-    );
-};
+    )
+}
 
-export default Reservation;
+export default Reservation

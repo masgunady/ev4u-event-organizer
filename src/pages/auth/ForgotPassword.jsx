@@ -1,7 +1,7 @@
-import imgFemale from "../../assets/img/female.png";
-import imgMale from "../../assets/img/male.png";
-import logo from "../../assets/img/icon-logo.svg";
-import { Link } from "react-router-dom";
+import imgFemale from '../../assets/img/female.png'
+import imgMale from '../../assets/img/male.png'
+import logo from '../../assets/img/icon-logo.svg'
+import { Link } from 'react-router-dom'
 
 const ForgotPassword = () => {
     return (
@@ -73,7 +73,7 @@ const ForgotPassword = () => {
                 </div>
             </main>
         </>
-    );
-};
+    )
+}
 
-export default ForgotPassword;
+export default ForgotPassword

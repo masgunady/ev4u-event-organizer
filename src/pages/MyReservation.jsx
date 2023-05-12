@@ -1,8 +1,8 @@
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import UserSidebar from "../components/UserSidebar";
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import UserSidebar from '../components/UserSidebar'
 
-import { FiCalendar } from "react-icons/fi";
+import { FiCalendar } from 'react-icons/fi'
 const MyReservation = () => {
     return (
         <>
@@ -139,7 +139,7 @@ const MyReservation = () => {
                 </footer>
             </div>
         </>
-    );
-};
+    )
+}
 
-export default MyReservation;
+export default MyReservation

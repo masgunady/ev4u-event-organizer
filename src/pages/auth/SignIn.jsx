@@ -1,27 +1,27 @@
-import imgFemale from "../../assets/img/female.png";
-import imgMale from "../../assets/img/male.png";
-import logo from "../../assets/img/icon-logo.svg";
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Formik } from "formik";
-import { FiEye } from "react-icons/fi";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
-import propTypes from "prop-types";
+import imgFemale from '../../assets/img/female.png'
+import imgMale from '../../assets/img/male.png'
+import logo from '../../assets/img/icon-logo.svg'
+import React from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Formik } from 'formik'
+import { FiEye } from 'react-icons/fi'
+import { FcGoogle } from 'react-icons/fc'
+import { FaFacebook } from 'react-icons/fa'
+import propTypes from 'prop-types'
 
-import { useDispatch, useSelector } from "react-redux";
-import { clearMessage } from "../../redux/reducers/auth";
+import { useDispatch, useSelector } from 'react-redux'
+import { clearMessage } from '../../redux/reducers/auth'
 
-import { asyncLoginAction } from "../../redux/action/auth";
+import { asyncLoginAction } from '../../redux/action/auth'
 
-import * as Yup from "yup";
+import * as Yup from 'yup'
 
 const validationSchema = Yup.object({
     email: Yup.string()
-        .required("Email is Required!")
-        .email("Email is invalid!"),
-    password: Yup.string().required("Password is invalid"),
-});
+        .required('Email is Required!')
+        .email('Email is invalid!'),
+    password: Yup.string().required('Password is invalid'),
+})
 
 const FormLogin = ({
     values,
@@ -32,8 +32,8 @@ const FormLogin = ({
     handleSubmit,
     isSubmitting,
 }) => {
-    const errorMessage = useSelector((state) => state.auth.errorMessage);
-    const warningMessage = useSelector((state) => state.auth.warningMessage);
+    const errorMessage = useSelector((state) => state.auth.errorMessage)
+    const warningMessage = useSelector((state) => state.auth.warningMessage)
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
             {warningMessage && (
@@ -45,7 +45,7 @@ const FormLogin = ({
                     onBlur={handleBlur}
                     value={values.email}
                     className={`input input-bordered ${
-                        errors.email && touched.email && "input-error"
+                        errors.email && touched.email && 'input-error'
                     } w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl`}
                     type="text"
                     name="email"
@@ -66,7 +66,7 @@ const FormLogin = ({
                     onBlur={handleBlur}
                     value={values.password}
                     className={`input input-bordered ${
-                        errors.password && touched.password && "input-error"
+                        errors.password && touched.password && 'input-error'
                     } w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl`}
                     type="password"
                     name="password"
@@ -102,8 +102,8 @@ const FormLogin = ({
                 </button>
             </div>
         </form>
-    );
-};
+    )
+}
 
 FormLogin.propTypes = {
     values: propTypes.objectOf(propTypes.string),
@@ -113,33 +113,33 @@ FormLogin.propTypes = {
     handleChange: propTypes.func,
     handleSubmit: propTypes.func,
     isSubmitting: propTypes.bool,
-};
+}
 
 const SignIn = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const token = useSelector((state) => state.auth.token);
-    const formError = useSelector((state) => state.auth.formError);
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const token = useSelector((state) => state.auth.token)
+    const formError = useSelector((state) => state.auth.formError)
 
     React.useEffect(() => {
         if (token) {
-            navigate("/");
+            navigate('/')
         }
-    }, [token, navigate]);
+    }, [token, navigate])
     const doLogin = async (values, { setSubmitting, setErrors }) => {
-        dispatch(clearMessage());
-        dispatch(asyncLoginAction(values));
+        dispatch(clearMessage())
+        dispatch(asyncLoginAction(values))
         if (formError.length) {
             setErrors({
-                email: formError.filter((item) => item.param === "email")[0]
+                email: formError.filter((item) => item.param === 'email')[0]
                     .message,
                 password: formError.filter(
-                    (item) => item.param === "password"
+                    (item) => item.param === 'password'
                 )[0].message,
-            });
+            })
         }
-        setSubmitting(false);
-    };
+        setSubmitting(false)
+    }
     return (
         <>
             <main>
@@ -186,7 +186,7 @@ const SignIn = () => {
                             </div>
 
                             <Formik
-                                initialValues={{ email: "", password: "" }}
+                                initialValues={{ email: '', password: '' }}
                                 validationSchema={validationSchema}
                                 onSubmit={doLogin}
                             >
@@ -214,7 +214,7 @@ const SignIn = () => {
                 </div>
             </main>
         </>
-    );
-};
+    )
+}
 
-export default SignIn;
+export default SignIn

@@ -8,7 +8,7 @@ import {
     FiHeart,
     FiSettings,
     FiLogOut,
-} from "react-icons/fi";
+} from 'react-icons/fi'
 const UserSidebar = () => {
     return (
         <>
@@ -135,7 +135,7 @@ const UserSidebar = () => {
                 </div>
             </aside>
         </>
-    );
-};
+    )
+}
 
-export default UserSidebar;
+export default UserSidebar

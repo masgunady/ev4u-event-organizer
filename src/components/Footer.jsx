@@ -1,11 +1,11 @@
-import logo from "../assets/img/icon-logo.svg";
-import { Link } from "react-router-dom";
+import logo from '../assets/img/icon-logo.svg'
+import { Link } from 'react-router-dom'
 import {
     AiFillInstagram,
     AiFillFacebook,
     AiOutlineTwitter,
-} from "react-icons/ai";
-import { FaWhatsappSquare } from "react-icons/fa";
+} from 'react-icons/ai'
+import { FaWhatsappSquare } from 'react-icons/fa'
 const Footer = () => {
     return (
         <>
@@ -160,7 +160,7 @@ const Footer = () => {
                 &copy; 2020 Wetick All Rights Reserved
             </div>
         </>
-    );
-};
+    )
+}
 
-export default Footer;
+export default Footer

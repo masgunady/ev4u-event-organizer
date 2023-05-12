@@ -1,10 +1,10 @@
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import sectionImg from "../assets/img/booking-img-art.png";
+import Footer from '../components/Footer'
+import Header from '../components/Header'
+import sectionImg from '../assets/img/booking-img-art.png'
 
-import { BiSort } from "react-icons/bi";
-import { IoTicket } from "react-icons/io5";
-import { HiPlus, HiMinus } from "react-icons/hi";
+import { BiSort } from 'react-icons/bi'
+import { IoTicket } from 'react-icons/io5'
+import { HiPlus, HiMinus } from 'react-icons/hi'
 
 const Reservation = () => {
     return (
@@ -215,7 +215,7 @@ const Reservation = () => {
                 </footer>
             </div>
         </>
-    );
-};
+    )
+}
 
-export default Reservation;
+export default Reservation

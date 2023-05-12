@@ -1,22 +1,22 @@
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import UserSidebar from "../components/UserSidebar";
-import React from "react";
-import { useSelector } from "react-redux";
-import http from "../helpers/http";
+import Footer from '../components/Footer'
+import Header from '../components/Header'
+import UserSidebar from '../components/UserSidebar'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import http from '../helpers/http'
 
 const Reservation = () => {
-    const token = useSelector((state) => state.auth.token);
+    const token = useSelector((state) => state.auth.token)
 
-    const [userProfile, setUserProfile] = React.useState({});
+    const [userProfile, setUserProfile] = React.useState({})
 
     React.useEffect(() => {
         const getDataProfile = async () => {
-            const { data } = await http(token).get("/profile");
-            setUserProfile(data.results);
-        };
-        getDataProfile();
-    }, []);
+            const { data } = await http(token).get('/profile')
+            setUserProfile(data.results)
+        }
+        getDataProfile()
+    }, [])
 
     return (
         <>
@@ -247,7 +247,7 @@ const Reservation = () => {
                 </footer>
             </div>
         </>
-    );
-};
+    )
+}
 
-export default Reservation;
+export default Reservation

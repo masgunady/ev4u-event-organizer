@@ -1,66 +1,66 @@
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
-import male from "../assets/img/male.png";
-import female from "../assets/img/female.png";
+import male from '../assets/img/male.png'
+import female from '../assets/img/female.png'
 
-import { Link } from "react-router-dom";
-import moment from "moment";
+import { Link } from 'react-router-dom'
+import moment from 'moment'
 
-import { FiSearch, FiMapPin, FiArrowRight, FiMinus } from "react-icons/fi";
-import { HiArrowLongLeft, HiArrowLongRight } from "react-icons/hi2";
+import { FiSearch, FiMapPin, FiArrowRight, FiMinus } from 'react-icons/fi'
+import { HiArrowLongLeft, HiArrowLongRight } from 'react-icons/hi2'
 
-import React from "react";
-import axios from "axios";
+import React from 'react'
+import axios from 'axios'
 
 const Home = () => {
-    const [events, setEvent] = React.useState([]);
-    const [locations, setLocation] = React.useState([]);
-    const [partners, setPartner] = React.useState([]);
-    const [categories, setCategory] = React.useState([]);
-    const [eventCategories, setEventCategory] = React.useState([]);
+    const [events, setEvent] = React.useState([])
+    const [locations, setLocation] = React.useState([])
+    const [partners, setPartner] = React.useState([])
+    const [categories, setCategory] = React.useState([])
+    const [eventCategories, setEventCategory] = React.useState([])
 
     React.useEffect(() => {
         async function getData() {
-            const { data } = await axios.get("http://localhost:8888/event");
-            setEvent(data.results);
+            const { data } = await axios.get('http://localhost:8888/event')
+            setEvent(data.results)
         }
-        getData();
-    }, []);
+        getData()
+    }, [])
 
     React.useEffect(() => {
         async function getLocation() {
-            const { data } = await axios.get("http://localhost:8888/city");
-            setLocation(data.results);
+            const { data } = await axios.get('http://localhost:8888/city')
+            setLocation(data.results)
         }
-        getLocation();
-    }, []);
+        getLocation()
+    }, [])
 
     React.useEffect(() => {
         async function getPartner() {
-            const { data } = await axios.get("http://localhost:8888/partner");
-            setPartner(data.results);
+            const { data } = await axios.get('http://localhost:8888/partner')
+            setPartner(data.results)
         }
-        getPartner();
-    }, []);
+        getPartner()
+    }, [])
 
     React.useEffect(() => {
         async function getCategory() {
-            const { data } = await axios.get("http://localhost:8888/category");
-            setCategory(data.results);
+            const { data } = await axios.get('http://localhost:8888/category')
+            setCategory(data.results)
         }
-        getCategory();
-    }, []);
+        getCategory()
+    }, [])
 
     React.useEffect(() => {
         async function getEventCategory() {
             const { data } = await axios.get(
-                `http://localhost:8888/event?searchCategory=sport&page=1&limit=3`
-            );
-            setEventCategory(data.results);
+                'http://localhost:8888/event?searchCategory=sport&page=1&limit=3'
+            )
+            setEventCategory(data.results)
         }
-        getEventCategory();
-    }, []);
+        getEventCategory()
+    }, [])
 
     return (
         <>
@@ -185,7 +185,7 @@ const Home = () => {
                                                     <div className="font-medium text-sm leading-[27px] flex items-center tracking-[1px] text-white">
                                                         {moment(
                                                             event.date
-                                                        ).format("LLLL")}
+                                                        ).format('LLLL')}
                                                     </div>
                                                     <div className="font-semibold capitalize text-[22px] leading-[30px] flex items-center tracking-[2px] text-white pb-5">
                                                         <div>{event.title}</div>
@@ -220,7 +220,7 @@ const Home = () => {
                                                 <div className="w-full h-[400px] absolute z-10 bottom-0 bg-gradient-to-t from-[#000000] from-5%"></div>
                                             </div>
                                         </Link>
-                                    );
+                                    )
                                 })}
                             </div>
                         </div>
@@ -262,7 +262,7 @@ const Home = () => {
                                                 </div>
                                             </div>
                                         </React.Fragment>
-                                    );
+                                    )
                                 })}
                             </div>
                             <div className="self-center pt-[50px]">
@@ -296,7 +296,7 @@ const Home = () => {
                                                     </button>
                                                 </div>
                                             </React.Fragment>
-                                        );
+                                        )
                                     })}
                                 </div>
                             </div>
@@ -350,7 +350,7 @@ const Home = () => {
                                                         <div className="font-medium text-sm leading-[27px] w-[70%] tracking-[1px] text-white absolute z-10 mb-[5px] bottom-20">
                                                             {moment(
                                                                 eventCategory.date
-                                                            ).format("LLLL")}
+                                                            ).format('LLLL')}
                                                         </div>
                                                         <div className="font-semibold text-[22px] leading-[30px] tracking-[2px] text-white absolute z-10 pr-[30px] bottom-[25px]">
                                                             <a href="./event-detail.html">
@@ -363,7 +363,7 @@ const Home = () => {
                                                 </div>
                                             </div>
                                         </React.Fragment>
-                                    );
+                                    )
                                 })}
                                 <button className="w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] flex items-center justify-center cursor-pointer mr-[50px] rounded-[10px] border-[none] bg-white">
                                     Prev
@@ -395,7 +395,7 @@ const Home = () => {
                                             alt=""
                                         />
                                     </div>
-                                );
+                                )
                             })}
                         </div>
                     </div>
@@ -405,7 +405,7 @@ const Home = () => {
                 </footer>
             </div>
         </>
-    );
-};
+    )
+}
 
-export default Home;
+export default Home

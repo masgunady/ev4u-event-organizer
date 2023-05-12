@@ -1,5 +1,5 @@
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Footer from '../components/Footer'
+import Header from '../components/Header'
 
 const Reservation = () => {
     return (
@@ -13,7 +13,7 @@ const Reservation = () => {
                 </footer>
             </div>
         </>
-    );
-};
+    )
+}
 
-export default Reservation;
+export default Reservation

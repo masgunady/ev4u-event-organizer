@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { asyncLoginAction } from "../action/auth";
+import { createSlice } from '@reduxjs/toolkit'
+import { asyncLoginAction } from '../action/auth'
 
 const initialState = {
     token: '',

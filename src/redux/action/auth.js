@@ -1,5 +1,5 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import http from "../../helpers/http";
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import http from '../../helpers/http'
 
 export const asyncLoginAction = createAsyncThunk(
     'auth/login',

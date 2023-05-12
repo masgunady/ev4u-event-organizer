@@ -1,6 +1,6 @@
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import UserSidebar from "../components/UserSidebar";
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import UserSidebar from '../components/UserSidebar'
 const ChangePassword = () => {
     return (
         <>
@@ -84,7 +84,7 @@ const ChangePassword = () => {
                 </footer>
             </div>
         </>
-    );
-};
+    )
+}
 
-export default ChangePassword;
+export default ChangePassword

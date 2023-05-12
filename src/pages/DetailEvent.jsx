@@ -1,24 +1,24 @@
 // import event from '../assets/img/event-1.png';
-import maps from "../assets/img/map.png";
-import { FiHeart, FiMapPin, FiClock } from "react-icons/fi";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import React from "react";
-import { useParams } from "react-router-dom";
-import http from "../helpers/http";
-import moment from "moment";
+import maps from '../assets/img/map.png'
+import { FiHeart, FiMapPin, FiClock } from 'react-icons/fi'
+import Footer from '../components/Footer'
+import Header from '../components/Header'
+import React from 'react'
+import { useParams } from 'react-router-dom'
+import http from '../helpers/http'
+import moment from 'moment'
 const DetailEvent = () => {
-    const { id } = useParams();
-    const [eventDetail, setEventDetail] = React.useState({});
+    const { id } = useParams()
+    const [eventDetail, setEventDetail] = React.useState({})
     React.useEffect(() => {
         const getEventData = async (id) => {
-            const { data } = await http().get(`/event/${id}`);
-            setEventDetail(data.results);
-        };
-        if (id) {
-            getEventData(id);
+            const { data } = await http().get(`/event/${id}`)
+            setEventDetail(data.results)
         }
-    }, [id]);
+        if (id) {
+            getEventData(id)
+        }
+    }, [id])
 
     return (
         <>
@@ -67,7 +67,7 @@ const DetailEvent = () => {
                                                 <div className="text-white">
                                                     {moment(
                                                         eventDetail.date
-                                                    ).format("LLLL")}
+                                                    ).format('LLLL')}
                                                 </div>
                                             </div>
                                             <div>
@@ -141,7 +141,7 @@ const DetailEvent = () => {
                                             <div>
                                                 {moment(
                                                     eventDetail.date
-                                                ).format("LLLL")}
+                                                ).format('LLLL')}
                                             </div>
                                         </div>
                                     </div>
@@ -218,7 +218,7 @@ const DetailEvent = () => {
                 </footer>
             </div>
         </>
-    );
-};
+    )
+}
 
-export default DetailEvent;
+export default DetailEvent
