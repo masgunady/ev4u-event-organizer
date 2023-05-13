@@ -25,6 +25,7 @@ export default {
                     'info':'#F4F7FF',
                     'success':'#3366FF',
                     'error':'#ff0000',
+                    'snow': '#ffffff'
                 }
             }
         ]

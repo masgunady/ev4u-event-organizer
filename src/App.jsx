@@ -42,11 +42,19 @@ const App = () => {
                         />
                         <Route
                             path='/event/reservation'
-                            element={<Reservation />}
+                            element={
+                                <PrivateRoute>
+                                    <Reservation />
+                                </PrivateRoute>
+                            }
                         />
                         <Route
                             path='/event/reservation/payment'
-                            element={<Payment />}
+                            element={
+                                <PrivateRoute>
+                                    <Payment />
+                                </PrivateRoute>
+                            }
                         />
                         <Route
                             path='/user/edit-profile'
@@ -58,16 +66,35 @@ const App = () => {
                         />
                         <Route
                             path='/user/change-password'
-                            element={<ChangePassword />}
+                            element={
+                                <PrivateRoute>
+                                    <ChangePassword />
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path='/user/manage-event'
+                            element={
+                                <PrivateRoute>
+                                    <ManageEvent />
+                                </PrivateRoute>
+                            }
                         />
                         <Route
                             path='/user/reservation'
-                            element={<MyReservation />}
+                            element={
+                                <PrivateRoute>
+                                    <MyReservation />
+                                </PrivateRoute>
+                            }
                         />
-                        <Route path='/user/wishlist' element={<MyWishlist />} />
                         <Route
-                            path='/user/manage-event'
-                            element={<ManageEvent />}
+                            path='/user/wishlist'
+                            element={
+                                <PrivateRoute>
+                                    <MyWishlist />
+                                </PrivateRoute>
+                            }
                         />
                     </Routes>
                 </BrowserRouter>

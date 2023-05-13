@@ -9,26 +9,65 @@ import {
     FiSettings,
     FiLogOut,
 } from 'react-icons/fi'
+
+import {
+    logout as logoutAction,
+    setWarningMessage,
+} from '../redux/reducers/auth'
+import { Link, useNavigate } from 'react-router-dom'
+import http from '../helpers/http'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
 const UserSidebar = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const [profile, setProfile] = React.useState({})
+    const token = useSelector((state) => state.auth.token)
+    React.useEffect(() => {
+        async function getProfileData() {
+            const fallback = (message) => {
+                dispatch(logoutAction())
+                dispatch(setWarningMessage(message))
+                navigate('/auth/login')
+            }
+            const { data } = await http(token, fallback).get('/profile')
+            setProfile(data.results)
+        }
+        if (token) {
+            getProfileData()
+        }
+    }, [token, dispatch, navigate])
+
+    const doLogout = () => {
+        dispatch(logoutAction())
+        navigate('/auth/login')
+    }
     return (
         <>
             <aside className='hidden md:block my-12 md:w-64 xl:w-80'>
                 <div className='flex gap-3.5 mb-14'>
                     <div>
                         <div className='inline-block rounded-full p-[2px] bg-gradient-to-tr from-[#3366FF] to-[#884DFF]'>
-                            <img
-                                className='border-4 border-white rounded-full'
-                                src='https://i.pravatar.cc/48'
-                                alt='nav-img-profile'
-                            />
+                            {profile?.picture && (
+                                <img
+                                    className='w-12 h-12  border-4 border-white rounded-full'
+                                    src={
+                                        profile?.picture.startsWith('https')
+                                            ? profile?.picture
+                                            : `http://localhost:8888/uploads/${profile?.picture}`
+                                    }
+                                    alt='nav-img-profile'
+                                />
+                            )}
                         </div>
                     </div>
                     <div className='flex flex-col justify-center gap-2'>
-                        <div className='text-sm text-[#373a42] font-semibold tracking-[1px]'>
-                            John Tompson
+                        <div className='text-sm text-[#373a42] font-semibold tracking-[1px] capitalize'>
+                            {profile?.fullName}
                         </div>
                         <div className='text-xs text-[#373a42] tracking-[0.5px]'>
-                            Entrepreneur, ID
+                            {profile?.profession}
                         </div>
                     </div>
                 </div>
@@ -56,80 +95,84 @@ const UserSidebar = () => {
                                     </a>
                                 </li>
                                 <li className='mb-8 text-sm text-[#3366FF] font-semibold tracking-[1px]'>
-                                    <a
+                                    <Link
+                                        to='/user/edit-profile'
                                         className='flex items-center gap-6'
-                                        href='./edit-profile.html'
                                     >
                                         <i className=''>
                                             <FiEdit3 size={22} />
                                         </i>
                                         Edit Profile
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className='mb-8 text-sm font-semibold text-[#373a42] tracking-[1px]'>
-                                    <a
+                                    <Link
+                                        to='/user/change-password'
                                         className='flex items-center gap-6'
-                                        href='./change-pass.html'
                                     >
                                         <i className=''>
                                             <FiUnlock size={22} />
                                         </i>
                                         Change Password
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                         </li>
                         <li className='mb-8 text-sm font-semibold tracking-[1px] text-[#373a42]'>
-                            <a
+                            <Link
+                                to='/user/manage-event'
                                 className='flex items-center gap-6'
-                                href='./create-events.html'
                             >
                                 <i className=''>
                                     <FiPlusCircle size={22} />
                                 </i>
                                 Create Event
-                            </a>
+                            </Link>
                         </li>
                         <li className='mb-8 text-sm font-semibold tracking-[1px] text-[#373a42]'>
-                            <a
+                            <Link
+                                to='/user/reservation'
                                 className='flex items-center gap-6'
-                                href='./my-booking.html'
                             >
                                 <i className=''>
                                     <FiList size={22} />
                                 </i>
                                 My Booking
-                            </a>
+                            </Link>
                         </li>
                         <li className='mb-8 text-sm text-[#373a42] font-semibold tracking-[1px]'>
-                            <a
+                            <Link
+                                to='/user/wishlist'
                                 className='flex items-center gap-6'
-                                href='./my-wishlists.html'
                             >
                                 <i className=''>
                                     <FiHeart size={22} />
                                 </i>
                                 My Wishlist
-                            </a>
+                            </Link>
                         </li>
                         <li className='mb-8 text-sm text-[#373a42] font-semibold tracking-[1px]'>
-                            <a className='flex items-center gap-6' href='#'>
+                            <Link
+                                to='/user/edit-profile'
+                                className='flex items-center gap-6'
+                                href='#'
+                            >
                                 <i className=''>
                                     <FiSettings size={22} />
                                 </i>
                                 Setting
-                            </a>
+                            </Link>
                         </li>
                         <li className='mb-8 text-sm text-[#F03800] font-semibold tracking-[1px]'>
-                            <a
+                            <button
+                                onClick={doLogout}
                                 className='flex items-center gap-6'
-                                href='./auth-login.html'
                             >
                                 <i className=''>
                                     <FiLogOut size={22} />
                                 </i>
                                 Logout
-                            </a>
+                            </button>
                         </li>
                     </ul>
                 </div>

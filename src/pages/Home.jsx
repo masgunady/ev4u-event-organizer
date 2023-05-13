@@ -426,7 +426,7 @@ const Home = () => {
                                 <div>
                                     <button
                                         onClick={handlePrev}
-                                        className='hidden w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] md:flex items-center justify-center cursor-pointer mr-[50px] rounded-[10px] border-[none] bg-white'
+                                        className='hidden btn btn-neutral w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] md:flex items-center justify-center cursor-pointer mr-[50px] rounded-[10px] border-[none]'
                                     >
                                         <i className='text-secondary'>
                                             <HiArrowLongLeft size={25} />
@@ -487,7 +487,7 @@ const Home = () => {
                                                                 eventCategory.date
                                                             ).format('LLLL')}
                                                         </div>
-                                                        <div className='font-semibold text-[22px] leading-[30px] tracking-[2px] text-white absolute z-10 pr-[30px] bottom-[25px]'>
+                                                        <div className='capitalize font-semibold text-[22px] leading-[30px] tracking-[2px] text-white absolute z-10 pr-[30px] bottom-[25px]'>
                                                             <a href='./event-detail.html'>
                                                                 {
                                                                     eventCategory.title
@@ -517,7 +517,7 @@ const Home = () => {
                         <div className='flex  justify-between items-between gap-16'>
                             <button
                                 onClick={handlePrev}
-                                className='w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] flex flex-row md:hidden items-center justify-center cursor-pointer rounded-[10px] border-[none] bg-white'
+                                className='btn btn-neutral w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] flex flex-row md:hidden items-center justify-center cursor-pointer rounded-[10px] border-[none]'
                             >
                                 <i className='text-secondary'>
                                     <HiArrowLongLeft size={25} />
