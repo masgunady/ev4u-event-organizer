@@ -31,6 +31,7 @@ const Header = () => {
                 navigate('/auth/login')
             }
             const { data } = await http(token, fallback).get('/profile')
+            // console.log(data.results.picture)
             setProfile(data.results)
         }
         if (token) {
@@ -63,7 +64,7 @@ const Header = () => {
                             <Link to='/'>Home</Link>
                         </li>
                         <li className='cursor-pointer hover:border-b-2 border-[#4c3f91]'>
-                            <Link to='/user/create-event'>Create Event</Link>
+                            <Link to='/user/manage-event'>Create Event</Link>
                         </li>
                         <li className='cursor-pointer hover:border-b-2 border-[#4c3f91]'>
                             <Link to='/'>Location</Link>
@@ -98,7 +99,7 @@ const Header = () => {
                                 <div>
                                     <button
                                         onClick={doLogout}
-                                        className='btn btn-primary'
+                                        className='btn btn-primary text-white capitalize'
                                     >
                                         Logout
                                     </button>

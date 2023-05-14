@@ -39,6 +39,9 @@ const FormLogin = ({
             {warningMessage && (
                 <div className='alert alert-warning'>{warningMessage}</div>
             )}
+            {errorMessage && (
+                <div className='alert alert-error'>{errorMessage}</div>
+            )}
             <div className='form-control text-sm tracking[0.5]'>
                 <input
                     onChange={handleChange}
@@ -86,9 +89,7 @@ const FormLogin = ({
                     </i>
                 </div>
             </div>
-            {errorMessage && (
-                <div className='alert alert-error'>{errorMessage}</div>
-            )}
+
             <div className='self-end text-sm text-[#4c3f91] font-semibold tracking[0.5] my-3'>
                 <Link to='/auth/forgot-password'>Forgot Password ?</Link>
             </div>

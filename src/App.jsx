@@ -18,12 +18,14 @@ import { store, persistor } from './redux/store'
 import PrivateRoute from './components/PrivateRoute'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import SearchResults from './pages/SearchResults'
+import ScrollToTop from './components/ScrollToTop'
 
 const App = () => {
     return (
         <Provider store={store}>
             <PersistGate persistor={persistor}>
                 <BrowserRouter>
+                    <ScrollToTop />
                     <Routes>
                         <Route path='/' element={<Home />} />
                         <Route path='/auth/login' element={<SignIn />} />

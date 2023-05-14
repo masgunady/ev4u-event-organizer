@@ -200,7 +200,7 @@ const SearchResults = () => {
                             {searchResults.length < 1 && (
                                 <div className='flex items-center justify-center font-semibold text-2xl '>
                                     Event &quot;{searchParams.get('searchName')}{' '}
-                                    loc {searchParams.get('searchLocation')} all
+                                    {` - ${searchParams.get('searchLocation')}`}
                                     &quot; Not found ...
                                 </div>
                             )}

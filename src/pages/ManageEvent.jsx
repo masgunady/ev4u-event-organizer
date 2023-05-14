@@ -3,8 +3,26 @@ import Footer from '../components/Footer'
 import UserSidebar from '../components/UserSidebar'
 
 import { FiPlusCircle } from 'react-icons/fi'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import http from '../helpers/http'
+import { Link } from 'react-router-dom'
+import moment from 'moment'
 
 const ManageEvent = () => {
+    const [eventByMe, setEventByMe] = React.useState([])
+    const token = useSelector((state) => state.auth.token)
+
+    React.useEffect(() => {
+        async function getEventByMe() {
+            const { data } = await http(token).get('/event/manage')
+            setEventByMe(data.results)
+        }
+        if (token) {
+            getEventByMe()
+        }
+    }, [token, setEventByMe])
+
     return (
         <>
             <div className='bg-white md:bg-[#F4F7FF]'>
@@ -20,168 +38,81 @@ const ManageEvent = () => {
                                     Create Event
                                 </div>
                                 <div className='w-32 h-14 rounded-2xl bg-[#EAF1FF] flex justify-center items-center'>
-                                    <a
-                                        href='./create-events-modal.html'
+                                    <Link
+                                        to='/user/manage-event'
                                         className='w-full h-full flex justify-center items-center gap-4 text-xs font-medium tracking-1px text-[#3366FF]'
                                     >
                                         <i className=''>
                                             <FiPlusCircle size={25} />
                                         </i>
                                         Create
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
-                            <div className='flex items-center justify-start gap-6 border-b-2 py-7'>
-                                <div>
-                                    <div className='w-[50px] h-[75px] flex flex-col items-center justify-center rounded-2xl bg-white shadow-lg'>
-                                        <div className='text-sm font-semibold text-[#FF8900]'>
-                                            15
+                            {eventByMe.map((eventMe) => {
+                                return (
+                                    <div
+                                        className='flex items-center justify-start gap-6 border-b-2 py-7'
+                                        key={`eventMe-${eventMe.id}`}
+                                    >
+                                        <div>
+                                            <div className='w-[50px] h-[75px] flex flex-col items-center justify-center rounded-2xl bg-white shadow-lg'>
+                                                <div className='text-sm font-semibold text-[#FF8900]'>
+                                                    {moment(
+                                                        eventMe?.date
+                                                    ).format('DD')}
+                                                </div>
+                                                <div className='text-xs font-medium text-[#C1C5D0]'>
+                                                    {moment(eventMe?.date)
+                                                        .format('LLLL')
+                                                        .slice(0, 3)}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className='text-xs font-medium text-[#C1C5D0]'>
-                                            Wed
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='flex flex-col items-start justify-start text-[#373A42] gap-[5px]'>
-                                    <div className='text-2xl font-semibold tracking-[2px] mb-3.5'>
-                                        Sights & Sounds Exhibition
-                                    </div>
-                                    <div className='text-xs tracking-[0.5px]'>
-                                        Jakarta, Indonesia
-                                    </div>
-                                    <div className='text-xs tracking-[0.5px]'>
-                                        Wed, 15 Nov, 4:00 PM
-                                    </div>
-                                    <div className='flex items-center gap-5'>
-                                        <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
-                                            <a href='./detail-events-modal.html'>
-                                                Detail
-                                            </a>
-                                        </div>
-                                        <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
-                                            <a href='./update-events-modal.html'>
-                                                Update
-                                            </a>
-                                        </div>
-                                        <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
-                                            <a href='#'>Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='flex items-center justify-start gap-6 border-b-2 py-7'>
-                                <div>
-                                    <div className='w-[50px] h-[75px] flex flex-col items-center justify-center rounded-2xl bg-white shadow-lg'>
-                                        <div className='text-sm font-semibold text-[#FF8900]'>
-                                            15
-                                        </div>
-                                        <div className='text-xs font-medium text-[#C1C5D0]'>
-                                            Wed
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='flex flex-col items-start justify-start text-[#373A42] gap-[5px]'>
-                                    <div className='text-2xl font-semibold tracking-[2px] mb-3.5'>
-                                        Sights & Sounds Exhibition
-                                    </div>
-                                    <div className='text-xs tracking-[0.5px]'>
-                                        Jakarta, Indonesia
-                                    </div>
-                                    <div className='text-xs tracking-[0.5px]'>
-                                        Wed, 15 Nov, 4:00 PM
-                                    </div>
-                                    <div className='flex items-center gap-5'>
-                                        <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
-                                            <a href='./detail-events-modal.html'>
-                                                Detail
-                                            </a>
-                                        </div>
-                                        <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
-                                            <a href='./update-events-modal.html'>
-                                                Update
-                                            </a>
-                                        </div>
-                                        <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
-                                            <a href='#'>Delete</a>
+                                        <div className='flex flex-col items-start justify-start text-[#373A42] gap-[5px]'>
+                                            <div className='text-2xl font-semibold tracking-[2px] mb-3.5 capitalize'>
+                                                {eventMe?.title}
+                                            </div>
+                                            <div className='text-xs tracking-[0.5px] capitalize'>
+                                                {`${eventMe?.location}, Indonesia`}
+                                            </div>
+                                            <div className='text-xs tracking-[0.5px]'>
+                                                {moment(eventMe?.date).format(
+                                                    'LLLL'
+                                                )}
+                                            </div>
+                                            <div className='flex items-center gap-5'>
+                                                <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
+                                                    <a href='./detail-events-modal.html'>
+                                                        Detail
+                                                    </a>
+                                                </div>
+                                                <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
+                                                    <a href='./update-events-modal.html'>
+                                                        Update
+                                                    </a>
+                                                </div>
+                                                <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
+                                                    <a href='#'>Delete</a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div className='flex items-center justify-start gap-6 border-b-2 py-7'>
-                                <div>
-                                    <div className='w-[50px] h-[75px] flex flex-col items-center justify-center rounded-2xl bg-white shadow-lg'>
-                                        <div className='text-sm font-semibold text-[#FF8900]'>
-                                            15
+                                )
+                            })}
+                            <div>
+                                {eventByMe.length < 1 && (
+                                    <div className=' h-full flex flex-col items-center justify-center gap-7 '>
+                                        <div className='font-semibold text-2xl text-secondary'>
+                                            No Event Found
                                         </div>
-                                        <div className='text-xs font-medium text-[#C1C5D0]'>
-                                            Wed
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='flex flex-col items-start justify-start text-[#373A42] gap-[5px]'>
-                                    <div className='text-2xl font-semibold tracking-[2px] mb-3.5'>
-                                        Sights & Sounds Exhibition
-                                    </div>
-                                    <div className='text-xs tracking-[0.5px]'>
-                                        Jakarta, Indonesia
-                                    </div>
-                                    <div className='text-xs tracking-[0.5px]'>
-                                        Wed, 15 Nov, 4:00 PM
-                                    </div>
-                                    <div className='flex items-center gap-5'>
-                                        <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
-                                            <a href='./detail-events-modal.html'>
-                                                Detail
-                                            </a>
-                                        </div>
-                                        <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
-                                            <a href='./update-events-modal.html'>
-                                                Update
-                                            </a>
-                                        </div>
-                                        <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
-                                            <a href='#'>Delete</a>
+                                        <div className='font-medium text base max-w-[300px] text-center'>
+                                            It seems that you haven&apos;t added
+                                            any Events yet. Maybe try looking
+                                            for this?
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div className='flex items-center justify-start gap-6 border-b-2 py-7'>
-                                <div>
-                                    <div className='w-[50px] h-[75px] flex flex-col items-center justify-center rounded-2xl bg-white shadow-lg'>
-                                        <div className='text-sm font-semibold text-[#FF8900]'>
-                                            15
-                                        </div>
-                                        <div className='text-xs font-medium text-[#C1C5D0]'>
-                                            Wed
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='flex flex-col items-start justify-start text-[#373A42] gap-[5px]'>
-                                    <div className='text-2xl font-semibold tracking-[2px] mb-3.5'>
-                                        Sights & Sounds Exhibition
-                                    </div>
-                                    <div className='text-xs tracking-[0.5px]'>
-                                        Jakarta, Indonesia
-                                    </div>
-                                    <div className='text-xs tracking-[0.5px]'>
-                                        Wed, 15 Nov, 4:00 PM
-                                    </div>
-                                    <div className='flex items-center gap-5'>
-                                        <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
-                                            <a href='./detail-events-modal.html'>
-                                                Detail
-                                            </a>
-                                        </div>
-                                        <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
-                                            <a href='./update-events-modal.html'>
-                                                Update
-                                            </a>
-                                        </div>
-                                        <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
-                                            <a href='#'>Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </div>

@@ -29,6 +29,7 @@ const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(asyncLoginAction.rejected, (state, action) => {
+            // console.log(action)
             if(typeof action.payload === 'string'){
                 state.errorMessage = action.payload
             }else{

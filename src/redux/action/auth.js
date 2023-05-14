@@ -9,16 +9,19 @@ export const asyncLoginAction = createAsyncThunk(
             const {data} = await http().post('auth/login', body)
             return data.results.token
         } catch (err) {
-            const resultsError = err?.response?.data?.results
-            const messageError = err?.response?.data?.message
-            if(resultsError){
-                return rejectWithValue(resultsError)
+            const results = err?.response?.data?.results
+            // const message = err?.response?.data?.results
+            
+            if(results){
+                return rejectWithValue(results)
             }
             if(err.code === 'ERR_NETWORK'){
                 
                 return rejectWithValue('Error: Connection to backend failed!')
             }
-            return rejectWithValue(messageError)
+            
+            return rejectWithValue('Username or password invalid')
+            // return rejectWithValue(message)
         }
     }
 )

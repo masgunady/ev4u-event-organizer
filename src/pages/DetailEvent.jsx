@@ -4,12 +4,18 @@ import { FiHeart, FiMapPin, FiClock } from 'react-icons/fi'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import http from '../helpers/http'
 import moment from 'moment'
+
+import { useSelector } from 'react-redux'
 const DetailEvent = () => {
     const { id } = useParams()
+    const navigate = useNavigate()
     const [eventDetail, setEventDetail] = React.useState({})
+    const [eventReservation, setEventReservation] = React.useState('')
+
+    const token = useSelector((state) => state.auth.token)
     React.useEffect(() => {
         const getEventData = async (id) => {
             const { data } = await http().get(`/event/${id}`)
@@ -21,6 +27,44 @@ const DetailEvent = () => {
         }
     }, [id])
 
+    const addReservation = async (event) => {
+        event.preventDefault()
+        try {
+            const eventId = { eventId: eventDetail.id }
+            const qString = new URLSearchParams(eventId).toString()
+            // console.log(qString)
+            const { data } = await http(token).post('/reservation', qString)
+
+            setEventReservation(data.results)
+        } catch (err) {
+            const message = err?.response?.data?.message
+            if (message) {
+                console.log(message)
+            }
+        }
+    }
+
+    const addRemoveWishlist = async (event) => {
+        event.preventDefault()
+        try {
+            const eventId = { eventId: eventDetail.id }
+            const qString = new URLSearchParams(eventId).toString()
+            const { data } = await http(token).post('/wishlist', qString)
+            console.log(data)
+            // setEventReservation(data.results)
+        } catch (err) {
+            const message = err?.response?.data?.message
+            if (message) {
+                console.log(message)
+            }
+        }
+    }
+
+    React.useEffect(() => {
+        if (eventReservation) {
+            navigate('/event/reservation')
+        }
+    }, [eventReservation, navigate])
     return (
         <>
             <div className='bg-white md:bg-[#F4F7FF]'>
@@ -115,11 +159,11 @@ const DetailEvent = () => {
                             </div>
                             <div className='hidden md:block'>
                                 <div className='flex items-center gap-3 justify-center text-[#373a42] text-[20px] font-semibold tracking-[1px]'>
-                                    <div>
+                                    <button onClick={addRemoveWishlist}>
                                         <i className=''>
                                             <FiHeart size={27} />
                                         </i>
-                                    </div>
+                                    </button>
                                     <div>Add To Wishlist</div>
                                 </div>
                             </div>
@@ -191,7 +235,7 @@ const DetailEvent = () => {
                                     <p>{eventDetail?.descriptions}</p>
                                 </div>
                                 <div className='text-xs text-[#3366ff] font-medium tracking-[0.5px]'>
-                                    <a href='#'>Read Mode</a>
+                                    <Link to=''>Read Mode</Link>
                                 </div>
                             </div>
                             <div className='flex flex-col gap-3.5'>
@@ -203,14 +247,14 @@ const DetailEvent = () => {
                                 </div>
                             </div>
                             <div className='w-full'>
-                                <div className='shadow-for-all-button flex items-center justify-center bg-[#4c3f91] w-full md:w-[315px] h-[55px] rounded-2xl text-white text-base font-semibold tracking-[1px]'>
-                                    <a
-                                        className='w-full h-full flex items-center justify-center'
-                                        href='./booking.html'
+                                <form onSubmit={addReservation}>
+                                    <button
+                                        type='submit'
+                                        className='btn btn-primary w-full md:w-[315px] h-[55px] rounded-2xl capitalize text-base font-semibold tracking-[1px] text-white'
                                     >
                                         Buy Tickets
-                                    </a>
-                                </div>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

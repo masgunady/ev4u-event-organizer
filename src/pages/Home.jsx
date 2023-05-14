@@ -233,11 +233,11 @@ const Home = () => {
                                 </i>
                             </button>
                             <div className='flex flex-col justify-center items-center font-medium text-xs leading-[18px] tracking-[0.0003375px] text-[#c1c5d0]'>
-                                <p>15</p>
+                                <p>13</p>
                                 <p>Wed</p>
                             </div>
                             <div className='flex flex-col justify-center items-center font-medium text-xs leading-[18px] tracking-[0.0003375px] text-[#c1c5d0]'>
-                                <p>15</p>
+                                <p>14</p>
                                 <p>Wed</p>
                             </div>
                             <div className='flex flex-col justify-center items-center font-medium text-xs leading-[18px] tracking-[0.0003375px] w-[50px] h-[75px] border text-[#ff8900] rounded-2xl border-solid border-[#ff8900]'>
@@ -246,11 +246,11 @@ const Home = () => {
                                 <p>&bull;</p>
                             </div>
                             <div className='flex flex-col justify-center items-center font-medium text-xs leading-[18px] tracking-[0.0003375px] text-[#c1c5d0]'>
-                                <p>15</p>
+                                <p>16</p>
                                 <p>Wed</p>
                             </div>
                             <div className='flex flex-col justify-center items-center font-medium text-xs leading-[18px] tracking-[0.0003375px] text-[#c1c5d0]'>
-                                <p>15</p>
+                                <p>17</p>
                                 <p>Wed</p>
                             </div>
                             <button className='hidden sm:flex items-center justify-center w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] cursor-pointer rounded-[10px] border-[none] bg-[#4c3f91]'>
@@ -325,10 +325,10 @@ const Home = () => {
                                 })}
                             </div>
                         </div>
-                        <div className='btn-see-event'>
-                            <button className='w-[255px] h-10 border font-semibold text-sm leading-[21px] text-center tracking-[1px] bg-white text-[#4c3f91] cursor-pointer rounded-[10px] border-solid border-[#4c3f91]'>
+                        <div className='flex items-center justify-center w-[255px] h-10 border font-semibold text-sm leading-[21px] text-center tracking-[1px] bg-white text-[#4c3f91] cursor-pointer rounded-[10px] border-solid border-[#4c3f91]'>
+                            <Link to='/event/search' className=''>
                                 See All
-                            </button>
+                            </Link>
                         </div>
                     </div>
                     <div className='dsp-locaion w-full flex flex-col items-center justify-center px-0 py-[70px]'>
@@ -405,7 +405,7 @@ const Home = () => {
                                                             category.name
                                                         )
                                                     }
-                                                    className={`capitalize ${
+                                                    className={`capitalize hover:border-b-2 hover:font-semibold hover:border-primary hover:opacity-100 ${
                                                         activeTabCategory ===
                                                         category.name
                                                             ? 'border-b-2 font-semibold border-primary'
@@ -488,11 +488,9 @@ const Home = () => {
                                                             ).format('LLLL')}
                                                         </div>
                                                         <div className='capitalize font-semibold text-[22px] leading-[30px] tracking-[2px] text-white absolute z-10 pr-[30px] bottom-[25px]'>
-                                                            <a href='./event-detail.html'>
-                                                                {
-                                                                    eventCategory.title
-                                                                }
-                                                            </a>
+                                                            {
+                                                                eventCategory.title
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
