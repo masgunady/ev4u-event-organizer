@@ -262,14 +262,12 @@ const DetailEvent = () => {
                                 </div>
                             </div>
                             <div className='w-full'>
-                                <form onSubmit={addReservation}>
-                                    <button
-                                        type='submit'
-                                        className='btn btn-primary w-full md:w-[315px] h-[55px] rounded-2xl capitalize text-base font-semibold tracking-[1px] text-white'
-                                    >
-                                        Buy Tickets
-                                    </button>
-                                </form>
+                                <button
+                                    onClick={addReservation}
+                                    className='btn btn-primary w-full md:w-[315px] h-[55px] rounded-2xl capitalize text-base font-semibold tracking-[1px] text-white'
+                                >
+                                    Buy Tickets
+                                </button>
                             </div>
                         </div>
                     </div>
