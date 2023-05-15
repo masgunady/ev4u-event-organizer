@@ -96,7 +96,7 @@ const MyWishlist = () => {
                                             <div className='text-2xl font-semibold tracking-[2px] mb-3.5 capitalize'>
                                                 {wishlist?.title}
                                             </div>
-                                            <div className='text-xs tracking-[0.5px]'>
+                                            <div className='text-xs tracking-[0.5px] capitalize'>
                                                 {wishlist?.location}, Indonesia
                                             </div>
                                             <div className='text-xs tracking-[0.5px]'>

@@ -1,10 +1,73 @@
 import imgFemale from '../../assets/img/female.png'
 import imgMale from '../../assets/img/male.png'
 import logo from '../../assets/img/icon-logo.svg'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { FiEye } from 'react-icons/fi'
+import http from '../../helpers/http'
+import React from 'react'
 const SignUp = () => {
+    const location = useLocation()
+    const navigate = useNavigate()
+    const [token, setToken] = React.useState('')
+    const [ErrorMessage, setErrorMessage] = React.useState('')
+    const [warningMessage, setWarningMessage] = React.useState(
+        location.state?.warningMessage
+    )
+
+    const [checked, setChecked] = React.useState(false)
+    const [disableBtn, setDisableBtn] = React.useState(true)
+
+    const handleCheckbox = (e) => {
+        setChecked(e.target.checked)
+        setDisableBtn(!e.target.checked)
+    }
+
+    const doSignup = async (e) => {
+        e.preventDefault()
+        setErrorMessage('')
+        setWarningMessage('')
+
+        try {
+            const { value: fullName } = e.target.fullName
+            const { value: email } = e.target.email
+            const { value: password } = e.target.password
+            const { value: confirmPassword } = e.target.confirmPassword
+            const termAndCondition = 1
+
+            const body = new URLSearchParams({
+                fullName,
+                email,
+                password,
+                confirmPassword,
+                termAndCondition,
+            }).toString()
+
+            console.log(body)
+
+            if (password !== confirmPassword) {
+                setWarningMessage('Password Not match')
+            }
+
+            const { data } = await http().post('/auth/register', body)
+            window.localStorage.setItem('token', data.results.token)
+            setToken(data.results)
+
+            console.log(data)
+        } catch (error) {
+            const message = error?.response?.data?.message
+            if (message) {
+                console.log(message)
+            }
+        }
+    }
+
+    React.useEffect(() => {
+        if (token) {
+            navigate('/auth/login')
+        }
+    }, [navigate, token])
+
     return (
         <>
             <main>
@@ -53,12 +116,29 @@ const SignUp = () => {
                                 </Link>
                                 !
                             </div>
-                            <form className='flex flex-col gap-3.5'>
+                            <form
+                                onSubmit={doSignup}
+                                className='flex flex-col gap-3.5'
+                            >
+                                <div>
+                                    {ErrorMessage && (
+                                        <div className='alert alert-error text-base'>
+                                            {ErrorMessage}
+                                        </div>
+                                    )}
+                                </div>
+                                <div>
+                                    {warningMessage && (
+                                        <div className='alert alert-warning text-base'>
+                                            {warningMessage}
+                                        </div>
+                                    )}
+                                </div>
                                 <div className='text-sm tracking[0.5]'>
                                     <input
                                         className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl'
                                         type='text'
-                                        name='fullname'
+                                        name='fullName'
                                         placeholder='Full Name'
                                     />
                                 </div>
@@ -89,7 +169,7 @@ const SignUp = () => {
                                     <input
                                         className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl'
                                         type='password'
-                                        name='password2'
+                                        name='confirmPassword'
                                         placeholder='Confirm Password'
                                     />
                                     <div className='absolute top-[18px] right-4 text-[#4c3f91]'>
@@ -106,6 +186,8 @@ const SignUp = () => {
                                             type='checkbox'
                                             name='chkBox'
                                             id='chkBox'
+                                            checked={checked}
+                                            onChange={handleCheckbox}
                                         />
                                     </div>
                                     <label
@@ -118,7 +200,8 @@ const SignUp = () => {
                                 <div>
                                     <button
                                         type='submit'
-                                        className='shadow-for-all-button w-full h-14 rounded-xl bg-[#4c3f91] text-base font-semibold tracking-[1px] text-white'
+                                        disabled={disableBtn}
+                                        className='btn btn-primary shadow-for-all-button w-full h-14 rounded-xl text-base font-semibold tracking-[1px] text-white'
                                     >
                                         Sign In
                                     </button>

@@ -5,15 +5,17 @@ import Footer from '../components/Footer'
 import Header from '../components/Header'
 import React from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
+import { setWarningMessage } from '../redux/reducers/auth'
 import http from '../helpers/http'
 import moment from 'moment'
 
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 const DetailEvent = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const [eventDetail, setEventDetail] = React.useState({})
     const [eventReservation, setEventReservation] = React.useState('')
+    const dispatch = useDispatch()
 
     const token = useSelector((state) => state.auth.token)
     React.useEffect(() => {
@@ -29,6 +31,10 @@ const DetailEvent = () => {
 
     const addReservation = async (event) => {
         event.preventDefault()
+        if (!token) {
+            dispatch(setWarningMessage('You have to login first'))
+            navigate('/auth/login')
+        }
         try {
             const eventId = { eventId: eventDetail.id }
             const qString = new URLSearchParams(eventId).toString()
@@ -46,6 +52,10 @@ const DetailEvent = () => {
 
     const addRemoveWishlist = async (event) => {
         event.preventDefault()
+        if (!token) {
+            dispatch(setWarningMessage('You have to login first'))
+            navigate('/auth/login')
+        }
         try {
             const eventId = { eventId: eventDetail.id }
             const qString = new URLSearchParams(eventId).toString()
