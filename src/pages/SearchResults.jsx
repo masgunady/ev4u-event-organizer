@@ -5,7 +5,6 @@ import { Link, useSearchParams } from 'react-router-dom'
 import http from '../helpers/http'
 import moment from 'moment'
 import { Formik } from 'formik'
-import axios from 'axios'
 
 import { FiSearch, FiMapPin, FiArrowRight } from 'react-icons/fi'
 import { IoHome } from 'react-icons/io5'
@@ -28,7 +27,7 @@ const SearchResults = () => {
 
     React.useEffect(() => {
         async function getLocation() {
-            const { data } = await axios.get('http://localhost:8888/city')
+            const { data } = await http().get('/city')
             setLocation(data.results)
         }
         getLocation()

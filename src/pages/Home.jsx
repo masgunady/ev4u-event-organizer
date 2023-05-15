@@ -11,7 +11,7 @@ import { FiSearch, FiMapPin, FiArrowRight, FiMinus } from 'react-icons/fi'
 import { HiArrowLongLeft, HiArrowLongRight } from 'react-icons/hi2'
 
 import React from 'react'
-import axios from 'axios'
+
 import { useNavigate } from 'react-router-dom'
 import http from '../helpers/http'
 
@@ -39,7 +39,7 @@ const Home = () => {
 
     React.useEffect(() => {
         async function getLocation() {
-            const { data } = await axios.get('http://localhost:8888/city')
+            const { data } = await http().get('/city')
             setLocation(data.results)
         }
         getLocation()
@@ -47,7 +47,7 @@ const Home = () => {
 
     React.useEffect(() => {
         async function getPartner() {
-            const { data } = await axios.get('http://localhost:8888/partner')
+            const { data } = await http().get('/partner')
             setPartner(data.results)
         }
         getPartner()
@@ -55,7 +55,7 @@ const Home = () => {
 
     React.useEffect(() => {
         async function getCategory() {
-            const { data } = await axios.get('http://localhost:8888/category')
+            const { data } = await http().get('/category')
             setCategory(data.results)
         }
         getCategory()
@@ -63,8 +63,8 @@ const Home = () => {
 
     React.useEffect(() => {
         async function getEventCategory() {
-            const { data } = await axios.get(
-                `http://localhost:8888/event?searchCategory=${activeTabCategory}&page=1&limit=3`
+            const { data } = await http().get(
+                `/event?searchCategory=${activeTabCategory}&page=1&limit=3`
             )
             setTotalPage(data.totalPage)
             setEventCategory(data.results)
@@ -74,8 +74,8 @@ const Home = () => {
 
     React.useEffect(() => {
         async function getEventCategoryNext() {
-            const { data } = await axios.get(
-                `http://localhost:8888/event?searchCategory=${activeTabCategory}&page=${tabEvent}&limit=3`
+            const { data } = await http().get(
+                `/event?searchCategory=${activeTabCategory}&page=${tabEvent}&limit=3`
             )
 
             setEventCategory(data.results)
