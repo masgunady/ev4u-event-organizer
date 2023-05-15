@@ -201,7 +201,7 @@ const SignUp = () => {
                                     <button
                                         type='submit'
                                         disabled={disableBtn}
-                                        className='btn btn-primary shadow-for-all-button w-full h-14 rounded-xl text-base font-semibold tracking-[1px] text-white'
+                                        className='btn btn-primary shadow-for-all-button w-full h-14 rounded-xl text-base font-semibold tracking-[1px] text-white capitalize'
                                     >
                                         Sign Up
                                     </button>
