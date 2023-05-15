@@ -49,7 +49,7 @@ const FormLogin = ({
                     value={values.email}
                     className={`input input-bordered ${
                         errors.email && touched.email && 'input-error'
-                    } w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl`}
+                    } w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl text-secondary`}
                     type='text'
                     name='email'
                     placeholder='Email'
@@ -70,7 +70,7 @@ const FormLogin = ({
                     value={values.password}
                     className={`input input-bordered ${
                         errors.password && touched.password && 'input-error'
-                    } w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl`}
+                    } w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl text-secondary`}
                     type='password'
                     name='password'
                     placeholder='Password'
@@ -193,7 +193,16 @@ const SignIn = () => {
                             >
                                 {(props) => <FormLogin {...props} />}
                             </Formik>
-                            <div className='flex flex-col items-center justify-center gap-4 mt-12'>
+                            <div className='flex flex-col items-center justify-center gap-4 mt-2'>
+                                <div className='text-sm font-semibold tracking-[0.5px] text-[#373A42] mb-8'>
+                                    Don&apos;t have an account ?{' '}
+                                    <Link
+                                        className='text-primary'
+                                        to='/auth/register'
+                                    >
+                                        Sign up
+                                    </Link>
+                                </div>
                                 <div className='text-sm tracking[0.5] text-[#373A42]'>
                                     or sign in with
                                 </div>
