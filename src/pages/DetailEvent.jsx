@@ -42,6 +42,8 @@ const DetailEvent = () => {
             // console.log(qString)
             const { data } = await http(token).post('/reservation', qString)
 
+            console.log(data)
+
             setEventReservation(data.results)
         } catch (err) {
             const message = err?.response?.data

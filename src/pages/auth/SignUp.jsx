@@ -203,7 +203,7 @@ const SignUp = () => {
                                         disabled={disableBtn}
                                         className='btn btn-primary shadow-for-all-button w-full h-14 rounded-xl text-base font-semibold tracking-[1px] text-white'
                                     >
-                                        Sign In
+                                        Sign Up
                                     </button>
                                 </div>
                             </form>
