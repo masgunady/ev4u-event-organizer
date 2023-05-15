@@ -13,6 +13,7 @@ import { HiArrowLongLeft, HiArrowLongRight } from 'react-icons/hi2'
 import React from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import http from '../helpers/http'
 
 import { Formik } from 'formik'
 
@@ -30,7 +31,7 @@ const Home = () => {
 
     React.useEffect(() => {
         async function getData() {
-            const { data } = await axios.get('http://localhost:8888/event')
+            const { data } = await http().get('/event')
             setEvent(data.results)
         }
         getData()
