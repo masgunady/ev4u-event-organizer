@@ -368,7 +368,13 @@ const Home = () => {
                                                                 'https'
                                                             )
                                                                 ? location.picture
-                                                                : `http://localhost:8888/uploads/${location.picture}`
+                                                                : `${
+                                                                      import.meta
+                                                                          .env
+                                                                          .VITE_BACKEND_URL
+                                                                  }/uploads/${
+                                                                      location.picture
+                                                                  }`
                                                         }
                                                         alt=''
                                                     />
@@ -455,7 +461,13 @@ const Home = () => {
                                                                 'https'
                                                             )
                                                                 ? eventCategory.picture
-                                                                : `http://localhost:8888/uploads/${eventCategory.picture}`
+                                                                : `${
+                                                                      import.meta
+                                                                          .env
+                                                                          .VITE_BACKEND_URL
+                                                                  }/uploads/${
+                                                                      eventCategory.picture
+                                                                  }`
                                                         }
                                                         alt=''
                                                         className='absolute bottom-24 w-full'
@@ -564,7 +576,12 @@ const Home = () => {
                                                         'https'
                                                     )
                                                         ? partner.picture
-                                                        : `http://localhost:8888/uploads/${partner.picture}`
+                                                        : `${
+                                                              import.meta.env
+                                                                  .VITE_BACKEND_URL
+                                                          }/uploads/${
+                                                              partner.picture
+                                                          }`
                                                 }
                                                 alt=''
                                             />

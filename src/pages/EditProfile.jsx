@@ -245,7 +245,13 @@ const Reservation = () => {
                                                             'https'
                                                         )
                                                             ? profilePicture.picture
-                                                            : `http://localhost:8888/uploads/${profilePicture.picture}`
+                                                            : `${
+                                                                  import.meta
+                                                                      .env
+                                                                      .VITE_BACKEND_URL
+                                                              }/uploads/${
+                                                                  profilePicture.picture
+                                                              }`
                                                     }
                                                     alt=''
                                                 />

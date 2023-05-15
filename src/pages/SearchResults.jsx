@@ -148,7 +148,13 @@ const SearchResults = () => {
                                                             'https'
                                                         )
                                                             ? event.picture
-                                                            : `http://localhost:8888/uploads/${event.picture}`
+                                                            : `${
+                                                                  import.meta
+                                                                      .env
+                                                                      .VITE_BACKEND_URL
+                                                              }/uploads/${
+                                                                  event.picture
+                                                              }`
                                                     }
                                                     alt=''
                                                 />

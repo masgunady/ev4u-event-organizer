@@ -93,7 +93,12 @@ const DetailEvent = () => {
                                                 'https'
                                             )
                                                 ? eventDetail.picture
-                                                : `http://localhost:8888/uploads/${eventDetail?.picture}`
+                                                : `${
+                                                      import.meta.env
+                                                          .VITE_BACKEND_URL
+                                                  }/uploads/${
+                                                      eventDetail?.picture
+                                                  }`
                                         }
                                         alt=''
                                     />
