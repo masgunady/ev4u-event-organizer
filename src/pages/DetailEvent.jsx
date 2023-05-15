@@ -43,7 +43,7 @@ const DetailEvent = () => {
 
             setEventReservation(data.results)
         } catch (err) {
-            const message = err?.response?.data?.message
+            const message = err?.response?.data
             if (message) {
                 console.log(message)
             }
