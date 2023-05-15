@@ -38,6 +38,7 @@ const DetailEvent = () => {
         try {
             const eventId = { eventId: eventDetail.id }
             const qString = new URLSearchParams(eventId).toString()
+            console.log(qString)
             // console.log(qString)
             const { data } = await http(token).post('/reservation', qString)
 
