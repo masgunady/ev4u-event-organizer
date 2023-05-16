@@ -56,9 +56,9 @@ const UserSidebar = () => {
                                         profile?.picture.startsWith('https')
                                             ? profile?.picture
                                             : `${
-                                                  import.meta.env
-                                                      .VITE_BACKEND_URL
-                                              }/uploads/${profile?.picture}`
+                                                import.meta.env
+                                                    .VITE_BACKEND_URL
+                                            }/uploads/${profile?.picture}`
                                     }
                                     alt='nav-img-profile'
                                 />

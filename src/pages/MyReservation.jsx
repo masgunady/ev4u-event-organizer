@@ -48,8 +48,7 @@ const MyReservation = () => {
                                 return (
                                     <div
                                         className='flex items-center justify-start gap-6 border-b-2 py-7'
-                                        key={`reservation-${reservation.id}`}
-                                    >
+                                        key={`reservation-${reservation.id}`}>
                                         <div>
                                             <div className='w-[50px] h-[75px] flex flex-col items-center justify-center rounded-2xl bg-white shadow-lg'>
                                                 <div className='text-sm font-semibold text-[#FF8900]'>

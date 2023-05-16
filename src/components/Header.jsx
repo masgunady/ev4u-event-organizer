@@ -86,11 +86,11 @@ const Header = () => {
                                                 )
                                                     ? profile?.picture
                                                     : `${
-                                                          import.meta.env
-                                                              .VITE_BACKEND_URL
-                                                      }/uploads/${
-                                                          profile?.picture
-                                                      }`
+                                                        import.meta.env
+                                                            .VITE_BACKEND_URL
+                                                    }/uploads/${
+                                                        profile?.picture
+                                                    }`
                                             }
                                             alt={profile?.fullName}
                                         />

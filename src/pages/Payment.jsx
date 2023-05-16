@@ -180,8 +180,7 @@ const Reservation = () => {
                                 <div className='shadow-for-all-button flex items-center justify-center bg-[#4c3f91] w-full md:w-[315px] h-[55px] rounded-2xl text-white text-base font-semibold tracking-[1px]'>
                                     <a
                                         className='h-full w-full flex items-center justify-center'
-                                        href='#'
-                                    >
+                                        href='#'>
                                         Payment
                                     </a>
                                 </div>

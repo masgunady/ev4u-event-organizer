@@ -97,8 +97,7 @@ const FormLogin = ({
                 <button
                     disabled={isSubmitting}
                     type='submit'
-                    className='btn btn-primary shadow-for-all-button w-full h-14 rounded-xl  text-base font-semibold tracking-[1px] text-white'
-                >
+                    className='btn btn-primary shadow-for-all-button w-full h-14 rounded-xl  text-base font-semibold tracking-[1px] text-white'>
                     Sign In
                 </button>
             </div>
@@ -189,8 +188,7 @@ const SignIn = () => {
                             <Formik
                                 initialValues={{ email: '', password: '' }}
                                 validationSchema={validationSchema}
-                                onSubmit={doLogin}
-                            >
+                                onSubmit={doLogin}>
                                 {(props) => <FormLogin {...props} />}
                             </Formik>
                             <div className='flex flex-col items-center justify-center gap-4 mt-2'>
@@ -198,8 +196,7 @@ const SignIn = () => {
                                     Don&apos;t have an account ?{' '}
                                     <Link
                                         className='text-primary'
-                                        to='/auth/register'
-                                    >
+                                        to='/auth/register'>
                                         Sign up
                                     </Link>
                                 </div>

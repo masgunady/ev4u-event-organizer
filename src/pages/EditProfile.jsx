@@ -20,7 +20,7 @@ const Reservation = () => {
     }
     React.useEffect(() => {
         getDataProfile()
-    }, [])
+    })
 
     const storeUpdate = async (event) => {
         event.preventDefault()
@@ -246,12 +246,12 @@ const Reservation = () => {
                                                         )
                                                             ? profilePicture.picture
                                                             : `${
-                                                                  import.meta
-                                                                      .env
-                                                                      .VITE_BACKEND_URL
-                                                              }/uploads/${
-                                                                  profilePicture.picture
-                                                              }`
+                                                                import.meta
+                                                                    .env
+                                                                    .VITE_BACKEND_URL
+                                                            }/uploads/${
+                                                                profilePicture.picture
+                                                            }`
                                                     }
                                                     alt=''
                                                 />

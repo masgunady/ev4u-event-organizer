@@ -279,12 +279,12 @@ const Home = () => {
                                                             )
                                                                 ? event.picture
                                                                 : `${
-                                                                      import.meta
-                                                                          .env
-                                                                          .VITE_BACKEND_URL
-                                                                  }/uploads/${
-                                                                      event.picture
-                                                                  }`
+                                                                    import.meta
+                                                                        .env
+                                                                        .VITE_BACKEND_URL
+                                                                }/uploads/${
+                                                                    event.picture
+                                                                }`
                                                         }
                                                         alt=''
                                                     />
@@ -369,12 +369,12 @@ const Home = () => {
                                                             )
                                                                 ? location.picture
                                                                 : `${
-                                                                      import.meta
-                                                                          .env
-                                                                          .VITE_BACKEND_URL
-                                                                  }/uploads/${
-                                                                      location.picture
-                                                                  }`
+                                                                    import.meta
+                                                                        .env
+                                                                        .VITE_BACKEND_URL
+                                                                }/uploads/${
+                                                                    location.picture
+                                                                }`
                                                         }
                                                         alt=''
                                                     />
@@ -462,12 +462,12 @@ const Home = () => {
                                                             )
                                                                 ? eventCategory.picture
                                                                 : `${
-                                                                      import.meta
-                                                                          .env
-                                                                          .VITE_BACKEND_URL
-                                                                  }/uploads/${
-                                                                      eventCategory.picture
-                                                                  }`
+                                                                    import.meta
+                                                                        .env
+                                                                        .VITE_BACKEND_URL
+                                                                }/uploads/${
+                                                                    eventCategory.picture
+                                                                }`
                                                         }
                                                         alt=''
                                                         className='absolute bottom-24 w-full'
@@ -577,11 +577,11 @@ const Home = () => {
                                                     )
                                                         ? partner.picture
                                                         : `${
-                                                              import.meta.env
-                                                                  .VITE_BACKEND_URL
-                                                          }/uploads/${
-                                                              partner.picture
-                                                          }`
+                                                            import.meta.env
+                                                                .VITE_BACKEND_URL
+                                                        }/uploads/${
+                                                            partner.picture
+                                                        }`
                                                 }
                                                 alt=''
                                             />

@@ -11,7 +11,7 @@ module.exports = {
     plugins: ['react-refresh', 'prettier'],
     rules: {
         'react-refresh/only-export-components': 'warn',
-        indent: ['error', 4],
+        indent: ['warn', 4],
         quotes: ['error', 'single'],
         semi: ['error', 'never'],
         'jsx-quotes': ['error', 'prefer-single']

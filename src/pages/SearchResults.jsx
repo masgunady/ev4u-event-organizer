@@ -149,12 +149,12 @@ const SearchResults = () => {
                                                         )
                                                             ? event.picture
                                                             : `${
-                                                                  import.meta
-                                                                      .env
-                                                                      .VITE_BACKEND_URL
-                                                              }/uploads/${
-                                                                  event.picture
-                                                              }`
+                                                                import.meta
+                                                                    .env
+                                                                    .VITE_BACKEND_URL
+                                                            }/uploads/${
+                                                                event.picture
+                                                            }`
                                                     }
                                                     alt=''
                                                 />
