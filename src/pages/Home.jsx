@@ -63,9 +63,7 @@ const Home = () => {
 
     React.useEffect(() => {
         async function getEventCategory() {
-            const { data } = await http().get(
-                `/event?searchCategory=${activeTabCategory}&page=1&limit=3`
-            )
+            const { data } = await http().get(`/event?searchCategory=${activeTabCategory}&page=1&limit=3`)
             setTotalPage(data.totalPage)
             setEventCategory(data.results)
         }
@@ -74,9 +72,7 @@ const Home = () => {
 
     React.useEffect(() => {
         async function getEventCategoryNext() {
-            const { data } = await http().get(
-                `/event?searchCategory=${activeTabCategory}&page=${tabEvent}&limit=3`
-            )
+            const { data } = await http().get(`/event?searchCategory=${activeTabCategory}&page=${tabEvent}&limit=3`)
 
             setEventCategory(data.results)
         }
@@ -117,9 +113,7 @@ const Home = () => {
                     <div className='flex flex-col-reverse lg:flex-row justify-between w-full h-[750px] bg-[#4c3f91] bg-head-pattern bg-no-repeat bg-cover  items-center gap-2.5 overflow-hidden pt-[140px] pb-[50px] px-[30px] md:px-[50px]'>
                         <div className='w-[90%] h-[500px] absolute z-10 sm:static md:w-full lg:w-[45%] lg:max-w-[650px]'>
                             <div className='w-full h-full relative sm:static flex flex-col gap-[50px]'>
-                                <div className='font-semibold text-[36px] md:text-[64px] absolute top-0 sm:static text-center sm:text-start leading-[54px] lg:leading-[95px] tracking-[2px] text-white'>
-                                    Find events you love with our
-                                </div>
+                                <div className='font-semibold text-[36px] md:text-[64px] absolute top-0 sm:static text-center sm:text-start leading-[54px] lg:leading-[95px] tracking-[2px] text-white'>Find events you love with our</div>
                                 <div className='absolute bottom-0 sm:static w-full h-[75px] bg-white shadow-[0px_4px_10px_rgba(255,255,255,0.1)] flex flex-row items-center justify-between px-[15px] py-0 rounded-[20px]'>
                                     <Formik
                                         initialValues={{
@@ -128,69 +122,33 @@ const Home = () => {
                                         }}
                                         onSubmit={onSearch}
                                     >
-                                        {({
-                                            handleBlur,
-                                            handleChange,
-                                            handleSubmit,
-                                        }) => (
-                                            <form
-                                                onSubmit={handleSubmit}
-                                                className='w-full flex items-center justify-between gap-[3px]'
-                                            >
+                                        {({ handleBlur, handleChange, handleSubmit }) => (
+                                            <form onSubmit={handleSubmit} className='w-full flex items-center justify-between gap-[3px]'>
                                                 <i className=''>
                                                     <FiSearch size={20} />
                                                 </i>
                                                 <div className='form-control w-[45%] h-[45px]'>
-                                                    <input
-                                                        type='text'
-                                                        name='searchName'
-                                                        onBlur={handleBlur}
-                                                        onChange={handleChange}
-                                                        placeholder='Search event...'
-                                                        className='w-full h-full px-2.5 py-0 border-0 outline-none'
-                                                    />
+                                                    <input type='text' name='searchName' onBlur={handleBlur} onChange={handleChange} placeholder='Search event...' className='w-full h-full px-2.5 py-0 border-0 outline-none' />
                                                 </div>
                                                 <i className=''>
                                                     <FiMapPin size={20} />
                                                 </i>
                                                 <div className='form-control w-[45%] h-[45px]'>
-                                                    <select
-                                                        name='searchLocation'
-                                                        onBlur={handleBlur}
-                                                        onChange={handleChange}
-                                                        className='select  w-full h-full text-secondary capitalize px-2.5 py-0 border-0 outline-none'
-                                                        id=''
-                                                    >
-                                                        <option value=''>
-                                                            Select Location
-                                                        </option>
-                                                        {locations.map(
-                                                            (location) => {
-                                                                return (
-                                                                    <option
-                                                                        key={`location-select-${location.id}`}
-                                                                        value={
-                                                                            location.name
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            location.name
-                                                                        }
-                                                                    </option>
-                                                                )
-                                                            }
-                                                        )}
+                                                    <select name='searchLocation' onBlur={handleBlur} onChange={handleChange} className='select  w-full h-full text-secondary capitalize px-2.5 py-0 border-0 outline-none' id=''>
+                                                        <option value=''>Select Location</option>
+                                                        {locations.map((location) => {
+                                                            return (
+                                                                <option key={`location-select-${location.id}`} value={location.name}>
+                                                                    {location.name}
+                                                                </option>
+                                                            )
+                                                        })}
                                                     </select>
                                                 </div>
 
-                                                <button
-                                                    type='submit'
-                                                    className='w-[45px] h-[45px] shadow-[0px_8px_10px_rgba(51,102,255,0.15)] cursor-pointer flex items-center justify-center rounded-[10px] border-[none] bg-[#ff3d71]'
-                                                >
+                                                <button type='submit' className='w-[45px] h-[45px] shadow-[0px_8px_10px_rgba(51,102,255,0.15)] cursor-pointer flex items-center justify-center rounded-[10px] border-[none] bg-[#ff3d71]'>
                                                     <i className='text-white'>
-                                                        <FiArrowRight
-                                                            size={25}
-                                                        />
+                                                        <FiArrowRight size={25} />
                                                     </i>
                                                 </button>
                                             </form>
@@ -201,16 +159,8 @@ const Home = () => {
                         </div>
                         <div className=''>
                             <div className='relative min-w-[530px] h-[470px] overflow-hidden '>
-                                <img
-                                    src={male}
-                                    alt=''
-                                    className='absolute object-cover right-0 top-[130px]'
-                                />
-                                <img
-                                    src={female}
-                                    alt=''
-                                    className='absolute z-[1] object-cover left-0'
-                                />
+                                <img src={male} alt='' className='absolute object-cover right-0 top-[130px]' />
+                                <img src={female} alt='' className='absolute z-[1] object-cover left-0' />
                                 <div className='w-full left-0 h-[200px] absolute z-[2] bottom-0 bg-gradient-to-t from-[#4c3f91] from-35%'></div>
                             </div>
                         </div>
@@ -224,9 +174,7 @@ const Home = () => {
                                 Event
                             </button>
                         </div>
-                        <div className='font-semibold text-4xl leading-[54px] text-[#333333] pb-10'>
-                            Event For You
-                        </div>
+                        <div className='font-semibold text-4xl leading-[54px] text-[#333333] pb-10'>Event For You</div>
                         <div className='flex items-start justify-center gap-[30px] md:gap-[60px]'>
                             <button className='hidden sm:flex items-center justify-center w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] cursor-pointer rounded-[10px] border-[none] bg-white'>
                                 <i className=''>
@@ -265,63 +213,28 @@ const Home = () => {
                             <div className='w-[90%] flex justify-start items-center gap-[30px] object-cover scrollbar-hide overflow-scroll overflow-y-hidden px-0 py-[50px]'>
                                 {events.map((event) => {
                                     return (
-                                        <Link
-                                            to={`/event/detail/${event.id}`}
-                                            key={`event-${event.id}`}
-                                        >
+                                        <Link to={`/event/detail/${event.id}`} key={`event-${event.id}`}>
                                             <div className='w-[260px] min-w-[260px] h-[376px] overflow-hidden relative rounded-[35px]'>
                                                 {event?.picture && (
-                                                    <img
-                                                        className='w-full h-full object-cover'
-                                                        src={
-                                                            event.picture.startsWith(
-                                                                'https'
-                                                            )
-                                                                ? event.picture
-                                                                : `${
-                                                                    import.meta
-                                                                        .env
-                                                                        .VITE_BACKEND_URL
-                                                                }/uploads/${
-                                                                    event.picture
-                                                                }`
-                                                        }
-                                                        alt=''
-                                                    />
+                                                    <img className='w-full h-full object-cover' src={event.picture.startsWith('https') ? event.picture : `${import.meta.env.VITE_BACKEND_URL}/uploads/${event.picture}`} alt='' />
                                                 )}
                                                 <div className='absolute w-full z-20 px-5 py-[0pc] bottom-[25px]'>
-                                                    <div className='font-medium text-sm leading-[27px] flex items-center tracking-[1px] text-white'>
-                                                        {moment(
-                                                            event.date
-                                                        ).format('LLLL')}
-                                                    </div>
+                                                    <div className='font-medium text-sm leading-[27px] flex items-center tracking-[1px] text-white'>{moment(event.date).format('LLLL')}</div>
                                                     <div className='font-semibold capitalize text-[22px] leading-[30px] flex items-center tracking-[2px] text-white pb-5'>
                                                         <div>{event.title}</div>
                                                     </div>
                                                     <div className='flex justify-start items-center ml-2.5'>
                                                         <div className='w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white'>
-                                                            <img
-                                                                src='https://i.pravatar.cc/28'
-                                                                alt=''
-                                                            />
+                                                            <img src='https://i.pravatar.cc/28' alt='' />
                                                         </div>
                                                         <div className='w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white'>
-                                                            <img
-                                                                src='https://i.pravatar.cc/28'
-                                                                alt=''
-                                                            />
+                                                            <img src='https://i.pravatar.cc/28' alt='' />
                                                         </div>
                                                         <div className='w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white'>
-                                                            <img
-                                                                src='https://i.pravatar.cc/28'
-                                                                alt=''
-                                                            />
+                                                            <img src='https://i.pravatar.cc/28' alt='' />
                                                         </div>
                                                         <div className='w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white'>
-                                                            <img
-                                                                src='https://i.pravatar.cc/28'
-                                                                alt=''
-                                                            />
+                                                            <img src='https://i.pravatar.cc/28' alt='' />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -356,41 +269,19 @@ const Home = () => {
                                 </div>
                                 {locations.map((location) => {
                                     return (
-                                        <React.Fragment
-                                            key={`location-${location.id}`}
-                                        >
+                                        <React.Fragment key={`location-${location.id}`}>
                                             <div className='flex flex-col items-center gap-[15px] font-medium text-base leading-6 tracking-[1px] text-white'>
                                                 {location?.picture && (
-                                                    <img
-                                                        className='rounded-2xl overflow-hidden'
-                                                        src={
-                                                            location.picture.startsWith(
-                                                                'https'
-                                                            )
-                                                                ? location.picture
-                                                                : `${
-                                                                    import.meta
-                                                                        .env
-                                                                        .VITE_BACKEND_URL
-                                                                }/uploads/${
-                                                                    location.picture
-                                                                }`
-                                                        }
-                                                        alt=''
-                                                    />
+                                                    <img className='rounded-2xl overflow-hidden' src={location.picture.startsWith('https') ? location.picture : `${import.meta.env.VITE_BACKEND_URL}/uploads/${location.picture}`} alt='' />
                                                 )}
-                                                <div className='capitalize'>
-                                                    {location.name}
-                                                </div>
+                                                <div className='capitalize'>{location.name}</div>
                                             </div>
                                         </React.Fragment>
                                     )
                                 })}
                             </div>
                             <div className='self-center pt-[50px]'>
-                                <button className='w-[255px] h-10 border font-semibold text-sm leading-[21px] text-center tracking-[1px] text-[#4c3f91] cursor-pointer rounded-[10px] border-solid border-[#4c3f91] bg-white'>
-                                    See All
-                                </button>
+                                <button className='w-[255px] h-10 border font-semibold text-sm leading-[21px] text-center tracking-[1px] text-[#4c3f91] cursor-pointer rounded-[10px] border-solid border-[#4c3f91] bg-white'>See All</button>
                             </div>
                         </div>
                     </div>
@@ -401,28 +292,17 @@ const Home = () => {
                             </i>
                             categories
                         </div>
-                        <div className='font-semibold text-4xl leading-[177.78%] tracking-[1px] text-[#373a42] flex items-center text-center mt-[25px]'>
-                            Browse Event By Category
-                        </div>
+                        <div className='font-semibold text-4xl leading-[177.78%] tracking-[1px] text-[#373a42] flex items-center text-center mt-[25px]'>Browse Event By Category</div>
                         <div className='w-full flex items-center justify-center'>
                             <div className='w-[85%] md:max-w-[900px] flex justify-between items-center gap-20 object-cover scrollbar-hide overflow-scroll overflow-y-hidden px-0 py-[50px]'>
                                 {categories.map((category) => {
                                     return (
-                                        <React.Fragment
-                                            key={`category-${category.id}`}
-                                        >
+                                        <React.Fragment key={`category-${category.id}`}>
                                             <div className='font-medium text-base leading-6 text-secondary  cursor-pointer capitalize list-none hover:text-[#373a42]'>
                                                 <button
-                                                    onClick={() =>
-                                                        handleTabClicked(
-                                                            category.name
-                                                        )
-                                                    }
+                                                    onClick={() => handleTabClicked(category.name)}
                                                     className={`capitalize hover:border-b-2 hover:font-semibold hover:border-primary hover:opacity-100 ${
-                                                        activeTabCategory ===
-                                                        category.name
-                                                            ? 'border-b-2 font-semibold border-primary'
-                                                            : 'opacity-60'
+                                                        activeTabCategory === category.name ? 'border-b-2 font-semibold border-primary' : 'opacity-60'
                                                     }`}
                                                 >
                                                     {category.name}
@@ -435,11 +315,11 @@ const Home = () => {
                         </div>
 
                         <div className='w-full flex items-center justify-center'>
-                            <div className='w-[90%] md:max-w-[85%] flex justify-between items-center gap-11 object-cover scrollbar-hide overflow-scroll overflow-y-hidden px-0 py-[50px]'>
-                                <div>
+                            <div className='w-[90%] md:max-w-[85%] flex justify-between items-center gap-9 object-cover scrollbar-hide overflow-scroll overflow-y-hidden px-0 py-[50px]'>
+                                <div className='hidden xl:block'>
                                     <button
                                         onClick={handlePrev}
-                                        className='hidden btn btn-neutral w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] md:flex items-center justify-center cursor-pointer mr-[50px] rounded-[10px] border-[none]'
+                                        className='hidden btn btn-neutral w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] xl:flex items-center justify-center cursor-pointer mr-[50px] rounded-[10px] border-[none]'
                                     >
                                         <i className='text-secondary'>
                                             <HiArrowLongLeft size={25} />
@@ -449,26 +329,11 @@ const Home = () => {
 
                                 {eventCategories.map((eventCategory) => {
                                     return (
-                                        <Link
-                                            to={`/event/detail/${eventCategory.id}`}
-                                            key={`eventCategory-${eventCategory.id}`}
-                                        >
+                                        <Link to={`/event/detail/${eventCategory.id}`} key={`eventCategory-${eventCategory.id}`}>
                                             <div className='relative overflow-hidden min-w-[300px] h-[350px] rounded-[40px]'>
                                                 {eventCategory?.picture && (
                                                     <img
-                                                        src={
-                                                            eventCategory.picture.startsWith(
-                                                                'https'
-                                                            )
-                                                                ? eventCategory.picture
-                                                                : `${
-                                                                    import.meta
-                                                                        .env
-                                                                        .VITE_BACKEND_URL
-                                                                }/uploads/${
-                                                                    eventCategory.picture
-                                                                }`
-                                                        }
+                                                        src={eventCategory.picture.startsWith('https') ? eventCategory.picture : `${import.meta.env.VITE_BACKEND_URL}/uploads/${eventCategory.picture}`}
                                                         alt=''
                                                         className='absolute bottom-24 w-full'
                                                     />
@@ -477,50 +342,30 @@ const Home = () => {
                                                     <div className='px-11'>
                                                         <div className='absolute flex z-[1] ml-2.5 mb-5 bottom-[125px]'>
                                                             <div className='w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white'>
-                                                                <img
-                                                                    src='https://i.pravatar.cc/28'
-                                                                    alt=''
-                                                                />
+                                                                <img src='https://i.pravatar.cc/28' alt='' />
                                                             </div>
                                                             <div className='w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white'>
-                                                                <img
-                                                                    src='https://i.pravatar.cc/28'
-                                                                    alt=''
-                                                                />
+                                                                <img src='https://i.pravatar.cc/28' alt='' />
                                                             </div>
                                                             <div className='w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white'>
-                                                                <img
-                                                                    src='https://i.pravatar.cc/28'
-                                                                    alt=''
-                                                                />
+                                                                <img src='https://i.pravatar.cc/28' alt='' />
                                                             </div>
                                                             <div className='w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white'>
-                                                                <img
-                                                                    src='https://i.pravatar.cc/28'
-                                                                    alt=''
-                                                                />
+                                                                <img src='https://i.pravatar.cc/28' alt='' />
                                                             </div>
                                                         </div>
-                                                        <div className='font-medium text-sm leading-[27px] w-[70%] tracking-[1px] text-white absolute z-10 mb-[5px] bottom-20'>
-                                                            {moment(
-                                                                eventCategory.date
-                                                            ).format('LLLL')}
-                                                        </div>
-                                                        <div className='capitalize font-semibold text-[22px] leading-[30px] tracking-[2px] text-white absolute z-10 pr-[30px] bottom-[25px]'>
-                                                            {
-                                                                eventCategory.title
-                                                            }
-                                                        </div>
+                                                        <div className='font-medium text-sm leading-[27px] w-[70%] tracking-[1px] text-white absolute z-10 mb-[5px] bottom-20'>{moment(eventCategory.date).format('LLLL')}</div>
+                                                        <div className='capitalize font-semibold text-[22px] leading-[30px] tracking-[2px] text-white absolute z-10 pr-[30px] bottom-[25px]'>{eventCategory.title}</div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </Link>
                                     )
                                 })}
-                                <div>
+                                <div className='hidden xl:block'>
                                     <button
                                         onClick={handleNext}
-                                        className='hidden btn btn-primary w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] md:flex items-center justify-center cursor-pointer mr-[50px] rounded-[10px] border-[none]'
+                                        className='hidden btn btn-primary w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] xl:flex items-center justify-center cursor-pointer mr-[50px] rounded-[10px] border-[none]'
                                     >
                                         <i className='text-white'>
                                             <HiArrowLongRight size={25} />
@@ -534,16 +379,13 @@ const Home = () => {
                         <div className='flex  justify-between items-between gap-16'>
                             <button
                                 onClick={handlePrev}
-                                className='btn btn-neutral w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] flex flex-row md:hidden items-center justify-center cursor-pointer rounded-[10px] border-[none]'
+                                className='btn btn-neutral w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] flex flex-row xl:hidden items-center justify-center cursor-pointer rounded-[10px] border-[none]'
                             >
                                 <i className='text-secondary'>
                                     <HiArrowLongLeft size={25} />
                                 </i>
                             </button>
-                            <button
-                                onClick={handleNext}
-                                className='btn btn-primary w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] flex md:hidden items-center justify-center cursor-pointer rounded-[10px] border-[none]'
-                            >
+                            <button onClick={handleNext} className='btn btn-primary w-[45px] h-[45px] shadow-[0px_2px_15px_rgba(26,60,68,0.08)] flex xl:hidden items-center justify-center cursor-pointer rounded-[10px] border-[none]'>
                                 <i className='text-white'>
                                     <HiArrowLongRight size={25} />
                                 </i>
@@ -559,35 +401,11 @@ const Home = () => {
                                 partner
                             </div>
                         </div>
-                        <div className='font-semibold text-4xl leading-[54px] tracking-[1px] text-white text-center mb-[15px]'>
-                            Our Trusted Partners
-                        </div>
-                        <div className='font-normal text-xs leading-[233.33%] tracking-[0.5px] text-[#c1c5d0] text-center mb-[50px]'>
-                            By companies like :
-                        </div>
+                        <div className='font-semibold text-4xl leading-[54px] tracking-[1px] text-white text-center mb-[15px]'>Our Trusted Partners</div>
+                        <div className='font-normal text-xs leading-[233.33%] tracking-[0.5px] text-[#c1c5d0] text-center mb-[50px]'>By companies like :</div>
                         <div className='w-full flex flex-wrap justify-center items-center gap-14'>
                             {partners.map((partner) => {
-                                return (
-                                    <div key={partner.id}>
-                                        {partner?.picture && (
-                                            <img
-                                                src={
-                                                    partner.picture.startsWith(
-                                                        'https'
-                                                    )
-                                                        ? partner.picture
-                                                        : `${
-                                                            import.meta.env
-                                                                .VITE_BACKEND_URL
-                                                        }/uploads/${
-                                                            partner.picture
-                                                        }`
-                                                }
-                                                alt=''
-                                            />
-                                        )}
-                                    </div>
-                                )
+                                return <div key={partner.id}>{partner?.picture && <img src={partner.picture.startsWith('https') ? partner.picture : `${import.meta.env.VITE_BACKEND_URL}/uploads/${partner.picture}`} alt='' />}</div>
                             })}
                         </div>
                     </div>

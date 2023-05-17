@@ -11,9 +11,7 @@ const SignUp = () => {
     const navigate = useNavigate()
     const [token, setToken] = React.useState('')
     const [ErrorMessage, setErrorMessage] = React.useState('')
-    const [warningMessage, setWarningMessage] = React.useState(
-        location.state?.warningMessage
-    )
+    const [warningMessage, setWarningMessage] = React.useState(location.state?.warningMessage)
 
     const [checked, setChecked] = React.useState(false)
     const [disableBtn, setDisableBtn] = React.useState(true)
@@ -75,16 +73,8 @@ const SignUp = () => {
                     <section className='basis-3/5 hidden lg:block'>
                         <div className='h-[100vh] flex items-center justify-center bg-[#4c3f91]'>
                             <div className='w-[549px] h-[478px] relative'>
-                                <img
-                                    className='absolute z-10'
-                                    src={imgFemale}
-                                    alt=''
-                                />
-                                <img
-                                    className='absolute right-[0px] top-[100px]'
-                                    src={imgMale}
-                                    alt=''
-                                />
+                                <img className='absolute z-10' src={imgFemale} alt='' />
+                                <img className='absolute right-[0px] top-[100px]' src={imgMale} alt='' />
                                 <div className='absolute bottom-0 z-10 h-[230px] w-full bg-gradient-to-t from-[#4c3f91] from-35%'></div>
                             </div>
                         </div>
@@ -99,16 +89,12 @@ const SignUp = () => {
                                     <Link to='/'>
                                         <p className='text-2xl font-semibold text-[#3366FF] tracking-[1px]'>
                                             We
-                                            <span className='text-[#FF3D71]'>
-                                                tick
-                                            </span>
+                                            <span className='text-[#FF3D71]'>tick</span>
                                         </p>
                                     </Link>
                                 </div>
                             </div>
-                            <div className='text-2xl font-semibold tracking-[1px] text-[#373A42]'>
-                                Sign Up
-                            </div>
+                            <div className='text-2xl font-semibold tracking-[1px] text-[#373A42]'>Sign Up</div>
                             <div className='text-sm font-semibold tracking-[0.5px] text-[#373A42] mb-8'>
                                 Already have an account?{' '}
                                 <Link class='text-[#4c3f91]' to='/auth/login'>
@@ -116,49 +102,19 @@ const SignUp = () => {
                                 </Link>
                                 !
                             </div>
-                            <form
-                                onSubmit={doSignup}
-                                className='flex flex-col gap-3.5'
-                            >
-                                <div>
-                                    {ErrorMessage && (
-                                        <div className='alert alert-error text-base'>
-                                            {ErrorMessage}
-                                        </div>
-                                    )}
-                                </div>
-                                <div>
-                                    {warningMessage && (
-                                        <div className='alert alert-warning text-base'>
-                                            {warningMessage}
-                                        </div>
-                                    )}
-                                </div>
+                            <form onSubmit={doSignup} className='flex flex-col gap-3.5'>
+                                <div>{ErrorMessage && <div className='alert alert-error text-base'>{ErrorMessage}</div>}</div>
+                                <div>{warningMessage && <div className='alert alert-warning text-base'>{warningMessage}</div>}</div>
                                 <div className='text-sm tracking[0.5]'>
-                                    <input
-                                        className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl'
-                                        type='text'
-                                        name='fullName'
-                                        placeholder='Full Name'
-                                    />
+                                    <input className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl' type='text' name='fullName' placeholder='Full Name' />
                                 </div>
                                 <div className='hidden items-center justify-start text-sm text-red-500 font-medium tracking[0.5]'></div>
                                 <div className='text-sm tracking[0.5]'>
-                                    <input
-                                        className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl'
-                                        type='email'
-                                        name='email'
-                                        placeholder='Email'
-                                    />
+                                    <input className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl' type='email' name='email' placeholder='Email' />
                                 </div>
                                 <div className='hidden items-center justify-start text-sm text-red-500 font-medium tracking[0.5]'></div>
                                 <div className='text-sm tracking[0.5] relative'>
-                                    <input
-                                        className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl'
-                                        type='password'
-                                        name='password'
-                                        placeholder='Password'
-                                    />
+                                    <input className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl' type='password' name='password' placeholder='Password' />
                                     <div className='absolute top-[18px] right-4 text-[#4c3f91]'>
                                         <i className='cursor-pointer'>
                                             <FiEye size={20} />
@@ -166,12 +122,7 @@ const SignUp = () => {
                                     </div>
                                 </div>
                                 <div className='text-sm tracking[0.5] relative'>
-                                    <input
-                                        className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl'
-                                        type='password'
-                                        name='confirmPassword'
-                                        placeholder='Confirm Password'
-                                    />
+                                    <input className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl' type='password' name='confirmPassword' placeholder='Confirm Password' />
                                     <div className='absolute top-[18px] right-4 text-[#4c3f91]'>
                                         <i className='cursor-pointer'>
                                             <FiEye size={20} />
@@ -182,27 +133,14 @@ const SignUp = () => {
                                 <div className='hidden items-center justify-center text-sm text-red-500 font-medium tracking[0.5]'></div>
                                 <div className='flex items-center gap-3.5'>
                                     <div>
-                                        <input
-                                            type='checkbox'
-                                            name='chkBox'
-                                            id='chkBox'
-                                            checked={checked}
-                                            onChange={handleCheckbox}
-                                        />
+                                        <input type='checkbox' name='chkBox' id='chkBox' checked={checked} onChange={handleCheckbox} />
                                     </div>
-                                    <label
-                                        htmlFor='chkBox'
-                                        className='self-end text-sm text-[#373A42] font-medium tracking[0.5] my-3'
-                                    >
+                                    <label htmlFor='chkBox' className='self-end text-sm text-[#373A42] font-medium tracking[0.5] my-3'>
                                         Accept terms and condition
                                     </label>
                                 </div>
                                 <div>
-                                    <button
-                                        type='submit'
-                                        disabled={disableBtn}
-                                        className='btn btn-primary shadow-for-all-button w-full h-14 rounded-xl text-base font-semibold tracking-[1px] text-white capitalize'
-                                    >
+                                    <button type='submit' disabled={disableBtn} className='btn btn-primary shadow-for-all-button w-full h-14 rounded-xl text-base font-semibold tracking-[1px] text-white capitalize'>
                                         Sign Up
                                     </button>
                                 </div>

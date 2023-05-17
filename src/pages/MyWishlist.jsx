@@ -53,70 +53,37 @@ const MyWishlist = () => {
                     <div className='md:my-12 flex-1'>
                         <div className='bg-white px-9 lg:px-12 py-9 lg:py-11 rounded-2xl md:min-h-[650px]'>
                             <div className='flex flex-col gap-6 md:gap-0 md:flex-row md:items-center md:justify-between mb-7'>
-                                <div className='text-xl text-[#373a42] font-semibold tracking-[1px]'>
-                                    My Wishlist
-                                </div>
+                                <div className='text-xl text-[#373a42] font-semibold tracking-[1px]'>My Wishlist</div>
                             </div>
                             {myWishlist.map((wishlist) => {
                                 return (
-                                    <div
-                                        className='flex items-center justify-start gap-6 border-b-2 py-7'
-                                        key={`my-wishlist-${wishlist.wishlistId}`}
-                                    >
+                                    <div className='flex items-center justify-start gap-6 border-b-2 py-7' key={`my-wishlist-${wishlist.wishlistId}`}>
                                         <div className='flex flex-col items-center justify-center gap-[5px]'>
                                             <div className='w-[50px] h-[75px] flex flex-col items-center justify-center rounded-2xl bg-white shadow-lg'>
-                                                <div className='text-sm font-semibold text-[#FF8900]'>
-                                                    {moment(
-                                                        wishlist?.date
-                                                    ).format('DD')}
-                                                </div>
-                                                <div className='text-xs font-medium text-[#C1C5D0]'>
-                                                    {moment(wishlist?.date)
-                                                        .format('LLLL')
-                                                        .slice(0, 3)}
-                                                </div>
+                                                <div className='text-sm font-semibold text-[#FF8900]'>{moment(wishlist?.date).format('DD')}</div>
+                                                <div className='text-xs font-medium text-[#C1C5D0]'>{moment(wishlist?.date).format('LLLL').slice(0, 3)}</div>
                                             </div>
                                             <div className='block md:hidden'>
                                                 <div className='flex items-center justify-center h-[50px] w-[50px] text-[#3366ff]'>
-                                                    <button
-                                                        onClick={
-                                                            addRemoveWishlist
-                                                        }
-                                                    >
+                                                    <button onClick={addRemoveWishlist}>
                                                         <i className=''>
-                                                            <FiHeart
-                                                                size={25}
-                                                            />
+                                                            <FiHeart size={25} />
                                                         </i>
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className='flex flex-col items-start justify-start text-[#373A42] gap-[5px] w-full'>
-                                            <div className='text-2xl font-semibold tracking-[2px] mb-3.5 capitalize'>
-                                                {wishlist?.title}
-                                            </div>
-                                            <div className='text-xs tracking-[0.5px] capitalize'>
-                                                {wishlist?.location}, Indonesia
-                                            </div>
-                                            <div className='text-xs tracking-[0.5px]'>
-                                                {moment(wishlist?.date).format(
-                                                    'LLLL'
-                                                )}
-                                            </div>
+                                            <div className='text-2xl font-semibold tracking-[2px] mb-3.5 capitalize'>{wishlist?.title}</div>
+                                            <div className='text-xs tracking-[0.5px] capitalize'>{wishlist?.location}, Indonesia</div>
+                                            <div className='text-xs tracking-[0.5px]'>{moment(wishlist?.date).format('LLLL')}</div>
                                             <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
                                                 <a href='#'>Detail</a>
                                             </div>
                                         </div>
                                         <div className='hidden md:block'>
                                             <div className='flex items-start justify-end h-[100px] w-[50px] text-[#3366ff]'>
-                                                <button
-                                                    onClick={() =>
-                                                        addRemoveWishlist(
-                                                            `${wishlist.eventId}`
-                                                        )
-                                                    }
-                                                >
+                                                <button onClick={() => addRemoveWishlist(`${wishlist.eventId}`)}>
                                                     <i className=''>
                                                         <FiHeart size={25} />
                                                     </i>
@@ -130,14 +97,8 @@ const MyWishlist = () => {
                             <div>
                                 {myWishlist.length < 1 && (
                                     <div className=' h-full flex flex-col items-center justify-center gap-7 '>
-                                        <div className='font-semibold text-2xl text-secondary'>
-                                            No Wishlist Found
-                                        </div>
-                                        <div className='font-medium text base max-w-[300px] text-center'>
-                                            It seems that you haven&apos;t added
-                                            any wishlists yet. Maybe try looking
-                                            for this?
-                                        </div>
+                                        <div className='font-semibold text-2xl text-secondary'>No Wishlist Found</div>
+                                        <div className='font-medium text base max-w-[300px] text-center'>It seems that you haven&apos;t added any wishlists yet. Maybe try looking for this?</div>
                                     </div>
                                 )}
                             </div>

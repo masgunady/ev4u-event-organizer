@@ -61,69 +61,33 @@ const SearchResults = () => {
                                         }}
                                         onSubmit={onSearch}
                                     >
-                                        {({
-                                            handleBlur,
-                                            handleChange,
-                                            handleSubmit,
-                                        }) => (
-                                            <form
-                                                onSubmit={handleSubmit}
-                                                className='w-full flex items-center justify-between gap-[3px]'
-                                            >
+                                        {({ handleBlur, handleChange, handleSubmit }) => (
+                                            <form onSubmit={handleSubmit} className='w-full flex items-center justify-between gap-[3px]'>
                                                 <i className=''>
                                                     <FiSearch size={20} />
                                                 </i>
                                                 <div className='form-control w-[45%] h-[45px]'>
-                                                    <input
-                                                        type='text'
-                                                        name='searchName'
-                                                        onBlur={handleBlur}
-                                                        onChange={handleChange}
-                                                        placeholder='Search event...'
-                                                        className='w-full h-full text-secondary px-2.5 py-0 border-0 outline-none'
-                                                    />
+                                                    <input type='text' name='searchName' onBlur={handleBlur} onChange={handleChange} placeholder='Search event...' className='w-full h-full text-secondary px-2.5 py-0 border-0 outline-none' />
                                                 </div>
                                                 <i className=''>
                                                     <FiMapPin size={20} />
                                                 </i>
                                                 <div className='form-control w-[45%] h-[45px]'>
-                                                    <select
-                                                        name='searchLocation'
-                                                        onBlur={handleBlur}
-                                                        onChange={handleChange}
-                                                        className=' w-full h-full text-secondary capitalize px-2.5 py-0 border-0 outline-none'
-                                                        id=''
-                                                    >
-                                                        <option value=''>
-                                                            Select Location
-                                                        </option>
-                                                        {locations.map(
-                                                            (location) => {
-                                                                return (
-                                                                    <option
-                                                                        key={`location-select-${location.id}`}
-                                                                        value={
-                                                                            location.name
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            location.name
-                                                                        }
-                                                                    </option>
-                                                                )
-                                                            }
-                                                        )}
+                                                    <select name='searchLocation' onBlur={handleBlur} onChange={handleChange} className=' w-full h-full text-secondary capitalize px-2.5 py-0 border-0 outline-none' id=''>
+                                                        <option value=''>Select Location</option>
+                                                        {locations.map((location) => {
+                                                            return (
+                                                                <option key={`location-select-${location.id}`} value={location.name}>
+                                                                    {location.name}
+                                                                </option>
+                                                            )
+                                                        })}
                                                     </select>
                                                 </div>
 
-                                                <button
-                                                    type='submit'
-                                                    className='w-[45px] h-[45px] shadow-[0px_8px_10px_rgba(51,102,255,0.15)] cursor-pointer flex items-center justify-center rounded-[10px] border-[none] bg-[#ff3d71]'
-                                                >
+                                                <button type='submit' className='w-[45px] h-[45px] shadow-[0px_8px_10px_rgba(51,102,255,0.15)] cursor-pointer flex items-center justify-center rounded-[10px] border-[none] bg-[#ff3d71]'>
                                                     <i className='text-white'>
-                                                        <FiArrowRight
-                                                            size={25}
-                                                        />
+                                                        <FiArrowRight size={25} />
                                                     </i>
                                                 </button>
                                             </form>
@@ -135,63 +99,26 @@ const SearchResults = () => {
                         <div className='flex flex-wrap justify-center items-center gap-20'>
                             {searchResults.map((event) => {
                                 return (
-                                    <Link
-                                        to={`/event/detail/${event.id}`}
-                                        key={`event-${event.id}`}
-                                    >
+                                    <Link to={`/event/detail/${event.id}`} key={`event-${event.id}`}>
                                         <div className='w-[260px] min-w-[260px] h-[376px] overflow-hidden relative rounded-[25px]'>
-                                            {event?.picture && (
-                                                <img
-                                                    className='w-full h-full object-cover'
-                                                    src={
-                                                        event.picture.startsWith(
-                                                            'https'
-                                                        )
-                                                            ? event.picture
-                                                            : `${
-                                                                import.meta
-                                                                    .env
-                                                                    .VITE_BACKEND_URL
-                                                            }/uploads/${
-                                                                event.picture
-                                                            }`
-                                                    }
-                                                    alt=''
-                                                />
-                                            )}
+                                            {event?.picture && <img className='w-full h-full object-cover' src={event.picture.startsWith('https') ? event.picture : `${import.meta.env.VITE_BACKEND_URL}/uploads/${event.picture}`} alt='' />}
                                             <div className='absolute w-full z-20 px-5 py-[0pc] bottom-[25px]'>
-                                                <div className='font-medium text-sm leading-[27px] flex items-center tracking-[1px] text-white'>
-                                                    {moment(event.date).format(
-                                                        'LLLL'
-                                                    )}
-                                                </div>
+                                                <div className='font-medium text-sm leading-[27px] flex items-center tracking-[1px] text-white'>{moment(event.date).format('LLLL')}</div>
                                                 <div className='font-semibold capitalize text-[22px] leading-[30px] flex items-center tracking-[2px] text-white pb-5'>
                                                     <div>{event.title}</div>
                                                 </div>
                                                 <div className='flex justify-start items-center ml-2.5'>
                                                     <div className='w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white'>
-                                                        <img
-                                                            src='https://i.pravatar.cc/28'
-                                                            alt=''
-                                                        />
+                                                        <img src='https://i.pravatar.cc/28' alt='' />
                                                     </div>
                                                     <div className='w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white'>
-                                                        <img
-                                                            src='https://i.pravatar.cc/28'
-                                                            alt=''
-                                                        />
+                                                        <img src='https://i.pravatar.cc/28' alt='' />
                                                     </div>
                                                     <div className='w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white'>
-                                                        <img
-                                                            src='https://i.pravatar.cc/28'
-                                                            alt=''
-                                                        />
+                                                        <img src='https://i.pravatar.cc/28' alt='' />
                                                     </div>
                                                     <div className='w-7 h-7 overflow-hidden border -ml-2.5 rounded-[50%] border-solid border-white'>
-                                                        <img
-                                                            src='https://i.pravatar.cc/28'
-                                                            alt=''
-                                                        />
+                                                        <img src='https://i.pravatar.cc/28' alt='' />
                                                     </div>
                                                 </div>
                                             </div>
@@ -204,8 +131,7 @@ const SearchResults = () => {
                         <div>
                             {searchResults.length < 1 && (
                                 <div className='flex items-center justify-center font-semibold text-2xl '>
-                                    Event &quot;{searchParams.get('searchName')}{' '}
-                                    {` - ${searchParams.get('searchLocation')}`}
+                                    Event &quot;{searchParams.get('searchName')} {` - ${searchParams.get('searchLocation')}`}
                                     &quot; Not found ...
                                 </div>
                             )}

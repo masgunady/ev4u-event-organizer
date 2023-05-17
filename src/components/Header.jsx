@@ -1,27 +1,17 @@
 import logo from '../assets/img/icon-logo.svg'
 import { Link, useNavigate } from 'react-router-dom'
-import {
-    FiHome,
-    FiPlusSquare,
-    FiList,
-    FiHeart,
-    FiUnlock,
-    FiSettings,
-    FiLogOut,
-    FiAlignJustify,
-} from 'react-icons/fi'
+import { FiHome, FiPlusSquare, FiList, FiHeart, FiUnlock, FiSettings, FiLogOut, FiAlignJustify } from 'react-icons/fi'
 
 import http from '../helpers/http'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-    logout as logoutAction,
-    setWarningMessage,
-} from '../redux/reducers/auth'
+import { logout as logoutAction, setWarningMessage } from '../redux/reducers/auth'
 const Header = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [profile, setProfile] = React.useState({})
+    const [menuMobile, setMenuMobile] = React.useState(false)
+
     const token = useSelector((state) => state.auth.token)
     React.useEffect(() => {
         async function getProfileData() {
@@ -38,6 +28,10 @@ const Header = () => {
             getProfileData()
         }
     }, [token, dispatch, navigate])
+
+    const handleMenuMobile = () => {
+        setMenuMobile(!menuMobile)
+    }
 
     const doLogout = () => {
         dispatch(logoutAction())
@@ -80,32 +74,16 @@ const Header = () => {
                                     {profile?.picture && (
                                         <img
                                             className='w-12 h-12 border-4 border-white rounded-full'
-                                            src={
-                                                profile?.picture.startsWith(
-                                                    'https'
-                                                )
-                                                    ? profile?.picture
-                                                    : `${
-                                                        import.meta.env
-                                                            .VITE_BACKEND_URL
-                                                    }/uploads/${
-                                                        profile?.picture
-                                                    }`
-                                            }
+                                            src={profile?.picture.startsWith('https') ? profile?.picture : `${import.meta.env.VITE_BACKEND_URL}/uploads/${profile?.picture}`}
                                             alt={profile?.fullName}
                                         />
                                     )}
                                 </div>
                                 <div className='text-sm text-[#373a42] font-semibold tracking-[1px] object-cover capitalize'>
-                                    <Link to='/user/edit-profile'>
-                                        {profile?.fullName}
-                                    </Link>
+                                    <Link to='/user/edit-profile'>{profile?.fullName}</Link>
                                 </div>
                                 <div>
-                                    <button
-                                        onClick={doLogout}
-                                        className='btn btn-primary text-white capitalize'
-                                    >
+                                    <button onClick={doLogout} className='btn btn-primary text-white capitalize'>
                                         Logout
                                     </button>
                                 </div>
@@ -129,7 +107,7 @@ const Header = () => {
 
                 <div className='block md:hidden'>
                     <div>
-                        <button id='btnShowNavMobile'>
+                        <button onClick={handleMenuMobile} id='btnShowNavMobile'>
                             <i className=''>
                                 <FiAlignJustify size={25} />
                             </i>
@@ -138,7 +116,7 @@ const Header = () => {
                 </div>
             </nav>
 
-            <div className='hidden justify-between items-center w-full px-7 md:px-9 lg:px-14 relative'>
+            <div className={`${menuMobile ? 'flex' : 'md: hidden'}  justify-between items-center w-full px-7 md:px-9 lg:px-14 relative`}>
                 <div className='absolute flex flex-col items-center gap-7 z-40 bg-white w-full overflow-scroll left-0 top-0 py-7 rounded-b-2xl shadow-xl'>
                     <div className='w-[85%] border-b-2 py-3'>
                         <div className='flex flex-col justify-center items-center gap-3'>
@@ -146,9 +124,7 @@ const Header = () => {
                                 <img src='https://i.pravatar.cc/90' alt='' />
                             </div>
                             <div className='text-base text-[#373a42] font-semibold tracking-[1px]'>
-                                <Link to='./edit-profile.html'>
-                                    John Tompson
-                                </Link>
+                                <Link to='./edit-profile.html'>John Tompson</Link>
                             </div>
                         </div>
                     </div>
@@ -165,33 +141,25 @@ const Header = () => {
                                     <i className=''>
                                         <FiPlusSquare />
                                     </i>
-                                    <Link to='/user/create-event'>
-                                        Create Event
-                                    </Link>
+                                    <Link to='/user/manage-event'>Create Event</Link>
                                 </li>
                                 <li className='flex items-center justify-start gap-3.5'>
                                     <i className=''>
                                         <FiList />
                                     </i>
-                                    <Link to='/user/my-booking'>
-                                        my booking
-                                    </Link>
+                                    <Link to='/user/reservation'>my booking</Link>
                                 </li>
                                 <li className='flex items-center justify-start gap-3.5'>
                                     <i className=''>
                                         <FiHeart />
                                     </i>
-                                    <Link to='/user/my-wishlist'>
-                                        my wishlist
-                                    </Link>
+                                    <Link to='/user/wishlist'>my wishlist</Link>
                                 </li>
                                 <li className='flex items-center justify-start gap-3.5'>
                                     <i className=''>
                                         <FiUnlock />
                                     </i>
-                                    <Link to='/user/change-password'>
-                                        Change Password
-                                    </Link>
+                                    <Link to='/user/change-password'>Change Password</Link>
                                 </li>
                                 <li className='flex items-center justify-start gap-3.5'>
                                     <i className=''>

@@ -20,31 +20,21 @@ const Reservation = () => {
                         <div className='w-full h-full flex-1'>
                             <div className='flex flex-col justify-start gap-12 w-full'>
                                 <div className='flex items-center justify-between'>
-                                    <div className='text-[20px] text-[373a42] font-semibold tracking-[1px] capitalize'>
-                                        Payment method
-                                    </div>
+                                    <div className='text-[20px] text-[373a42] font-semibold tracking-[1px] capitalize'>Payment method</div>
                                 </div>
                                 <div className='pt-4 flex flex-col gap-7'>
                                     <div className='flex items-center justify-between gap-2'>
                                         <div className='w-[10%]'>
-                                            <input
-                                                type='radio'
-                                                name='change-payment'
-                                                id=''
-                                            />
+                                            <input type='radio' name='change-payment' id='' />
                                         </div>
                                         <div className='w-[15%]'>
                                             <div className='flex justify-center items-center w-[45px] h-[45px] rounded-[10px] bg-[#884DFF33]'>
                                                 <i className='text-[#884DFF]'>
-                                                    <BsCreditCardFill
-                                                        size={25}
-                                                    />
+                                                    <BsCreditCardFill size={25} />
                                                 </i>
                                             </div>
                                         </div>
-                                        <div className='w-[100%] text-sm text-[#373a42] font-semibold tracking-[1px]'>
-                                            Card
-                                        </div>
+                                        <div className='w-[100%] text-sm text-[#373a42] font-semibold tracking-[1px]'>Card</div>
                                         <div className='w-[20%]'>
                                             <i className=''>
                                                 <FiChevronUp size={20} />
@@ -61,11 +51,7 @@ const Reservation = () => {
                                     </div>
                                     <div className='flex items-center justify-between gap-2'>
                                         <div className='w-[10%]'>
-                                            <input
-                                                type='radio'
-                                                name='change-payment'
-                                                id=''
-                                            />
+                                            <input type='radio' name='change-payment' id='' />
                                         </div>
                                         <div className='w-[15%]'>
                                             <div className='flex justify-center items-center w-[45px] h-[45px] rounded-[10px] bg-[#FC105533]'>
@@ -74,9 +60,7 @@ const Reservation = () => {
                                                 </i>
                                             </div>
                                         </div>
-                                        <div className='w-[100%] text-sm text-[#373a42] font-semibold tracking-[1px] capitalize'>
-                                            bank transfer
-                                        </div>
+                                        <div className='w-[100%] text-sm text-[#373a42] font-semibold tracking-[1px] capitalize'>bank transfer</div>
                                         <div className='w-[20%]'>
                                             <i className=''>
                                                 <FiChevronDown size={20} />
@@ -85,11 +69,7 @@ const Reservation = () => {
                                     </div>
                                     <div className='flex items-center justify-between gap-2'>
                                         <div className='w-[10%]'>
-                                            <input
-                                                type='radio'
-                                                name='change-payment'
-                                                id=''
-                                            />
+                                            <input type='radio' name='change-payment' id='' />
                                         </div>
                                         <div className='w-[15%]'>
                                             <div className='flex justify-center items-center w-[45px] h-[45px] rounded-[10px] bg-[#FF890033]'>
@@ -98,9 +78,7 @@ const Reservation = () => {
                                                 </i>
                                             </div>
                                         </div>
-                                        <div className='w-[100%] text-sm text-[#373a42] font-semibold tracking-[1px] capitalize'>
-                                            retail
-                                        </div>
+                                        <div className='w-[100%] text-sm text-[#373a42] font-semibold tracking-[1px] capitalize'>retail</div>
                                         <div className='w-[20%]'>
                                             <i className=''>
                                                 <FiChevronDown size={20} />
@@ -109,11 +87,7 @@ const Reservation = () => {
                                     </div>
                                     <div className='flex items-center justify-between gap-2'>
                                         <div className='w-[10%]'>
-                                            <input
-                                                type='radio'
-                                                name='change-payment'
-                                                id=''
-                                            />
+                                            <input type='radio' name='change-payment' id='' />
                                         </div>
                                         <div className='w-[15%]'>
                                             <div className='flex justify-center items-center w-[45px] h-[45px] rounded-[10px] bg-[#3366FF33]'>
@@ -122,9 +96,7 @@ const Reservation = () => {
                                                 </i>
                                             </div>
                                         </div>
-                                        <div className='w-[100%] text-sm text-[#373a42] font-semibold tracking-[1px] capitalize'>
-                                            e-money
-                                        </div>
+                                        <div className='w-[100%] text-sm text-[#373a42] font-semibold tracking-[1px] capitalize'>e-money</div>
                                         <div className='w-[20%]'>
                                             <i className=''>
                                                 <FiChevronDown size={20} />
@@ -137,50 +109,30 @@ const Reservation = () => {
                         <div className='mt-11 md:mt-0 flex flex-col flex-1 gap-7 w-full'>
                             <div className='flex flex-col justify-start gap-12 w-full'>
                                 <div className='flex items-center justify-between'>
-                                    <div className='text-[20px] text-[373a42] font-semibold tracking-[1px] capitalize'>
-                                        ticket details
-                                    </div>
+                                    <div className='text-[20px] text-[373a42] font-semibold tracking-[1px] capitalize'>ticket details</div>
                                 </div>
                                 <div className='pt-4 flex flex-col gap-3.5'>
                                     <div className='flex items-center justify-between'>
-                                        <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px]'>
-                                            Event
-                                        </div>
-                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px]'>
-                                            Sights & Sounds Exhibition
-                                        </div>
+                                        <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px]'>Event</div>
+                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px]'>Sights & Sounds Exhibition</div>
                                     </div>
                                     <div className='flex items-center justify-between'>
-                                        <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px]'>
-                                            Ticket Section
-                                        </div>
-                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px]'>
-                                            VIP
-                                        </div>
+                                        <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px]'>Ticket Section</div>
+                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px]'>VIP</div>
                                     </div>
                                     <div className='flex items-center justify-between'>
-                                        <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px]'>
-                                            Quantity
-                                        </div>
-                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px]'>
-                                            2
-                                        </div>
+                                        <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px]'>Quantity</div>
+                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px]'>2</div>
                                     </div>
                                     <div className='flex items-center justify-between'>
-                                        <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px]'>
-                                            Total Payment
-                                        </div>
-                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px]'>
-                                            $70
-                                        </div>
+                                        <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px]'>Total Payment</div>
+                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px]'>$70</div>
                                     </div>
                                 </div>
                             </div>
                             <div className='w-full mt-11'>
                                 <div className='shadow-for-all-button flex items-center justify-center bg-[#4c3f91] w-full md:w-[315px] h-[55px] rounded-2xl text-white text-base font-semibold tracking-[1px]'>
-                                    <a
-                                        className='h-full w-full flex items-center justify-center'
-                                        href='#'>
+                                    <a className='h-full w-full flex items-center justify-center' href='#'>
                                         Payment
                                     </a>
                                 </div>
