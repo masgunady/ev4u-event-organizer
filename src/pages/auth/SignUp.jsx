@@ -1,71 +1,232 @@
 import imgFemale from '../../assets/img/female.png'
 import imgMale from '../../assets/img/male.png'
 import logo from '../../assets/img/icon-logo.svg'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-
-import { FiEye } from 'react-icons/fi'
-import http from '../../helpers/http'
 import React from 'react'
-const SignUp = () => {
-    const location = useLocation()
-    const navigate = useNavigate()
-    const [token, setToken] = React.useState('')
-    const [ErrorMessage, setErrorMessage] = React.useState('')
-    const [warningMessage, setWarningMessage] = React.useState(location.state?.warningMessage)
+import { Link, useNavigate } from 'react-router-dom'
+import { Field, Formik } from 'formik'
+import { FiEye, FiEyeOff } from 'react-icons/fi'
+import { FcGoogle } from 'react-icons/fc'
+import { FaFacebook } from 'react-icons/fa'
+import propTypes from 'prop-types'
 
-    const [checked, setChecked] = React.useState(false)
-    const [disableBtn, setDisableBtn] = React.useState(true)
+import { useDispatch, useSelector } from 'react-redux'
+import { clearMessage } from '../../redux/reducers/auth'
+import { asyncRegisterAction } from '../../redux/action/auth'
 
-    const handleCheckbox = (e) => {
-        setChecked(e.target.checked)
-        setDisableBtn(!e.target.checked)
+import * as Yup from 'yup'
+
+const validationSchema = Yup.object({
+    fullName: Yup.string().required('Full name is Required!').min(3, 'Please insert valid full name'),
+    email: Yup.string().required('Email is Required!').email('Email is invalid!'),
+    password: Yup.string().required('Password is Required'),
+    confirmPassword: Yup.string()
+        .required('Confirm password is Required')
+        .oneOf([Yup.ref('password'), null], 'Password must match'),
+    termAndCondition: Yup.boolean().oneOf([true], 'You must accept the terms and conditions'),
+})
+
+const FormRegister = ({ values, errors, touched, handleBlur, handleChange, handleSubmit, isSubmitting }) => {
+    const errorMessage = useSelector((state) => state.auth.errorMessage)
+    const warningMessage = useSelector((state) => state.auth.warningMessage)
+    const successMessage = useSelector((state) => state.auth.successMessage)
+    const [iconEye, setIconEye] = React.useState(false)
+    const [typePassword, setTypePassword] = React.useState(false)
+    const [iconEyeCp, setIconEyeCp] = React.useState(false)
+    const [typeConfirmPassword, setTypeConfirmPassword] = React.useState(false)
+
+    const handleInputPassword = () => {
+        setIconEye(!typePassword)
+        setTypePassword(!iconEye)
+    }
+    const handleInputConfirmPassword = () => {
+        setIconEyeCp(!typeConfirmPassword)
+        setTypeConfirmPassword(!iconEyeCp)
     }
 
-    const doSignup = async (e) => {
-        e.preventDefault()
-        setErrorMessage('')
-        setWarningMessage('')
+    return (
+        <form onSubmit={handleSubmit} className='flex flex-col gap-3.5'>
+            {warningMessage && <div className='alert alert-warning'>{warningMessage}</div>}
+            {errorMessage && <div className='alert alert-error'>{errorMessage}</div>}
+            {successMessage && <div className='alert alert-success'>{successMessage}</div>}
+            <div className='form-control text-sm tracking[0.5]'>
+                <input
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.fullName}
+                    className={`input input-bordered ${errors.fullName && touched.fullName && 'input-error'} w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl text-secondary`}
+                    type='text'
+                    name='fullName'
+                    placeholder='Full Name'
+                />
+                {errors.fullName && touched.fullName && (
+                    <label htmlFor='fullName' className='label'>
+                        <span className='label-text-alt text-error'>{errors.fullName}</span>
+                    </label>
+                )}
+            </div>
+            <div className='form-control text-sm tracking[0.5]'>
+                <input
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.email}
+                    className={`input input-bordered ${errors.email && touched.email && 'input-error'} w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl text-secondary`}
+                    type='text'
+                    name='email'
+                    placeholder='Email'
+                />
+                {errors.email && touched.email && (
+                    <label htmlFor='email' className='label'>
+                        <span className='label-text-alt text-error'>{errors.email}</span>
+                    </label>
+                )}
+            </div>
 
-        try {
-            const { value: fullName } = e.target.fullName
-            const { value: email } = e.target.email
-            const { value: password } = e.target.password
-            const { value: confirmPassword } = e.target.confirmPassword
-            const termAndCondition = 1
+            <div className='form-control text-sm tracking[0.5] relative'>
+                <input
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.password}
+                    className={`input input-bordered ${errors.password && touched.password && 'input-error'} w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl text-secondary`}
+                    type={typePassword ? 'text' : 'password'}
+                    name='password'
+                    placeholder='Password'
+                />
+                {errors.password && touched.password && (
+                    <label htmlFor='password' className='label'>
+                        <span className='label-text-alt text-error'>{errors.password}</span>
+                    </label>
+                )}
+                <button type='button' onClick={handleInputPassword} className='absolute top-[18px] right-4 text-[#4c3f91]'>
+                    {iconEye ? (
+                        <i className=''>
+                            <FiEyeOff size={20} />
+                        </i>
+                    ) : (
+                        <i className=''>
+                            <FiEye size={20} />
+                        </i>
+                    )}
+                </button>
+            </div>
+            <div className='form-control text-sm tracking[0.5] relative'>
+                <input
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.confirmPassword}
+                    className={`input input-bordered ${errors.confirmPassword && touched.confirmPassword && 'input-error'} w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl text-secondary`}
+                    type={typeConfirmPassword ? 'text' : 'password'}
+                    name='confirmPassword'
+                    placeholder='Confirm Password'
+                />
+                {errors.confirmPassword && touched.confirmPassword && (
+                    <label htmlFor='confirmPassword' className='label'>
+                        <span className='label-text-alt text-error'>{errors.confirmPassword}</span>
+                    </label>
+                )}
+                <button type='button' onClick={handleInputConfirmPassword} className='absolute top-[18px] right-4 text-[#4c3f91]'>
+                    {iconEyeCp ? (
+                        <i className=''>
+                            <FiEyeOff size={20} />
+                        </i>
+                    ) : (
+                        <i className=''>
+                            <FiEye size={20} />
+                        </i>
+                    )}
+                </button>
+            </div>
 
-            const body = new URLSearchParams({
-                fullName,
-                email,
-                password,
-                confirmPassword,
-                termAndCondition,
-            }).toString()
+            <div className='flex items-center gap-3.5'>
+                <div className='form-control'>
+                    <Field type='checkbox' name='termAndCondition' id='termAndCondition' />
+                </div>
+                <label htmlFor='termAndCondition' className='self-end text-sm text-[#373A42] font-medium tracking[0.5] my-3'>
+                    Accept terms and condition
+                </label>
+            </div>
+            {errors.termAndCondition && touched.termAndCondition && (
+                <label htmlFor='termAndCondition' className='label'>
+                    <span className='label-text-alt text-error'>{errors.termAndCondition}</span>
+                </label>
+            )}
+            <div>
+                <button type='submit' disabled={isSubmitting} className='btn btn-primary capitalize shadow-for-all-button w-full h-14 rounded-xl  text-base font-semibold tracking-[1px] text-white'>
+                    Sign up
+                </button>
+            </div>
+        </form>
+    )
+}
 
-            console.log(body)
+FormRegister.propTypes = {
+    values: propTypes.objectOf(propTypes.string),
+    errors: propTypes.objectOf(propTypes.string),
+    touched: propTypes.objectOf(propTypes.bool),
+    handleBlur: propTypes.func,
+    handleChange: propTypes.func,
+    handleSubmit: propTypes.func,
+    isSubmitting: propTypes.bool,
+}
 
-            if (password !== confirmPassword) {
-                setWarningMessage('Password Not match')
+const SignUp = () => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const formError = useSelector((state) => state.auth.formError)
+    const successMessage = useSelector((state) => state.auth.successMessage)
+
+    const doRegister = async (values, { setSubmitting, setFieldError }) => {
+        dispatch(clearMessage())
+        dispatch(asyncRegisterAction(values))
+        if (formError.length) {
+            // setErrors({
+            //     fullName: formError.filter((item) => item.param === 'fullName')[0].msg,
+            //     email: formError.filter((item) => item.param === 'email')[0].msg,
+            //     password: formError.filter((item) => item.param === 'password')[0].msg,
+            //     confirmPassword: formError.filter((item) => item.param === 'confirmPassword')[0].msg,
+            //     termAndCondition: formError.filter((item) => item.param === 'termAndCondition')[0].msg,
+            // })
+
+            console.log(formError)
+            const fullName = formError.filter((item) => item.param === 'fullName')[0]?.msg
+            const email = formError.filter((item) => item.param === 'email')[0]?.msg
+            const password = formError.filter((item) => item.param === 'password')[0]?.msg
+
+            console.log(fullName)
+            console.log(email)
+            console.log(password)
+
+            if (fullName) {
+                setFieldError('fullName', fullName)
             }
-
-            const { data } = await http().post('/auth/register', body)
-            window.localStorage.setItem('token', data.results.token)
-            setToken(data.results)
-
-            console.log(data)
-        } catch (error) {
-            const message = error?.response?.data?.message
-            if (message) {
-                console.log(message)
+            if (email) {
+                setFieldError('email', email)
+            }
+            if (password) {
+                setFieldError('password', password)
+                setFieldError('confirmPassword', password)
             }
         }
+        setSubmitting(false)
     }
 
     React.useEffect(() => {
-        if (token) {
-            navigate('/auth/login')
+        if (successMessage) {
+            setTimeout(() => {
+                navigate('/auth/login')
+            }, 3000)
+            // setTimeout(() => {
+            //     dispatch(clearMessage())
+            // }, 2000)
         }
-    }, [navigate, token])
+    }, [successMessage, navigate])
 
+    const handleLinkLogin = () => {
+        dispatch(clearMessage())
+    }
+
+    React.useEffect(() => {
+        dispatch(clearMessage())
+    }, [dispatch])
     return (
         <>
             <main>
@@ -94,57 +255,34 @@ const SignUp = () => {
                                     </Link>
                                 </div>
                             </div>
-                            <div className='text-2xl font-semibold tracking-[1px] text-[#373A42]'>Sign Up</div>
+                            <div className='text-2xl font-semibold tracking-[1px] text-[#373A42]'>Sign up</div>
                             <div className='text-sm font-semibold tracking-[0.5px] text-[#373A42] mb-8'>
-                                Already have an account?{' '}
-                                <Link class='text-[#4c3f91]' to='/auth/login'>
-                                    Log In
-                                </Link>
-                                !
-                            </div>
-                            <form onSubmit={doSignup} className='flex flex-col gap-3.5'>
-                                <div>{ErrorMessage && <div className='alert alert-error text-base'>{ErrorMessage}</div>}</div>
-                                <div>{warningMessage && <div className='alert alert-warning text-base'>{warningMessage}</div>}</div>
-                                <div className='text-sm tracking[0.5]'>
-                                    <input className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl' type='text' name='fullName' placeholder='Full Name' />
-                                </div>
-                                <div className='hidden items-center justify-start text-sm text-red-500 font-medium tracking[0.5]'></div>
-                                <div className='text-sm tracking[0.5]'>
-                                    <input className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl' type='email' name='email' placeholder='Email' />
-                                </div>
-                                <div className='hidden items-center justify-start text-sm text-red-500 font-medium tracking[0.5]'></div>
-                                <div className='text-sm tracking[0.5] relative'>
-                                    <input className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl' type='password' name='password' placeholder='Password' />
-                                    <div className='absolute top-[18px] right-4 text-[#4c3f91]'>
-                                        <i className='cursor-pointer'>
-                                            <FiEye size={20} />
-                                        </i>
-                                    </div>
-                                </div>
-                                <div className='text-sm tracking[0.5] relative'>
-                                    <input className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl' type='password' name='confirmPassword' placeholder='Confirm Password' />
-                                    <div className='absolute top-[18px] right-4 text-[#4c3f91]'>
-                                        <i className='cursor-pointer'>
-                                            <FiEye size={20} />
-                                        </i>
-                                    </div>
-                                </div>
-                                <div className='hidden items-center justify-start text-sm text-red-500 font-medium tracking[0.5]'></div>
-                                <div className='hidden items-center justify-center text-sm text-red-500 font-medium tracking[0.5]'></div>
-                                <div className='flex items-center gap-3.5'>
-                                    <div>
-                                        <input type='checkbox' name='chkBox' id='chkBox' checked={checked} onChange={handleCheckbox} />
-                                    </div>
-                                    <label htmlFor='chkBox' className='self-end text-sm text-[#373A42] font-medium tracking[0.5] my-3'>
-                                        Accept terms and condition
-                                    </label>
-                                </div>
-                                <div>
-                                    <button type='submit' disabled={disableBtn} className='btn btn-primary shadow-for-all-button w-full h-14 rounded-xl text-base font-semibold tracking-[1px] text-white capitalize'>
-                                        Sign Up
+                                Already have an account ?{' '}
+                                <Link to='/auth/login' className='text-primary capitalize'>
+                                    <button type='button' onClick={handleLinkLogin}>
+                                        Sign in
                                     </button>
+                                </Link>
+                            </div>
+
+                            <Formik initialValues={{ fullName: '', email: '', password: '', confirmPassword: '', termAndCondition: false }} validationSchema={validationSchema} onSubmit={doRegister}>
+                                {(props) => <FormRegister {...props} />}
+                            </Formik>
+                            <div className='flex flex-col items-center justify-center gap-4 mt-2'>
+                                <div className='text-sm tracking[0.5] text-[#373A42]'>or sign in with</div>
+                                <div className='flex items-center justify-center gap-4'>
+                                    <div className='w-24 h-14 flex items-center justify-center rounded-md border-2 border-[#4c3f91] cursor-pointer'>
+                                        <i className=''>
+                                            <FcGoogle size={25} />
+                                        </i>
+                                    </div>
+                                    <div className='w-24 h-14 flex items-center justify-center rounded-md border-2 border-[#4c3f91] cursor-pointer'>
+                                        <i className=''>
+                                            <FaFacebook size={25} />
+                                        </i>
+                                    </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </section>
                 </div>

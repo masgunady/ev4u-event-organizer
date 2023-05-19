@@ -68,7 +68,6 @@ const FormLogin = ({ values, errors, touched, handleBlur, handleChange, handleSu
                         <span className='label-text-alt text-error'>{errors.password}</span>
                     </label>
                 )}
-
                 <button type='button' onClick={handleInputPassword} className='absolute top-[18px] right-4 text-[#4c3f91]'>
                     {iconEye ? (
                         <i className=''>
@@ -86,8 +85,8 @@ const FormLogin = ({ values, errors, touched, handleBlur, handleChange, handleSu
                 <Link to='/auth/forgot-password'>Forgot Password ?</Link>
             </div>
             <div>
-                <button type='submit' disabled={isSubmitting} className='btn btn-primary shadow-for-all-button w-full h-14 rounded-xl  text-base font-semibold tracking-[1px] text-white'>
-                    Sign In
+                <button type='submit' disabled={isSubmitting} className='btn btn-primary capitalize shadow-for-all-button w-full h-14 rounded-xl  text-base font-semibold tracking-[1px] text-white'>
+                    Sign in
                 </button>
             </div>
         </form>
@@ -163,7 +162,7 @@ const SignIn = () => {
                             <div className='flex flex-col items-center justify-center gap-4 mt-2'>
                                 <div className='text-sm font-semibold tracking-[0.5px] text-[#373A42] mb-8'>
                                     Don&apos;t have an account ?{' '}
-                                    <Link className='text-primary' to='/auth/register'>
+                                    <Link className='text-primary capitalize' to='/auth/register'>
                                         Sign up
                                     </Link>
                                 </div>

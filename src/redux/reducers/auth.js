@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { asyncLoginAction } from '../action/auth'
+import { asyncLoginAction, asyncRegisterAction } from '../action/auth'
 
 const initialState = {
     token: '',
     errorMessage:'',
+    successMessage:'',
     warningMessage:'',
     formError: []
 }
@@ -20,8 +21,9 @@ const authSlice = createSlice({
         },
         
         clearMessage: (state) => {
-            state.errorMessage = '',
+            state.errorMessage = ''
             state.warningMessage = ''
+            state.successMessage = ''
         },
         logout: () => {
             return initialState
@@ -39,6 +41,19 @@ const authSlice = createSlice({
 
         builder.addCase(asyncLoginAction.fulfilled, (state, action) => {
             state.token = action.payload
+        })
+
+        builder.addCase(asyncRegisterAction.rejected, (state, action) => {
+            // console.log(action)
+            if(typeof action.payload === 'string'){
+                state.errorMessage = action.payload
+            }else{
+                state.formError = action.payload
+            }
+        })
+
+        builder.addCase(asyncRegisterAction.fulfilled, (state, action) => {
+            state.successMessage = action.payload
         })
     }
 
