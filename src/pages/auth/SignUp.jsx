@@ -159,7 +159,7 @@ const FormRegister = ({ values, errors, touched, handleBlur, handleChange, handl
 }
 
 FormRegister.propTypes = {
-    values: propTypes.objectOf(propTypes.string),
+    values: propTypes.object,
     errors: propTypes.objectOf(propTypes.string),
     touched: propTypes.objectOf(propTypes.bool),
     handleBlur: propTypes.func,
@@ -177,30 +177,18 @@ const SignUp = () => {
     const doRegister = async (values, { setSubmitting, setFieldError }) => {
         dispatch(clearMessage())
         dispatch(asyncRegisterAction(values))
+        console.log(formError)
         if (formError.length) {
-            // setErrors({
-            //     fullName: formError.filter((item) => item.param === 'fullName')[0].msg,
-            //     email: formError.filter((item) => item.param === 'email')[0].msg,
-            //     password: formError.filter((item) => item.param === 'password')[0].msg,
-            //     confirmPassword: formError.filter((item) => item.param === 'confirmPassword')[0].msg,
-            //     termAndCondition: formError.filter((item) => item.param === 'termAndCondition')[0].msg,
-            // })
-
-            console.log(formError)
             const fullName = formError.filter((item) => item.param === 'fullName')[0]?.msg
             const email = formError.filter((item) => item.param === 'email')[0]?.msg
             const password = formError.filter((item) => item.param === 'password')[0]?.msg
-
-            console.log(fullName)
-            console.log(email)
-            console.log(password)
-
             if (fullName) {
                 setFieldError('fullName', fullName)
             }
             if (email) {
                 setFieldError('email', email)
             }
+
             if (password) {
                 setFieldError('password', password)
                 setFieldError('confirmPassword', password)
@@ -213,12 +201,12 @@ const SignUp = () => {
         if (successMessage) {
             setTimeout(() => {
                 navigate('/auth/login')
-            }, 3000)
-            // setTimeout(() => {
-            //     dispatch(clearMessage())
-            // }, 2000)
+            }, 2000)
+            setTimeout(() => {
+                dispatch(clearMessage())
+            }, 2000)
         }
-    }, [successMessage, navigate])
+    }, [successMessage, navigate, dispatch])
 
     const handleLinkLogin = () => {
         dispatch(clearMessage())

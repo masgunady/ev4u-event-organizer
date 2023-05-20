@@ -24,6 +24,7 @@ const authSlice = createSlice({
             state.errorMessage = ''
             state.warningMessage = ''
             state.successMessage = ''
+            state.formError= []
         },
         logout: () => {
             return initialState

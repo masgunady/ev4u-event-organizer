@@ -13,6 +13,7 @@ import ChangePassword from './pages/ChangePassword'
 import MyReservation from './pages/MyReservation'
 import MyWishlist from './pages/MyWishlist'
 import ManageEvent from './pages/ManageEvent'
+import Profile from './pages/Profile'
 
 import { store, persistor } from './redux/store'
 import PrivateRoute from './components/PrivateRoute'
@@ -30,18 +31,9 @@ const App = () => {
                         <Route path='/' element={<Home />} />
                         <Route path='/auth/login' element={<SignIn />} />
                         <Route path='/auth/register' element={<SignUp />} />
-                        <Route
-                            path='/auth/forgot-password'
-                            element={<ForgotPassword />}
-                        />
-                        <Route
-                            path='/event/detail/:id'
-                            element={<DetailEvent />}
-                        />
-                        <Route
-                            path='/event/search'
-                            element={<SearchResults />}
-                        />
+                        <Route path='/auth/forgot-password' element={<ForgotPassword />} />
+                        <Route path='/event/detail/:id' element={<DetailEvent />} />
+                        <Route path='/event/search' element={<SearchResults />} />
                         <Route
                             path='/event/reservation'
                             element={
@@ -63,6 +55,14 @@ const App = () => {
                             element={
                                 <PrivateRoute>
                                     <EditProfile />
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path='/user/profile'
+                            element={
+                                <PrivateRoute>
+                                    <Profile />
                                 </PrivateRoute>
                             }
                         />
