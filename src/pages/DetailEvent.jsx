@@ -15,7 +15,7 @@ const DetailEvent = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const [eventDetail, setEventDetail] = React.useState({})
-    const [eventReservation, setEventReservation] = React.useState('')
+    // const [eventReservation, setEventReservation] = React.useState('')
     const [wishlistButton, setWishlistButton] = React.useState(false)
     const dispatch = useDispatch()
     const token = useSelector((state) => state.auth.token)
@@ -44,28 +44,28 @@ const DetailEvent = () => {
         checkWishlist()
     }, [])
 
-    const addReservation = async (event) => {
-        event.preventDefault()
-        if (!token) {
-            dispatch(setWarningMessage('You have to login first'))
-            navigate('/auth/login')
-        }
-        try {
-            const eventId = { eventId: eventDetail.id }
-            const qString = new URLSearchParams(eventId).toString()
-            // console.log(qString)
-            // console.log(qString)
-            const { data } = await http(token).post('/reservation', qString)
-            // console.log(data)
+    // const addReservation = async (event) => {
+    //     event.preventDefault()
+    //     if (!token) {
+    //         dispatch(setWarningMessage('You have to login first'))
+    //         navigate('/auth/login')
+    //     }
+    //     try {
+    //         const eventId = { eventId: eventDetail.id }
+    //         const qString = new URLSearchParams(eventId).toString()
+    //         // console.log(qString)
+    //         // console.log(qString)
+    //         const { data } = await http(token).post('/reservation', qString)
+    //         // console.log(data)
 
-            setEventReservation(data.results)
-        } catch (err) {
-            const message = err?.response?.data
-            if (message) {
-                console.log(message)
-            }
-        }
-    }
+    //         setEventReservation(data.results)
+    //     } catch (err) {
+    //         const message = err?.response?.data
+    //         if (message) {
+    //             console.log(message)
+    //         }
+    //     }
+    // }
 
     const addRemoveWishlist = async (event) => {
         event.preventDefault()
@@ -91,11 +91,11 @@ const DetailEvent = () => {
         }
     }
 
-    React.useEffect(() => {
-        if (eventReservation) {
-            navigate('/event/reservation')
-        }
-    }, [eventReservation, navigate])
+    // React.useEffect(() => {
+    //     if (eventReservation) {
+    //         navigate('/event/reservation')
+    //     }
+    // }, [eventReservation, navigate])
     return (
         <>
             <div className='bg-white md:bg-[#F4F7FF]'>
@@ -234,9 +234,9 @@ const DetailEvent = () => {
                                 </div>
                             </div>
                             <div className='w-full'>
-                                <button onClick={addReservation} className='btn btn-primary w-full md:w-[315px] h-[55px] rounded-2xl capitalize text-base font-semibold tracking-[1px] text-white'>
+                                <Link to={`/event/reservation/${id}`} className='btn btn-primary w-full md:w-[315px] h-[55px] rounded-2xl capitalize text-base font-semibold tracking-[1px] text-white'>
                                     Buy Tickets
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

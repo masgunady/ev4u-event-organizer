@@ -35,7 +35,7 @@ const App = () => {
                         <Route path='/event/detail/:id' element={<DetailEvent />} />
                         <Route path='/event/search' element={<SearchResults />} />
                         <Route
-                            path='/event/reservation'
+                            path='/event/reservation/:id'
                             element={
                                 <PrivateRoute>
                                     <Reservation />

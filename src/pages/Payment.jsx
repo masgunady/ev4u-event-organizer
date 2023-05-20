@@ -7,8 +7,28 @@ import { FiChevronUp, FiChevronDown } from 'react-icons/fi'
 import { BsCreditCardFill, BsBank2 } from 'react-icons/bs'
 import { IoStorefront } from 'react-icons/io5'
 import { FaDollarSign } from 'react-icons/fa'
+import { useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import React from 'react'
+import http from '../helpers/http'
 
 const Reservation = () => {
+    const { state } = useLocation()
+    const token = useSelector((state) => state.auth.token)
+    const [seslectedPayment, setSelectedPayment] = React.useState(null)
+
+    const doPayment = async (e) => {
+        console.log(seslectedPayment)
+        e.preventDefault()
+        const { reservationId } = state
+        const form = new URLSearchParams({
+            reservationId,
+            paymentMethodId: seslectedPayment,
+        }).toString()
+        const { data } = await http(token).post('/payment', form)
+
+        console.log(data)
+    }
     return (
         <>
             <div className='bg-white md:bg-[#F4F7FF]'>
@@ -16,16 +36,16 @@ const Reservation = () => {
                     <Header />
                 </div>
                 <main className='flex justify-center lg:mt-12'>
-                    <div className='container flex flex-col md:flex-row justify-between items-center gap-11 md:items-start bg-white px-7 lg:px-24 py-24 lg:rounded-3xl'>
+                    <form onSubmit={doPayment} className='container flex flex-col md:flex-row justify-between items-center gap-11 md:items-start bg-white px-7 lg:px-24 py-24 lg:rounded-3xl'>
                         <div className='w-full h-full flex-1'>
                             <div className='flex flex-col justify-start gap-12 w-full'>
                                 <div className='flex items-center justify-between'>
-                                    <div className='text-[20px] text-[373a42] font-semibold tracking-[1px] capitalize'>Payment method</div>
+                                    <div className='text-[20px] text-secondary font-semibold tracking-[1px] capitalize'>Payment method</div>
                                 </div>
                                 <div className='pt-4 flex flex-col gap-7'>
                                     <div className='flex items-center justify-between gap-2'>
                                         <div className='w-[10%]'>
-                                            <input type='radio' name='change-payment' id='' />
+                                            <input type='radio' value='1' onChange={(e) => setSelectedPayment(e.target.value)} name='change-payment' defaultChecked='1' />
                                         </div>
                                         <div className='w-[15%]'>
                                             <div className='flex justify-center items-center w-[45px] h-[45px] rounded-[10px] bg-[#884DFF33]'>
@@ -51,7 +71,7 @@ const Reservation = () => {
                                     </div>
                                     <div className='flex items-center justify-between gap-2'>
                                         <div className='w-[10%]'>
-                                            <input type='radio' name='change-payment' id='' />
+                                            <input type='radio' value='2' onChange={(e) => setSelectedPayment(e.target.value)} name='change-payment' />
                                         </div>
                                         <div className='w-[15%]'>
                                             <div className='flex justify-center items-center w-[45px] h-[45px] rounded-[10px] bg-[#FC105533]'>
@@ -69,7 +89,7 @@ const Reservation = () => {
                                     </div>
                                     <div className='flex items-center justify-between gap-2'>
                                         <div className='w-[10%]'>
-                                            <input type='radio' name='change-payment' id='' />
+                                            <input type='radio' value='3' onChange={(e) => setSelectedPayment(e.target.value)} name='change-payment' />
                                         </div>
                                         <div className='w-[15%]'>
                                             <div className='flex justify-center items-center w-[45px] h-[45px] rounded-[10px] bg-[#FF890033]'>
@@ -87,7 +107,7 @@ const Reservation = () => {
                                     </div>
                                     <div className='flex items-center justify-between gap-2'>
                                         <div className='w-[10%]'>
-                                            <input type='radio' name='change-payment' id='' />
+                                            <input type='radio' value='4' onChange={(e) => setSelectedPayment(e.target.value)} name='change-payment' />
                                         </div>
                                         <div className='w-[15%]'>
                                             <div className='flex justify-center items-center w-[45px] h-[45px] rounded-[10px] bg-[#3366FF33]'>
@@ -109,36 +129,36 @@ const Reservation = () => {
                         <div className='mt-11 md:mt-0 flex flex-col flex-1 gap-7 w-full'>
                             <div className='flex flex-col justify-start gap-12 w-full'>
                                 <div className='flex items-center justify-between'>
-                                    <div className='text-[20px] text-[373a42] font-semibold tracking-[1px] capitalize'>ticket details</div>
+                                    <div className='text-[20px] text-secondary font-semibold tracking-[1px] capitalize'>ticket details</div>
                                 </div>
                                 <div className='pt-4 flex flex-col gap-3.5'>
                                     <div className='flex items-center justify-between'>
                                         <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px]'>Event</div>
-                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px]'>Sights & Sounds Exhibition</div>
+                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px] capitalize'>{state.eventName}</div>
                                     </div>
                                     <div className='flex items-center justify-between'>
                                         <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px]'>Ticket Section</div>
-                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px]'>VIP</div>
+                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px] uppercase'>{state.sectionName}</div>
                                     </div>
                                     <div className='flex items-center justify-between'>
                                         <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px]'>Quantity</div>
-                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px]'>2</div>
+                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px]'>{state.quantity}</div>
                                     </div>
                                     <div className='flex items-center justify-between'>
                                         <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px]'>Total Payment</div>
-                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px]'>$70</div>
+                                        <div className='text-sm text-[#4c3f91] font-semibold tracking-[0.5px]'>IDR{state.totalPayment}</div>
                                     </div>
                                 </div>
                             </div>
                             <div className='w-full mt-11'>
                                 <div className='shadow-for-all-button flex items-center justify-center bg-[#4c3f91] w-full md:w-[315px] h-[55px] rounded-2xl text-white text-base font-semibold tracking-[1px]'>
-                                    <a className='h-full w-full flex items-center justify-center' href='#'>
+                                    <button type='submit' className='h-full w-full flex items-center justify-center'>
                                         Payment
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </main>
                 <footer className='md:bg-[#F4F7FF] w-[100%] flex flex-col items-start md:items-center justify-start md:justify-center px-9 md:px-11 xl:px-60 2xl:px-80'>
                     <Footer />
