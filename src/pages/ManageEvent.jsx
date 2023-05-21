@@ -190,7 +190,7 @@ const ManageEvent = () => {
                                                                             </div>
                                                                         </div>
                                                                         <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
-                                                                            <div className='text-sm text-[#373a42] tracking-[1px] text-secondary capitalize'>Date Time Show</div>
+                                                                            <div className='text-sm  tracking-[1px] text-secondary capitalize'>Date Time Show</div>
                                                                             <div className='w-full'>
                                                                                 <input
                                                                                     name='date'
