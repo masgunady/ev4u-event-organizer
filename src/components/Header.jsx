@@ -73,23 +73,31 @@ const Header = () => {
                         <div className='hidden md:block'>
                             <div className='flex justify-start items-center gap-[10px] lg:gap-[15px]'>
                                 <div className='inline-block rounded-full p-[2px] bg-gradient-to-tr from-[#3366FF] to-[#884DFF]'>
-                                    {
-                                        // <img
-                                        //     className='w-12 h-12 border-4 border-white rounded-full'
-                                        //     src={profile?.picture.startsWith('https') ? profile?.picture : `${import.meta.env.VITE_BACKEND_URL}/uploads/${profile?.picture}`}
-                                        //     alt={profile?.fullName}
-                                        // />
+                                    {<Image className='w-12 h-12 border-4 border-white rounded-full' src={profile?.picture || null} defaultImg={defaultImage} />}
+                                </div>
 
-                                        <Image className='w-12 h-12 border-4 border-white rounded-full' src={profile?.picture || null} defaultImg={defaultImage} />
-                                    }
-                                </div>
-                                <div className='text-sm text-[#373a42] font-semibold tracking-[1px] object-cover capitalize'>
-                                    <Link to='/user/edit-profile'>{profile?.fullName}</Link>
-                                </div>
-                                <div>
-                                    <button onClick={doLogout} className='btn btn-primary text-white capitalize'>
-                                        Logout
-                                    </button>
+                                <div className='dropdown dropdown-end drop-shadow-xl '>
+                                    <label tabIndex={0} className='cursor-pointer text-sm h-full text-[#373a42] font-semibold tracking-[1px] object-cover capitalize'>
+                                        {profile?.fullName}
+                                    </label>
+                                    <ul tabIndex={0} className='dropdown-content menu p-4 mt-5 shadow bg-base-100 rounded-box w-52'>
+                                        <li>
+                                            <i>
+                                                <FiHome className='text-secondary' />
+                                                <Link className='capitalize text-secondary not-italic w-full' to='/user/edit-profile'>
+                                                    Edit Profile
+                                                </Link>
+                                            </i>
+                                        </li>
+                                        <li>
+                                            <i>
+                                                <FiLogOut className='text-red-500' />
+                                                <button onClick={doLogout} className=' bg-transparent w-full text-left text-red-500 capitalize'>
+                                                    Logout
+                                                </button>
+                                            </i>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
