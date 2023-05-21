@@ -44,12 +44,13 @@ const Header = () => {
             <nav className='flex justify-between items-center w-[100%] h-24 px-9 lg:px-14 bg-white'>
                 <div className='flex justify-start items-center gap-2 lg:gap-3.5'>
                     <div>
-                        <img src={logo} alt='' />
+                        <img src={logo} className='w-16' alt='' />
                     </div>
                     <div>
                         <Link to='/'>
                             <p className='text-2xl font-semibold text-[#3366FF] tracking-[1px]'>
-                                We<span className='text-[#FF3D71]'>tick</span>
+                                EV
+                                <span className='text-[#FF3D71]'>4U</span>
                             </p>
                         </Link>
                     </div>

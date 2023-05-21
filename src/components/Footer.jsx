@@ -1,10 +1,6 @@
 import logo from '../assets/img/icon-logo.svg'
 import { Link } from 'react-router-dom'
-import {
-    AiFillInstagram,
-    AiFillFacebook,
-    AiOutlineTwitter,
-} from 'react-icons/ai'
+import { AiFillInstagram, AiFillFacebook, AiOutlineTwitter } from 'react-icons/ai'
 import { FaWhatsappSquare } from 'react-icons/fa'
 const Footer = () => {
     return (
@@ -18,15 +14,13 @@ const Footer = () => {
                         <div>
                             <Link to='/'>
                                 <p className='text-2xl font-semibold text-[#3366FF] tracking-[1px]'>
-                                    We
-                                    <span className='text-[#FF3D71]'>tick</span>
+                                    EV
+                                    <span className='text-[#FF3D71]'>4U</span>
                                 </p>
                             </Link>
                         </div>
                     </div>
-                    <div className='mt-7 text-sm text-[#373a42] font-semibold tracking-[1px]'>
-                        Find events you love with our!
-                    </div>
+                    <div className='mt-7 text-sm text-[#373a42] font-semibold tracking-[1px]'>Find events you love with our!</div>
                     <div className='flex items-center gap-5 md:gap-0.5 lg:gap-5 mt-4'>
                         <div>
                             <Link to=''>
@@ -59,9 +53,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className='flex flex-col gap-5 mt-2'>
-                    <div className='text-base text-[#373a42] font-semibold tracking-[1px]'>
-                        Wetick
-                    </div>
+                    <div className='text-base text-[#373a42] font-semibold tracking-[1px]'>EV4U</div>
                     <div>
                         <ul className='flex flex-col gap-4 text-sm text-[#c1c5d0] font-medium tracking-[1px]'>
                             <li>
@@ -93,9 +85,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className='flex flex-col gap-5 mt-2'>
-                    <div className='text-base text-[#373a42] font-semibold tracking-[1px]'>
-                        Features
-                    </div>
+                    <div className='text-base text-[#373a42] font-semibold tracking-[1px]'>Features</div>
                     <div>
                         <ul className='flex flex-col gap-4 text-sm text-[#c1c5d0] font-medium tracking-[1px]'>
                             <li>
@@ -122,9 +112,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className='flex flex-col gap-5 mt-2'>
-                    <div className='text-base text-[#373a42] font-semibold tracking-[1px]'>
-                        Company
-                    </div>
+                    <div className='text-base text-[#373a42] font-semibold tracking-[1px]'>Company</div>
                     <div>
                         <ul className='flex flex-col gap-4 text-sm text-[#c1c5d0] font-medium tracking-[1px]'>
                             <li>
@@ -156,9 +144,7 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-            <div className='md:self-start flex-1 my-7 text-base text-[#5a7184] font-semibold tracking-[1px]'>
-                &copy; 2020 Wetick All Rights Reserved
-            </div>
+            <div className='md:self-start flex-1 my-7 text-base text-[#5a7184] font-semibold tracking-[1px]'>&copy; 2020 EV4U All Rights Reserved</div>
         </>
     )
 }
