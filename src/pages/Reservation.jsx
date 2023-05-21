@@ -52,6 +52,7 @@ const Reservation = () => {
                 quantity: data.results.quantity,
                 totalPayment: data.results.totalPrice,
             },
+            replace: true,
         })
     }
 

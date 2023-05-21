@@ -13,13 +13,14 @@ import ChangePassword from './pages/ChangePassword'
 import MyReservation from './pages/MyReservation'
 import MyWishlist from './pages/MyWishlist'
 import ManageEvent from './pages/ManageEvent'
-import Profile from './pages/Profile'
+// import Profile from './pages/EditProfile'
 
 import { store, persistor } from './redux/store'
 import PrivateRoute from './components/PrivateRoute'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import SearchResults from './pages/SearchResults'
 import ScrollToTop from './components/ScrollToTop'
+import ResetPassword from './pages/auth/ResetPassword'
 
 const App = () => {
     return (
@@ -32,6 +33,7 @@ const App = () => {
                         <Route path='/auth/login' element={<SignIn />} />
                         <Route path='/auth/register' element={<SignUp />} />
                         <Route path='/auth/forgot-password' element={<ForgotPassword />} />
+                        <Route path='/auth/reset-password' element={<ResetPassword />} />
                         <Route path='/event/detail/:id' element={<DetailEvent />} />
                         <Route path='/event/search' element={<SearchResults />} />
                         <Route
@@ -58,14 +60,7 @@ const App = () => {
                                 </PrivateRoute>
                             }
                         />
-                        <Route
-                            path='/user/profile'
-                            element={
-                                <PrivateRoute>
-                                    <Profile />
-                                </PrivateRoute>
-                            }
-                        />
+
                         <Route
                             path='/user/change-password'
                             element={

@@ -6,6 +6,8 @@ import http from '../helpers/http'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout as logoutAction, setWarningMessage } from '../redux/reducers/auth'
+import Image from '../components/Image'
+import defaultImage from '../assets/img/default.png'
 const Header = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -71,13 +73,15 @@ const Header = () => {
                         <div className='hidden md:block'>
                             <div className='flex justify-start items-center gap-[10px] lg:gap-[15px]'>
                                 <div className='inline-block rounded-full p-[2px] bg-gradient-to-tr from-[#3366FF] to-[#884DFF]'>
-                                    {profile?.picture && (
-                                        <img
-                                            className='w-12 h-12 border-4 border-white rounded-full'
-                                            src={profile?.picture.startsWith('https') ? profile?.picture : `${import.meta.env.VITE_BACKEND_URL}/uploads/${profile?.picture}`}
-                                            alt={profile?.fullName}
-                                        />
-                                    )}
+                                    {
+                                        // <img
+                                        //     className='w-12 h-12 border-4 border-white rounded-full'
+                                        //     src={profile?.picture.startsWith('https') ? profile?.picture : `${import.meta.env.VITE_BACKEND_URL}/uploads/${profile?.picture}`}
+                                        //     alt={profile?.fullName}
+                                        // />
+
+                                        <Image className='w-12 h-12 border-4 border-white rounded-full' src={profile?.picture || null} defaultImg={defaultImage} />
+                                    }
                                 </div>
                                 <div className='text-sm text-[#373a42] font-semibold tracking-[1px] object-cover capitalize'>
                                     <Link to='/user/edit-profile'>{profile?.fullName}</Link>

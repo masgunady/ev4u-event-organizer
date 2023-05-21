@@ -7,27 +7,29 @@ import { FiChevronUp, FiChevronDown } from 'react-icons/fi'
 import { BsCreditCardFill, BsBank2 } from 'react-icons/bs'
 import { IoStorefront } from 'react-icons/io5'
 import { FaDollarSign } from 'react-icons/fa'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import React from 'react'
 import http from '../helpers/http'
 
 const Reservation = () => {
     const { state } = useLocation()
+    const navigate = useNavigate()
     const token = useSelector((state) => state.auth.token)
-    const [seslectedPayment, setSelectedPayment] = React.useState(null)
+    const [selectedPayment, setSelectedPayment] = React.useState(null)
 
     const doPayment = async (e) => {
-        console.log(seslectedPayment)
+        // console.log(selectedPayment)
         e.preventDefault()
         const { reservationId } = state
         const form = new URLSearchParams({
             reservationId,
-            paymentMethodId: seslectedPayment,
+            paymentMethodId: selectedPayment,
         }).toString()
         const { data } = await http(token).post('/payment', form)
-
-        console.log(data)
+        if (data) {
+            navigate('/user/reservation', { replace: true })
+        }
     }
     return (
         <>

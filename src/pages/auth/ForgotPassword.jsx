@@ -1,9 +1,36 @@
 import imgFemale from '../../assets/img/female.png'
 import imgMale from '../../assets/img/male.png'
 import logo from '../../assets/img/icon-logo.svg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import React from 'react'
+import http from '../../helpers/http'
 
 const ForgotPassword = () => {
+    // const Location = useLocation()
+    const navigate = useNavigate()
+    const [errorMessage, setErrorMessage] = React.useState('')
+    const [successMessage, setSuccessMessage] = React.useState('')
+
+    const doForgot = async (event) => {
+        event.preventDefault()
+        setErrorMessage('')
+        try {
+            const { value: email } = event.target.email
+            const body = new URLSearchParams({ email }).toString()
+            const { data } = await http().post('/auth/forgotPassword', body)
+
+            setSuccessMessage(data.message)
+            setTimeout(() => {
+                setSuccessMessage('')
+            }, 1000)
+            setTimeout(() => {
+                navigate('/auth/reset-password')
+            }, 2000)
+        } catch (error) {
+            const message = error?.response?.data?.message
+            setErrorMessage(message)
+        }
+    }
     return (
         <>
             <main>
@@ -34,9 +61,11 @@ const ForgotPassword = () => {
                             </div>
                             <div className='text-2xl font-semibold tracking-[1px] text-[#373A42]'>Forgot Password</div>
                             <div className='text-sm font-semibold tracking-[0.5px] text-[#373A42] mb-8'>You’ll get mail soon on your email</div>
-                            <form className='flex flex-col gap-3.5'>
-                                <div className='text-sm tracking[0.5]'>
-                                    <input className='w-full h-14 px-3 outline-[#C1C5D0] border-2 rounded-xl' type='text' name='email' placeholder='Email' />
+                            <form onSubmit={doForgot} className='flex flex-col gap-3.5'>
+                                {errorMessage && <div className='alert alert-error'>{errorMessage}</div>}
+                                {successMessage && <div className='alert alert-success'>{successMessage}</div>}
+                                <div className='text-sm tracking[0.5] text-secondary'>
+                                    <input className='input input-bordered w-full h-14 px-3 border-2 rounded-xl' type='text' name='email' placeholder='Email' />
                                 </div>
                                 <div className='hidden items-center justify-start text-sm text-red-500 font-medium tracking[0.5]'></div>
                                 <div className='hidden items-center justify-center text-sm text-red-500 font-medium tracking[0.5]'></div>
