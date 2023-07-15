@@ -1,7 +1,7 @@
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import UserSidebar from '../components/UserSidebar'
-import { AiOutlineLoading3Quarters } from 'react-icons/ai'
+import { AiOutlineLoading3Quarters, AiOutlinePicture } from 'react-icons/ai'
 
 import { FiPlusCircle } from 'react-icons/fi'
 import React from 'react'
@@ -10,6 +10,11 @@ import http from '../helpers/http'
 // import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { Formik } from 'formik'
+import * as Yup from 'yup'
+
+const validationSchema = Yup.object({
+    title: Yup.string().required('Title is Required!'),
+})
 
 const ManageEvent = () => {
     const [eventByMe, setEventByMe] = React.useState([])
@@ -123,10 +128,11 @@ const ManageEvent = () => {
                                                         date: '',
                                                         descriptions: '',
                                                     }}
+                                                    validationSchema={validationSchema}
                                                     onSubmit={editProfile}
                                                     enableReinitialize={true}
                                                 >
-                                                    {({ handleChange, handleBlur, handleSubmit, values }) => (
+                                                    {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                                                         <form onSubmit={handleSubmit}>
                                                             <div className='flex flex-col md:flex-row justify-center items-center gap-9'>
                                                                 <div className='flex items-start w-full flex-1'>
@@ -141,8 +147,14 @@ const ManageEvent = () => {
                                                                                     value={values.title}
                                                                                     type='text'
                                                                                     className='input input-bordered w-full px-3 h-[55px] border-secondary text-secondary capitalize'
+                                                                                    placeholder='Title'
                                                                                 />
                                                                             </div>
+                                                                            {errors.title && touched.title && (
+                                                                                <label htmlFor='title' className='label'>
+                                                                                    <span className='label-text-alt text-error'>{errors.title}</span>
+                                                                                </label>
+                                                                            )}
                                                                         </div>
                                                                         <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
                                                                             <div className='text-sm text-[#373a42] tracking-[1px]'>Location</div>
@@ -165,6 +177,11 @@ const ManageEvent = () => {
                                                                                     })}
                                                                                 </select>
                                                                             </div>
+                                                                            {errors.cityId && touched.cityId && (
+                                                                                <label htmlFor='cityId' className='label'>
+                                                                                    <span className='label-text-alt text-error'>{errors.cityId}</span>
+                                                                                </label>
+                                                                            )}
                                                                         </div>
 
                                                                         <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
@@ -205,20 +222,22 @@ const ManageEvent = () => {
                                                                     </div>
                                                                 </div>
                                                                 <div className='flex items-start w-full flex-1'>
-                                                                    <div className='flex flex-col gap-3.5 w-full'>
-                                                                        {/* <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
-                                                                    <div className='text-sm text-[#373a42] tracking-[1px]'>Image</div>
-                                                                    <div className='w-full'>
-                                                                        <input className='border-2 px-3.5 rounded-xl w-full h-[55px] text-sm tracking-[1px]' type='text' placeholder='Chose File ...' />
-                                                                    </div>
-                                                                </div> */}
+                                                                    <div className='flex flex-col gap-3.5 w-full justify-center items-center'>
+                                                                        {!selectedPicture && (
+                                                                            <div className='w-[291px] h-[332px] rounded-xl relative flex justify-center items-center'>
+                                                                                <i className=''>
+                                                                                    <AiOutlinePicture size={50} />
+                                                                                </i>
+                                                                                <div className='absolute bg-white border-2 rounded-xl border-slate-500 w-full h-full top-0 left-0 opacity-50 text-white flex justify-center items-center'></div>
+                                                                            </div>
+                                                                        )}
                                                                         {selectedPicture && (
-                                                                            <div className='w-[291px] h-[332px] relative'>
-                                                                                <img className='w-[291px] h-[323px] object-cover border-4 border-white' src={pictureURI} alt='profile' />
+                                                                            <div className='w-[291px] h-[352px] relative overflow-hidden rounded-xl'>
+                                                                                <img className='w-[291px] h-[353px] rounded-xl object-cover border-4 border-white' src={pictureURI} alt='profile' />
                                                                                 <div className='absolute bg-gray-400 w-full h-full top-0 left-0 opacity-50 text-white flex justify-center items-center'></div>
                                                                             </div>
                                                                         )}
-                                                                        <div>
+                                                                        <div className='w-[291px]'>
                                                                             <label className='btn bg-[#fff] w-full h-10 rounded-xl border-2 border-[#3366FF] text-[#3366FF] text-sm font-semibold tracking-[1px] mb-4'>
                                                                                 <span>Choose photo</span>
                                                                                 <input name='picture' onChange={changePicture} className='hidden' type='file' />

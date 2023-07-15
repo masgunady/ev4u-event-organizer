@@ -23,7 +23,7 @@ const MyWishlist = () => {
         if (token) {
             getMyWishlist()
         }
-    })
+    }, [])
 
     const addRemoveWishlist = async (eventId) => {
         try {

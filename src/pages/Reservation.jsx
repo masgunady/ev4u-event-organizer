@@ -21,10 +21,18 @@ const Reservation = () => {
     const token = useSelector((state) => state.auth.token)
 
     const increment = (id) => {
-        setFilledSection({ id, quantity: filledSection.quantity + 1 })
+        if (filledSection.quantity >= 2) {
+            setFilledSection({ id, quantity: 2 })
+        } else {
+            setFilledSection({ id, quantity: filledSection.quantity + 1 })
+        }
     }
     const decrement = (id) => {
-        setFilledSection({ id, quantity: filledSection.quantity - 1 })
+        if (filledSection.quantity <= 0) {
+            setFilledSection({ id, quantity: 0 })
+        } else {
+            setFilledSection({ id, quantity: filledSection.quantity - 1 })
+        }
     }
 
     React.useEffect(() => {
