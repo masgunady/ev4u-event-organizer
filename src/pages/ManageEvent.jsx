@@ -1,7 +1,7 @@
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import UserSidebar from '../components/UserSidebar'
-import { AiOutlineLoading3Quarters, AiOutlinePicture } from 'react-icons/ai'
+import { AiOutlineClose, AiOutlineCloseCircle, AiOutlineLoading3Quarters, AiOutlinePicture } from 'react-icons/ai'
 
 import { FiPlusCircle } from 'react-icons/fi'
 import React from 'react'
@@ -14,6 +14,10 @@ import * as Yup from 'yup'
 
 const validationSchema = Yup.object({
     title: Yup.string().required('Title is Required!'),
+    cityId: Yup.string().required('City is Required!'),
+    categoryId: Yup.string().required('Category is Required!'),
+    date: Yup.string().required('Date is Required!'),
+    descriptions: Yup.string().required('Descriptions is Required!'),
 })
 
 const ManageEvent = () => {
@@ -22,8 +26,10 @@ const ManageEvent = () => {
     const [categories, setCategories] = React.useState([])
     const token = useSelector((state) => state.auth.token)
     const [selectedPicture, setSelectedPicture] = React.useState(false)
-    const [openModal, setOpenModoal] = React.useState(false)
+    const [openModal, setOpenModal] = React.useState(false)
+    const [openModalEvent, setOpenModalEvent] = React.useState(false)
     const [pictureURI, setPictureURI] = React.useState('')
+    const [pictureErr, setPictureErr] = React.useState(true)
 
     React.useEffect(() => {
         async function getEventByMe() {
@@ -69,8 +75,23 @@ const ManageEvent = () => {
         fileToDataUrl(file)
     }
 
-    const editProfile = async (values) => {
-        setOpenModoal(true)
+    const handleModalEvent = () => {
+        setOpenModalEvent(true)
+    }
+
+    const handleCloseModalEvent = () => {
+        setOpenModalEvent(false)
+    }
+
+    const createEvent = async (values, { resetForm }) => {
+        setOpenModal(true)
+        if (!selectedPicture) {
+            setOpenModal(false)
+            setPictureErr(false)
+            return
+        } else {
+            setPictureErr(true)
+        }
         const form = new FormData()
         Object.keys(values).forEach((key) => {
             if (values[key]) {
@@ -90,7 +111,10 @@ const ManageEvent = () => {
                 'Content-Type': 'multipart/form-data',
             },
         })
-        setOpenModoal(false)
+        setOpenModal(false)
+        setOpenModalEvent(false)
+        setSelectedPicture('')
+        resetForm()
         console.log(data)
     }
 
@@ -107,19 +131,26 @@ const ManageEvent = () => {
                             <div className='flex flex-col gap-6 md:gap-0 md:flex-row md:items-center md:justify-between mb-7'>
                                 <div className='text-xl text-[#373a42] font-semibold tracking-[1px]'>Create Event</div>
                                 <div className='w-32 h-14 rounded-2xl bg-[#EAF1FF] flex justify-center items-center'>
-                                    <label htmlFor='my-modal-4' className='w-full h-full flex justify-center items-center gap-4 text-xs font-medium tracking-1px text-[#3366FF]'>
+                                    <button onClick={() => handleModalEvent()} className='w-full h-full flex justify-center items-center gap-4 text-xs font-medium tracking-1px text-[#3366FF]'>
                                         <i className=''>
                                             <FiPlusCircle size={25} />
                                         </i>
                                         Create
-                                    </label>
+                                    </button>
 
                                     {/* Put this part before </body> tag */}
-                                    <input type='checkbox' id='my-modal-4' className='modal-toggle' />
-                                    <label htmlFor='my-modal-4' className='modal cursor-pointer'>
+                                    <input type='checkbox' id='my-modal-4' className='modal-toggle' checked={openModalEvent} />
+                                    <label className='modal cursor-pointer'>
                                         <label className='modal-box relative container-event-modal container w-full md:w-[90%] lg:max-w-[900px] bg-white' htmlFor=''>
                                             <div>
-                                                <div className='text-[20px] text-[#373a42] font-semibold tracking-[1px] mb-11'>Create Event</div>
+                                                <div className='flex justify-between items-center mb-7 mt-2'>
+                                                    <div className='text-[20px] text-[#373a42] font-semibold tracking-[1px]'>Create Event</div>
+                                                    <button className='mr-4' onClick={handleCloseModalEvent}>
+                                                        <i className='text-red-400'>
+                                                            <AiOutlineCloseCircle size={30} />
+                                                        </i>
+                                                    </button>
+                                                </div>
                                                 <Formik
                                                     initialValues={{
                                                         title: '',
@@ -129,7 +160,7 @@ const ManageEvent = () => {
                                                         descriptions: '',
                                                     }}
                                                     validationSchema={validationSchema}
-                                                    onSubmit={editProfile}
+                                                    onSubmit={createEvent}
                                                     enableReinitialize={true}
                                                 >
                                                     {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -205,6 +236,11 @@ const ManageEvent = () => {
                                                                                     })}
                                                                                 </select>
                                                                             </div>
+                                                                            {errors.categoryId && touched.categoryId && (
+                                                                                <label htmlFor='categoryId' className='label'>
+                                                                                    <span className='label-text-alt text-error'>{errors.categoryId}</span>
+                                                                                </label>
+                                                                            )}
                                                                         </div>
                                                                         <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
                                                                             <div className='text-sm  tracking-[1px] text-secondary capitalize'>Date Time Show</div>
@@ -218,6 +254,11 @@ const ManageEvent = () => {
                                                                                     className='input input-bordered w-full px-3 h-[55px] border-secondary'
                                                                                 />
                                                                             </div>
+                                                                            {errors.date && touched.date && (
+                                                                                <label htmlFor='date' className='label'>
+                                                                                    <span className='label-text-alt text-error'>{errors.date}</span>
+                                                                                </label>
+                                                                            )}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -237,11 +278,16 @@ const ManageEvent = () => {
                                                                                 <div className='absolute bg-gray-400 w-full h-full top-0 left-0 opacity-50 text-white flex justify-center items-center'></div>
                                                                             </div>
                                                                         )}
-                                                                        <div className='w-[291px]'>
+                                                                        <div className='w-[291px] flex flex-col justify-center'>
                                                                             <label className='btn bg-[#fff] w-full h-10 rounded-xl border-2 border-[#3366FF] text-[#3366FF] text-sm font-semibold tracking-[1px] mb-4'>
                                                                                 <span>Choose photo</span>
                                                                                 <input name='picture' onChange={changePicture} className='hidden' type='file' />
                                                                             </label>
+                                                                            {!pictureErr && (
+                                                                                <label className='label'>
+                                                                                    <span className='label-text-alt text-error'>Please insert event picture!</span>
+                                                                                </label>
+                                                                            )}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -260,6 +306,11 @@ const ManageEvent = () => {
                                                                         placeholder='Input Detail'
                                                                     ></textarea>
                                                                 </div>
+                                                                {errors.descriptions && touched.descriptions && (
+                                                                    <label htmlFor='descriptions' className='label'>
+                                                                        <span className='label-text-alt text-error'>{errors.descriptions}</span>
+                                                                    </label>
+                                                                )}
                                                             </div>
                                                             <div className='w-full flex items-center justify-end mt-11'>
                                                                 <button className='shadow-for-all-button w-[315px] h-[55px] rounded-xl bg-[#4c3f91] text-white text-sm font-semibold tracking-[1px]' type='submit'>
