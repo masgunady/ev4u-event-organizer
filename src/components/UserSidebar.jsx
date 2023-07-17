@@ -1,7 +1,7 @@
-import { FiUser, FiCreditCard, FiEdit3, FiUnlock, FiPlusCircle, FiList, FiHeart, FiSettings, FiLogOut } from 'react-icons/fi'
+import { FiUser, FiEdit3, FiUnlock, FiPlusCircle, FiList, FiHeart, FiSettings, FiLogOut } from 'react-icons/fi'
 
 import { logout as logoutAction, setWarningMessage } from '../redux/reducers/auth'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import http from '../helpers/http'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,9 +9,11 @@ import Image from '../components/Image'
 import defaultImage from '../assets/img/default.png'
 
 const UserSidebar = () => {
+    const location = useLocation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [profile, setProfile] = React.useState({})
+    const pathAcive = location.pathname
     const token = useSelector((state) => state.auth.token)
     React.useEffect(() => {
         async function getProfileData() {
@@ -32,6 +34,7 @@ const UserSidebar = () => {
         dispatch(logoutAction())
         navigate('/auth/login')
     }
+
     return (
         <>
             <aside className='hidden md:block my-12 md:w-64 xl:w-80'>
@@ -63,24 +66,16 @@ const UserSidebar = () => {
                 <div>
                     <ul>
                         <li className='mb-8 text-sm text-[#373a42] font-semibold tracking-[1px]'>
-                            <a className='flex items-center gap-6' href='#'>
+                            <Link to='' className='flex items-center gap-6'>
                                 <i className=''>
                                     <FiUser size={22} />
                                 </i>
                                 Profile
-                            </a>
+                            </Link>
                         </li>
                         <li>
                             <ul className='ml-7'>
-                                <li className='mb-8 text-sm text-[#373a42] font-semibold tracking-[1px]'>
-                                    <a className='flex items-center gap-6' href='#'>
-                                        <i className=''>
-                                            <FiCreditCard size={22} />
-                                        </i>
-                                        Card
-                                    </a>
-                                </li>
-                                <li className='mb-8 text-sm text-[#3366FF] font-semibold tracking-[1px]'>
+                                <li className={`mb-8 text-sm ${pathAcive === '/user/edit-profile' ? 'text-[#3366FF] font-bold' : 'text-secondary font-semibold'}   tracking-[1px]`}>
                                     <Link to='/user/edit-profile' className='flex items-center gap-6'>
                                         <i className=''>
                                             <FiEdit3 size={22} />
@@ -88,7 +83,7 @@ const UserSidebar = () => {
                                         Edit Profile
                                     </Link>
                                 </li>
-                                <li className='mb-8 text-sm font-semibold text-[#373a42] tracking-[1px]'>
+                                <li className={`mb-8 text-sm ${pathAcive === '/user/change-password' ? 'text-[#3366FF] font-bold' : 'text-secondary font-semibold'}   tracking-[1px]`}>
                                     <Link to='/user/change-password' className='flex items-center gap-6'>
                                         <i className=''>
                                             <FiUnlock size={22} />
@@ -98,7 +93,7 @@ const UserSidebar = () => {
                                 </li>
                             </ul>
                         </li>
-                        <li className='mb-8 text-sm font-semibold tracking-[1px] text-[#373a42]'>
+                        <li className={`mb-8 text-sm ${pathAcive === '/user/manage-event' ? 'text-[#3366FF] font-bold' : 'text-secondary font-semibold'}   tracking-[1px]`}>
                             <Link to='/user/manage-event' className='flex items-center gap-6'>
                                 <i className=''>
                                     <FiPlusCircle size={22} />
@@ -106,7 +101,7 @@ const UserSidebar = () => {
                                 Create Event
                             </Link>
                         </li>
-                        <li className='mb-8 text-sm font-semibold tracking-[1px] text-[#373a42]'>
+                        <li className={`mb-8 text-sm ${pathAcive === '/user/reservation' ? 'text-[#3366FF] font-bold' : 'text-secondary font-semibold'}   tracking-[1px]`}>
                             <Link to='/user/reservation' className='flex items-center gap-6'>
                                 <i className=''>
                                     <FiList size={22} />
@@ -114,7 +109,7 @@ const UserSidebar = () => {
                                 My Booking
                             </Link>
                         </li>
-                        <li className='mb-8 text-sm text-[#373a42] font-semibold tracking-[1px]'>
+                        <li className={`mb-8 text-sm ${pathAcive === '/user/wishlist' ? 'text-[#3366FF] font-bold' : 'text-secondary font-semibold'}   tracking-[1px]`}>
                             <Link to='/user/wishlist' className='flex items-center gap-6'>
                                 <i className=''>
                                     <FiHeart size={22} />
@@ -123,7 +118,7 @@ const UserSidebar = () => {
                             </Link>
                         </li>
                         <li className='mb-8 text-sm text-[#373a42] font-semibold tracking-[1px]'>
-                            <Link to='/user/edit-profile' className='flex items-center gap-6' href='#'>
+                            <Link to='' className='flex items-center gap-6' href='#'>
                                 <i className=''>
                                     <FiSettings size={22} />
                                 </i>

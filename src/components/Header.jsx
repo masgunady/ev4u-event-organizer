@@ -86,7 +86,7 @@ const Header = () => {
                                             <i>
                                                 <FiHome className='text-secondary' />
                                                 <Link className='capitalize text-secondary not-italic w-full' to='/user/edit-profile'>
-                                                    Edit Profile
+                                                    My Profile
                                                 </Link>
                                             </i>
                                         </li>
