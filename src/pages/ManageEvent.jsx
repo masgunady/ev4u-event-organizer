@@ -70,6 +70,11 @@ const ManageEvent = () => {
         }
     }, [token, setCategories])
 
+    const updateEventList = React.useCallback(async () => {
+        const { data } = await http(token).get('/event/manage')
+        setEventByMe(data.results)
+    }, [token])
+
     const fileToDataUrl = (file) => {
         const reader = new FileReader()
         reader.addEventListener('load', () => {
@@ -108,6 +113,7 @@ const ManageEvent = () => {
         if (selectedEventId) {
             const { data } = await http(token).delete(`/event/manage/${selectedEventId}`)
             console.log(data.message)
+            updateEventList()
             setModalAction('')
             setSelectedEventId(null)
             setOpenModalEvent(false)
@@ -143,6 +149,7 @@ const ManageEvent = () => {
                 'Content-Type': 'multipart/form-data',
             },
         })
+        updateEventList()
         setModalAction('')
         setSelectedEventId(null)
         setOpenModalEvent(false)
@@ -180,6 +187,7 @@ const ManageEvent = () => {
                 'Content-Type': 'multipart/form-data',
             },
         })
+        updateEventList()
         setModalAction('')
         setSelectedEventId(null)
         setOpenModalEvent(false)
