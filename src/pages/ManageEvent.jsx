@@ -20,6 +20,10 @@ const validationSchema = Yup.object({
     date: Yup.string().required('Date is Required!'),
     descriptions: Yup.string().required('Descriptions is Required!'),
 })
+const validationSchemaUpdate = Yup.object({
+    title: Yup.string().required('Title is Required!'),
+    descriptions: Yup.string().required('Descriptions is Required!'),
+})
 
 const ManageEvent = () => {
     const [eventByMe, setEventByMe] = React.useState([])
@@ -34,6 +38,7 @@ const ManageEvent = () => {
     const [pictureErr, setPictureErr] = React.useState(true)
     const [selectedEventId, setSelectedEventId] = React.useState(null)
     const [modalAction, setModalAction] = React.useState('')
+    const [editDate, setEditDate] = React.useState(false)
 
     React.useEffect(() => {
         async function getEventByMe() {
@@ -93,6 +98,9 @@ const ManageEvent = () => {
         setModalAction('')
         setSelectedEventId(null)
         setOpenModalEvent(false)
+        setDetailEventByMe({})
+        setSelectedPicture(false)
+        setEditDate(false)
     }
 
     const handleDeleteEvent = async () => {
@@ -107,8 +115,6 @@ const ManageEvent = () => {
         }
     }
 
-    // console.log(detailEventByMe)
-
     const createEvent = async (values, { resetForm }) => {
         setOpenModal(true)
         if (!selectedPicture) {
@@ -121,7 +127,7 @@ const ManageEvent = () => {
         const form = new FormData()
         Object.keys(values).forEach((key) => {
             if (values[key]) {
-                if (key === 'birthDate') {
+                if (key === 'date') {
                     form.append(key, moment(values[key]).format('YYYY-MM-DD'))
                 } else {
                     form.append(key, values[key])
@@ -132,16 +138,56 @@ const ManageEvent = () => {
             form.append('picture', selectedPicture)
         }
 
-        const { data } = await http(token).patch('/event/manage', form, {
+        await http(token).patch('/event/manage', form, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         })
-        setOpenModal(false)
+        setModalAction('')
+        setSelectedEventId(null)
         setOpenModalEvent(false)
-        setSelectedPicture('')
+        setDetailEventByMe({})
+        setSelectedPicture(false)
+        setEditDate(false)
+        setOpenModal(false)
         resetForm()
-        console.log(data)
+    }
+
+    const updateEvent = async (values, { resetForm }) => {
+        setOpenModal(true)
+        const form = new FormData()
+        Object.keys(values).forEach((key) => {
+            if (values[key]) {
+                if (key === 'date') {
+                    form.append(key, moment(values[key]).format('YYYY-MM-DD'))
+                } else {
+                    form.append(key, values[key])
+                }
+            }
+        })
+        if (selectedPicture) {
+            form.append('picture', selectedPicture)
+        }
+
+        // console.log(selectedEventId)
+
+        // for (const [key, value] of form.entries()) {
+        //     console.log(`${key}: ${value}`)
+        // }
+
+        await http(token).patch(`/event/manage/${selectedEventId}`, form, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        setModalAction('')
+        setSelectedEventId(null)
+        setOpenModalEvent(false)
+        setDetailEventByMe({})
+        setSelectedPicture(false)
+        setEditDate(false)
+        setOpenModal(false)
+        resetForm()
     }
 
     return (
@@ -165,19 +211,19 @@ const ManageEvent = () => {
                                     </button>
 
                                     {/* Put this part before </body> tag */}
-                                    <input type='checkbox' id='my-modal-4' className='modal-toggle' checked={openModalEvent} />
-                                    <label className='modal cursor-pointer'>
-                                        <label className={`modal-box relative container-event-modal container w-full md:w-[90%] ${modalAction !== 'delete' ? 'lg:max-w-[900px]' : 'lg:max-w-[600px]'}  bg-white`}>
-                                            <div>
-                                                <div className='flex justify-between items-center mb-7 mt-2'>
-                                                    <div className='text-[20px] text-[#373a42] font-semibold tracking-[1px]'>
-                                                        {modalAction === 'create' && 'Create Event'}
-                                                        {modalAction === 'detail' && 'Detail Event'}
-                                                        {modalAction === 'update' && 'Edit Event'}
-                                                        {modalAction === 'delete' && 'Are you sure to delete this event ?'}
-                                                    </div>
+                                    <input type='checkbox' id='my_modal_6' className='modal-toggle' checked={openModalEvent} />
+                                    <div className='modal'>
+                                        <div className={`modal-box mx-4 w-full md:w-[90%] ${modalAction !== 'delete' ? 'lg:max-w-[900px]' : 'lg:max-w-[600px]'}  bg-white`}>
+                                            <div className='flex justify-between items-center'>
+                                                <div className='text-[20px] text-[#373a42] font-semibold tracking-[1px]'>
+                                                    {modalAction === 'create' && 'Create Event'}
+                                                    {modalAction === 'detail' && 'Detail Event'}
+                                                    {modalAction === 'update' && 'Edit Event'}
+                                                    {modalAction === 'delete' && 'Are you sure to delete this event ?'}
+                                                </div>
+                                                <div>
                                                     {modalAction !== 'delete' ? (
-                                                        <button className='mr-4' onClick={handleCloseModalEvent}>
+                                                        <button className='' onClick={handleCloseModalEvent}>
                                                             <i className='text-red-400'>
                                                                 <AiOutlineCloseCircle size={30} />
                                                             </i>
@@ -186,101 +232,337 @@ const ManageEvent = () => {
                                                         ''
                                                     )}
                                                 </div>
-                                                {modalAction === 'create' && (
-                                                    <Formik
-                                                        initialValues={{
-                                                            title: '',
-                                                            cityId: '',
-                                                            categoryId: '',
-                                                            date: '',
-                                                            descriptions: '',
-                                                        }}
-                                                        validationSchema={validationSchema}
-                                                        onSubmit={createEvent}
-                                                        enableReinitialize={true}
-                                                    >
-                                                        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-                                                            <form onSubmit={handleSubmit}>
-                                                                <div className='flex flex-col md:flex-row justify-center items-center gap-9'>
-                                                                    <div className='flex items-start w-full flex-1'>
-                                                                        <div className='flex flex-col gap-3.5 w-full'>
-                                                                            <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
-                                                                                <div className='text-sm text-[#373a42] tracking-[1px]'>Name</div>
-                                                                                <div className='w-full'>
-                                                                                    <input
-                                                                                        name='title'
-                                                                                        onChange={handleChange}
-                                                                                        onBlur={handleBlur}
-                                                                                        value={values.title}
-                                                                                        type='text'
-                                                                                        className='input input-bordered w-full px-3 h-[55px] border-secondary text-secondary capitalize'
-                                                                                        placeholder='Title'
-                                                                                    />
-                                                                                </div>
-                                                                                {errors.title && touched.title && (
-                                                                                    <label htmlFor='title' className='label'>
-                                                                                        <span className='label-text-alt text-error'>{errors.title}</span>
-                                                                                    </label>
-                                                                                )}
+                                            </div>
+                                            {modalAction === 'create' && (
+                                                <Formik
+                                                    initialValues={{
+                                                        title: '',
+                                                        cityId: '',
+                                                        categoryId: '',
+                                                        date: '',
+                                                        descriptions: '',
+                                                    }}
+                                                    validationSchema={validationSchema}
+                                                    onSubmit={createEvent}
+                                                    enableReinitialize={true}
+                                                >
+                                                    {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+                                                        <form onSubmit={handleSubmit}>
+                                                            <div className='flex flex-col md:flex-row justify-center items-center gap-9'>
+                                                                <div className='flex items-start w-full flex-1'>
+                                                                    <div className='flex flex-col gap-3.5 w-full'>
+                                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                                            <div className='text-sm text-[#373a42] tracking-[1px]'>Name</div>
+                                                                            <div className='w-full'>
+                                                                                <input
+                                                                                    name='title'
+                                                                                    onChange={handleChange}
+                                                                                    onBlur={handleBlur}
+                                                                                    value={values.title}
+                                                                                    type='text'
+                                                                                    className='input input-bordered w-full px-3 h-[55px] border-secondary text-secondary capitalize'
+                                                                                    placeholder='Title'
+                                                                                />
                                                                             </div>
-                                                                            <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
-                                                                                <div className='text-sm text-[#373a42] tracking-[1px]'>Location</div>
-                                                                                <div className='w-full'>
-                                                                                    <select
-                                                                                        name='cityId'
-                                                                                        onChange={handleChange}
-                                                                                        onBlur={handleBlur}
-                                                                                        className='select select-bordered w-full px-3 h-[55px] border-secondary text-secondary capitalize'
-                                                                                    >
-                                                                                        <option className='hidden'>Select Location</option>
-                                                                                        {locations.map((item) => {
-                                                                                            return (
-                                                                                                <React.Fragment key={`location-${item.id}`}>
-                                                                                                    <option className='text-secondary capitalize' value={item.id}>
-                                                                                                        {item.name}
-                                                                                                    </option>
-                                                                                                </React.Fragment>
-                                                                                            )
-                                                                                        })}
-                                                                                    </select>
-                                                                                </div>
-                                                                                {errors.cityId && touched.cityId && (
-                                                                                    <label htmlFor='cityId' className='label'>
-                                                                                        <span className='label-text-alt text-error'>{errors.cityId}</span>
-                                                                                    </label>
-                                                                                )}
+                                                                            {errors.title && touched.title && (
+                                                                                <label htmlFor='title' className='label'>
+                                                                                    <span className='label-text-alt text-error'>{errors.title}</span>
+                                                                                </label>
+                                                                            )}
+                                                                        </div>
+                                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                                            <div className='text-sm text-[#373a42] tracking-[1px]'>Location</div>
+                                                                            <div className='w-full'>
+                                                                                <select
+                                                                                    name='cityId'
+                                                                                    onChange={handleChange}
+                                                                                    onBlur={handleBlur}
+                                                                                    className='select select-bordered w-full px-3 h-[55px] border-secondary text-secondary capitalize'
+                                                                                >
+                                                                                    <option className='hidden'>Select Location</option>
+                                                                                    {locations.map((item) => {
+                                                                                        return (
+                                                                                            <React.Fragment key={`location-${item.id}`}>
+                                                                                                <option className='text-secondary capitalize' value={item.id}>
+                                                                                                    {item.name}
+                                                                                                </option>
+                                                                                            </React.Fragment>
+                                                                                        )
+                                                                                    })}
+                                                                                </select>
                                                                             </div>
+                                                                            {errors.cityId && touched.cityId && (
+                                                                                <label htmlFor='cityId' className='label'>
+                                                                                    <span className='label-text-alt text-error'>{errors.cityId}</span>
+                                                                                </label>
+                                                                            )}
+                                                                        </div>
 
-                                                                            <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
-                                                                                <div className='text-sm text-[#373a42] tracking-[1px]'>Category</div>
-                                                                                <div className='w-full'>
-                                                                                    <select
-                                                                                        name='categoryId'
-                                                                                        onChange={handleChange}
-                                                                                        onBlur={handleBlur}
-                                                                                        className='select select-bordered w-full px-3 h-[55px] border-secondary text-secondary capitalize'
-                                                                                    >
-                                                                                        <option className='hidden'>Select Category</option>
-                                                                                        {categories.map((item) => {
-                                                                                            return (
-                                                                                                <React.Fragment key={`location-${item.id}`}>
-                                                                                                    <option className='text-secondary capitalize' value={item.id}>
-                                                                                                        {item.name}
-                                                                                                    </option>
-                                                                                                </React.Fragment>
-                                                                                            )
-                                                                                        })}
-                                                                                    </select>
-                                                                                </div>
-                                                                                {errors.categoryId && touched.categoryId && (
-                                                                                    <label htmlFor='categoryId' className='label'>
-                                                                                        <span className='label-text-alt text-error'>{errors.categoryId}</span>
-                                                                                    </label>
-                                                                                )}
+                                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                                            <div className='text-sm text-[#373a42] tracking-[1px]'>Category</div>
+                                                                            <div className='w-full'>
+                                                                                <select
+                                                                                    name='categoryId'
+                                                                                    onChange={handleChange}
+                                                                                    onBlur={handleBlur}
+                                                                                    className='select select-bordered w-full px-3 h-[55px] border-secondary text-secondary capitalize'
+                                                                                >
+                                                                                    <option className='hidden'>Select Category</option>
+                                                                                    {categories.map((item) => {
+                                                                                        return (
+                                                                                            <React.Fragment key={`location-${item.id}`}>
+                                                                                                <option className='text-secondary capitalize' value={item.id}>
+                                                                                                    {item.name}
+                                                                                                </option>
+                                                                                            </React.Fragment>
+                                                                                        )
+                                                                                    })}
+                                                                                </select>
                                                                             </div>
-                                                                            <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
-                                                                                <div className='text-sm  tracking-[1px] text-secondary capitalize'>Date Time Show</div>
-                                                                                <div className='w-full'>
+                                                                            {errors.categoryId && touched.categoryId && (
+                                                                                <label htmlFor='categoryId' className='label'>
+                                                                                    <span className='label-text-alt text-error'>{errors.categoryId}</span>
+                                                                                </label>
+                                                                            )}
+                                                                        </div>
+                                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                                            <div className='text-sm  tracking-[1px] text-secondary capitalize'>Date Time Show</div>
+                                                                            <div className='w-full'>
+                                                                                <input
+                                                                                    name='date'
+                                                                                    onChange={handleChange}
+                                                                                    onBlur={handleBlur}
+                                                                                    value={values.date}
+                                                                                    type='date'
+                                                                                    className='input input-bordered w-full px-3 h-[55px] border-secondary'
+                                                                                />
+                                                                            </div>
+                                                                            {errors.date && touched.date && (
+                                                                                <label htmlFor='date' className='label'>
+                                                                                    <span className='label-text-alt text-error'>{errors.date}</span>
+                                                                                </label>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className='flex items-start w-full flex-1'>
+                                                                    <div className='flex flex-col gap-3.5 w-full justify-center items-center'>
+                                                                        {!selectedPicture && (
+                                                                            <div className='w-[291px] h-[332px] rounded-xl relative flex justify-center items-center'>
+                                                                                <i className=''>
+                                                                                    <AiOutlinePicture size={50} />
+                                                                                </i>
+                                                                                <div className='absolute bg-white border-2 rounded-xl border-slate-500 w-full h-full top-0 left-0 opacity-50 text-white flex justify-center items-center'></div>
+                                                                            </div>
+                                                                        )}
+                                                                        {selectedPicture && (
+                                                                            <div className='w-[291px] h-[352px] relative overflow-hidden rounded-xl'>
+                                                                                <img className='w-[291px] h-[353px] rounded-xl object-cover border-4 border-white' src={pictureURI} alt='profile' />
+                                                                                <div className='absolute bg-gray-400 w-full h-full top-0 left-0 opacity-50 text-white flex justify-center items-center'></div>
+                                                                            </div>
+                                                                        )}
+                                                                        <div className='w-[291px] flex flex-col justify-center'>
+                                                                            <label className='btn bg-[#fff] w-full h-10 rounded-xl border-2 border-[#3366FF] text-[#3366FF] text-sm font-semibold tracking-[1px] mb-4'>
+                                                                                <span>Choose photo</span>
+                                                                                <input name='picture' onChange={changePicture} className='hidden' type='file' />
+                                                                            </label>
+                                                                            {!pictureErr && (
+                                                                                <label className='label'>
+                                                                                    <span className='label-text-alt text-error'>Please insert event picture!</span>
+                                                                                </label>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className='text-[20px] text-[#373a42] font-semibold tracking-[1px] mt-11'>
+                                                                <div className='text-sm text-[#373a42] tracking-[1px] mb-3'>Detail</div>
+                                                                <div className='w-full'>
+                                                                    <textarea
+                                                                        name='descriptions'
+                                                                        onChange={handleChange}
+                                                                        onBlur={handleBlur}
+                                                                        value={values.descriptions}
+                                                                        className='border-2 w-full rounded-xl text-sm tracking-[1px] px-3.5 py-3.5'
+                                                                        cols='30'
+                                                                        rows='3'
+                                                                        placeholder='Input Detail'
+                                                                    ></textarea>
+                                                                </div>
+                                                                {errors.descriptions && touched.descriptions && (
+                                                                    <label htmlFor='descriptions' className='label'>
+                                                                        <span className='label-text-alt text-error'>{errors.descriptions}</span>
+                                                                    </label>
+                                                                )}
+                                                            </div>
+                                                            <div className='w-full flex items-center justify-end mt-11'>
+                                                                <button className='shadow-for-all-button w-[315px] h-[55px] rounded-xl bg-[#4c3f91] text-white text-sm font-semibold tracking-[1px]' type='submit'>
+                                                                    Save
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    )}
+                                                </Formik>
+                                            )}
+
+                                            {modalAction === 'detail' && (
+                                                <div>
+                                                    <div className='flex flex-col-reverse md:flex-row justify-center items-center gap-9'>
+                                                        <div className='flex items-start w-full flex-1'>
+                                                            <div className='flex flex-col gap-3.5 w-full'>
+                                                                <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                                    <div className='text-sm text-[#373a42] tracking-[1px]'>Name</div>
+                                                                    <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailEventByMe?.title}</div>
+                                                                </div>
+                                                                <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                                    <div className='text-sm text-[#373a42] tracking-[1px]'>Location</div>
+                                                                    <div className='w-full'>
+                                                                        <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailEventByMe?.location}</div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                                    <div className='text-sm text-[#373a42] tracking-[1px]'>Category</div>
+                                                                    <div className='w-full'>
+                                                                        <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailEventByMe?.eventCategory}</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                                    <div className='text-sm  tracking-[1px] text-secondary capitalize'>Date Time Show</div>
+                                                                    <div className='w-full'>
+                                                                        <div className='w-full text-lg font-semibold text-secondary capitalize'>{moment(detailEventByMe?.date).format('LLLL')}</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className='flex items-start w-full flex-1'>
+                                                            <div className='flex flex-col gap-3.5 w-full justify-center items-center'>
+                                                                {detailEventByMe && (
+                                                                    <div className='w-[291px] h-[352px] relative overflow-hidden rounded-xl'>
+                                                                        {<Image className='w-full h-full border-4 border-white rounded-xl object-cover' src={detailEventByMe?.picture || null} defaultImg={defaultImage} />}
+                                                                        {/* <div className='absolute bg-gray-400 w-full h-full top-0 left-0 opacity-50 text-white flex justify-center items-center'></div> */}
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className='text-[20px] text-[#373a42] font-semibold tracking-[1px] mt-11'>
+                                                        <div className='text-sm text-[#373a42] tracking-[1px] mb-3'>Detail</div>
+                                                        <div className='w-full'>
+                                                            <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailEventByMe?.descriptions}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div className='w-full flex items-center justify-center md:justify-end mt-11'>
+                                                        <button onClick={handleCloseModalEvent} className='shadow-for-all-button w-[315px] h-[55px] rounded-xl bg-[#4c3f91] text-white text-sm font-semibold tracking-[1px]' type='button'>
+                                                            Close
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {modalAction === 'update' && (
+                                                <Formik
+                                                    initialValues={{
+                                                        title: detailEventByMe?.title,
+                                                        cityId: detailEventByMe?.cityId,
+                                                        categoryId: detailEventByMe?.categoryId,
+                                                        date: detailEventByMe?.date,
+                                                        descriptions: detailEventByMe?.descriptions,
+                                                    }}
+                                                    validationSchema={validationSchemaUpdate}
+                                                    onSubmit={updateEvent}
+                                                    enableReinitialize={true}
+                                                >
+                                                    {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+                                                        <form onSubmit={handleSubmit}>
+                                                            <div className='flex flex-col-reverse md:flex-row justify-center items-center gap-9'>
+                                                                <div className='flex items-start w-full flex-1'>
+                                                                    <div className='flex flex-col gap-3.5 w-full'>
+                                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                                            <div className='text-sm text-[#373a42] tracking-[1px]'>Name</div>
+                                                                            <div className='w-full'>
+                                                                                <input
+                                                                                    name='title'
+                                                                                    onChange={handleChange}
+                                                                                    onBlur={handleBlur}
+                                                                                    value={values.title}
+                                                                                    type='text'
+                                                                                    className='input input-bordered w-full px-3 h-[55px] border-secondary text-secondary capitalize'
+                                                                                    placeholder='Title'
+                                                                                />
+                                                                            </div>
+                                                                            {errors.title && touched.title && (
+                                                                                <label htmlFor='title' className='label'>
+                                                                                    <span className='label-text-alt text-error'>{errors.title}</span>
+                                                                                </label>
+                                                                            )}
+                                                                        </div>
+                                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                                            <div className='text-sm text-[#373a42] tracking-[1px]'>Location</div>
+                                                                            <div className='w-full'>
+                                                                                <select
+                                                                                    name='cityId'
+                                                                                    onChange={handleChange}
+                                                                                    onBlur={handleBlur}
+                                                                                    className='select select-bordered w-full px-3 h-[55px] border-secondary text-secondary capitalize'
+                                                                                    value={values.location}
+                                                                                >
+                                                                                    <option className='hidden'>{detailEventByMe?.location}</option>
+                                                                                    {locations.map((item) => {
+                                                                                        return (
+                                                                                            <React.Fragment key={`location-${item.id}`}>
+                                                                                                <option className='text-secondary capitalize' value={item.id}>
+                                                                                                    {item.name}
+                                                                                                </option>
+                                                                                            </React.Fragment>
+                                                                                        )
+                                                                                    })}
+                                                                                </select>
+                                                                            </div>
+                                                                            {errors.cityId && touched.cityId && (
+                                                                                <label htmlFor='cityId' className='label'>
+                                                                                    <span className='label-text-alt text-error'>{errors.cityId}</span>
+                                                                                </label>
+                                                                            )}
+                                                                        </div>
+
+                                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                                            <div className='text-sm text-[#373a42] tracking-[1px]'>Category</div>
+                                                                            <div className='w-full'>
+                                                                                <select
+                                                                                    name='categoryId'
+                                                                                    onChange={handleChange}
+                                                                                    onBlur={handleBlur}
+                                                                                    className='select select-bordered w-full px-3 h-[55px] border-secondary text-secondary capitalize'
+                                                                                    value={values.categoryId}
+                                                                                >
+                                                                                    <option className='hidden'>{detailEventByMe?.eventCategory}</option>
+                                                                                    {categories.map((item) => {
+                                                                                        return (
+                                                                                            <React.Fragment key={`location-${item.id}`}>
+                                                                                                <option className='text-secondary capitalize' value={item.id}>
+                                                                                                    {item.name}
+                                                                                                </option>
+                                                                                            </React.Fragment>
+                                                                                        )
+                                                                                    })}
+                                                                                </select>
+                                                                            </div>
+                                                                            {errors.categoryId && touched.categoryId && (
+                                                                                <label htmlFor='categoryId' className='label'>
+                                                                                    <span className='label-text-alt text-error'>{errors.categoryId}</span>
+                                                                                </label>
+                                                                            )}
+                                                                        </div>
+                                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                                            <div className='text-sm  tracking-[1px] text-secondary capitalize'>Date Time Show</div>
+                                                                            <div className='w-full flex items-center justify-between'>
+                                                                                {!editDate && (
+                                                                                    <span className='text-secondary'>
+                                                                                        {detailEventByMe?.date === null ? <span className='text-red-400'>Not set</span> : moment(detailEventByMe?.date).format('DD/MM/YYYY')}
+                                                                                    </span>
+                                                                                )}
+
+                                                                                {editDate && (
                                                                                     <input
                                                                                         name='date'
                                                                                         onChange={handleChange}
@@ -289,147 +571,95 @@ const ManageEvent = () => {
                                                                                         type='date'
                                                                                         className='input input-bordered w-full px-3 h-[55px] border-secondary'
                                                                                     />
-                                                                                </div>
-                                                                                {errors.date && touched.date && (
-                                                                                    <label htmlFor='date' className='label'>
-                                                                                        <span className='label-text-alt text-error'>{errors.date}</span>
-                                                                                    </label>
+                                                                                )}
+                                                                                {!editDate && (
+                                                                                    <div>
+                                                                                        <button onClick={() => setEditDate(true)} className='text-primary font-semibold text-sm'>
+                                                                                            edit
+                                                                                        </button>
+                                                                                    </div>
                                                                                 )}
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className='flex items-start w-full flex-1'>
-                                                                        <div className='flex flex-col gap-3.5 w-full justify-center items-center'>
-                                                                            {!selectedPicture && (
-                                                                                <div className='w-[291px] h-[332px] rounded-xl relative flex justify-center items-center'>
-                                                                                    <i className=''>
-                                                                                        <AiOutlinePicture size={50} />
-                                                                                    </i>
-                                                                                    <div className='absolute bg-white border-2 rounded-xl border-slate-500 w-full h-full top-0 left-0 opacity-50 text-white flex justify-center items-center'></div>
-                                                                                </div>
-                                                                            )}
-                                                                            {selectedPicture && (
-                                                                                <div className='w-[291px] h-[352px] relative overflow-hidden rounded-xl'>
-                                                                                    <img className='w-[291px] h-[353px] rounded-xl object-cover border-4 border-white' src={pictureURI} alt='profile' />
-                                                                                    <div className='absolute bg-gray-400 w-full h-full top-0 left-0 opacity-50 text-white flex justify-center items-center'></div>
-                                                                                </div>
-                                                                            )}
-                                                                            <div className='w-[291px] flex flex-col justify-center'>
-                                                                                <label className='btn bg-[#fff] w-full h-10 rounded-xl border-2 border-[#3366FF] text-[#3366FF] text-sm font-semibold tracking-[1px] mb-4'>
-                                                                                    <span>Choose photo</span>
-                                                                                    <input name='picture' onChange={changePicture} className='hidden' type='file' />
+                                                                            {errors.date && touched.date && (
+                                                                                <label htmlFor='date' className='label'>
+                                                                                    <span className='label-text-alt text-error'>{errors.date}</span>
                                                                                 </label>
-                                                                                {!pictureErr && (
-                                                                                    <label className='label'>
-                                                                                        <span className='label-text-alt text-error'>Please insert event picture!</span>
-                                                                                    </label>
-                                                                                )}
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className='flex items-start w-full flex-1'>
+                                                                    <div className='flex flex-col gap-3.5 w-full justify-center items-center'>
+                                                                        {!selectedPicture && (
+                                                                            <div className='w-[291px] h-[332px] rounded-xl relative flex justify-center items-center'>
+                                                                                <Image className='w-full h-full border-4 border-white rounded-xl object-cover' src={detailEventByMe?.picture || null} defaultImg={defaultImage} />
                                                                             </div>
+                                                                        )}
+                                                                        {selectedPicture && (
+                                                                            <div className='w-[291px] h-[352px] relative overflow-hidden rounded-xl'>
+                                                                                <img className='w-[291px] h-[353px] rounded-xl object-cover border-4 border-white' src={pictureURI} alt='profile' />
+                                                                                <div className='absolute bg-gray-400 w-full h-full top-0 left-0 opacity-50 text-white flex justify-center items-center'></div>
+                                                                            </div>
+                                                                        )}
+                                                                        <div className='w-[291px] flex flex-col justify-center'>
+                                                                            <label className='btn bg-[#fff] w-full h-10 rounded-xl border-2 border-[#3366FF] text-[#3366FF] text-sm font-semibold tracking-[1px] mb-4'>
+                                                                                <span>Choose photo</span>
+                                                                                <input name='picture' onChange={changePicture} className='hidden' type='file' />
+                                                                            </label>
+                                                                            {!pictureErr && (
+                                                                                <label className='label'>
+                                                                                    <span className='label-text-alt text-error'>Please insert event picture!</span>
+                                                                                </label>
+                                                                            )}
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div className='text-[20px] text-[#373a42] font-semibold tracking-[1px] mt-11'>
-                                                                    <div className='text-sm text-[#373a42] tracking-[1px] mb-3'>Detail</div>
-                                                                    <div className='w-full'>
-                                                                        <textarea
-                                                                            name='descriptions'
-                                                                            onChange={handleChange}
-                                                                            onBlur={handleBlur}
-                                                                            value={values.descriptions}
-                                                                            className='border-2 w-full rounded-xl text-sm tracking-[1px] px-3.5 py-3.5'
-                                                                            cols='30'
-                                                                            rows='3'
-                                                                            placeholder='Input Detail'
-                                                                        ></textarea>
-                                                                    </div>
-                                                                    {errors.descriptions && touched.descriptions && (
-                                                                        <label htmlFor='descriptions' className='label'>
-                                                                            <span className='label-text-alt text-error'>{errors.descriptions}</span>
-                                                                        </label>
-                                                                    )}
+                                                            </div>
+                                                            <div className='text-[20px] text-[#373a42] font-semibold tracking-[1px] mt-11'>
+                                                                <div className='text-sm text-[#373a42] tracking-[1px] mb-3'>Detail</div>
+                                                                <div className='w-full'>
+                                                                    <textarea
+                                                                        name='descriptions'
+                                                                        onChange={handleChange}
+                                                                        onBlur={handleBlur}
+                                                                        value={values.descriptions}
+                                                                        className='border-2 w-full rounded-xl text-sm tracking-[1px] px-3.5 py-3.5'
+                                                                        cols='30'
+                                                                        rows='3'
+                                                                        placeholder='Input Detail'
+                                                                    ></textarea>
                                                                 </div>
-                                                                <div className='w-full flex items-center justify-end mt-11'>
-                                                                    <button className='shadow-for-all-button w-[315px] h-[55px] rounded-xl bg-[#4c3f91] text-white text-sm font-semibold tracking-[1px]' type='submit'>
-                                                                        Save
-                                                                    </button>
-                                                                </div>
-                                                            </form>
-                                                        )}
-                                                    </Formik>
-                                                )}
-
-                                                {modalAction === 'detail' && (
+                                                                {errors.descriptions && touched.descriptions && (
+                                                                    <label htmlFor='descriptions' className='label'>
+                                                                        <span className='label-text-alt text-error'>{errors.descriptions}</span>
+                                                                    </label>
+                                                                )}
+                                                            </div>
+                                                            <div className='w-full flex items-center justify-end mt-11'>
+                                                                <button className='shadow-for-all-button w-[315px] h-[55px] rounded-xl bg-[#4c3f91] text-white text-sm font-semibold tracking-[1px]' type='submit'>
+                                                                    Update
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    )}
+                                                </Formik>
+                                            )}
+                                            {modalAction === 'delete' && (
+                                                <div className='flex items-center justify-end gap-2 h-full'>
                                                     <div>
-                                                        <div className='flex flex-col-reverse md:flex-row justify-center items-center gap-9'>
-                                                            <div className='flex items-start w-full flex-1'>
-                                                                <div className='flex flex-col gap-3.5 w-full'>
-                                                                    <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
-                                                                        <div className='text-sm text-[#373a42] tracking-[1px]'>Name</div>
-                                                                        <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailEventByMe?.title}</div>
-                                                                    </div>
-                                                                    <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
-                                                                        <div className='text-sm text-[#373a42] tracking-[1px]'>Location</div>
-                                                                        <div className='w-full'>
-                                                                            <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailEventByMe?.location}</div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
-                                                                        <div className='text-sm text-[#373a42] tracking-[1px]'>Category</div>
-                                                                        <div className='w-full'>
-                                                                            <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailEventByMe?.eventCategory}</div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
-                                                                        <div className='text-sm  tracking-[1px] text-secondary capitalize'>Date Time Show</div>
-                                                                        <div className='w-full'>
-                                                                            <div className='w-full text-lg font-semibold text-secondary capitalize'>{moment(detailEventByMe?.date).format('LLLL')}</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className='flex items-start w-full flex-1'>
-                                                                <div className='flex flex-col gap-3.5 w-full justify-center items-center'>
-                                                                    {detailEventByMe && (
-                                                                        <div className='w-[291px] h-[352px] relative overflow-hidden rounded-xl'>
-                                                                            {<Image className='w-full h-full border-4 border-white rounded-xl object-cover' src={detailEventByMe?.picture || null} defaultImg={defaultImage} />}
-                                                                            {/* <div className='absolute bg-gray-400 w-full h-full top-0 left-0 opacity-50 text-white flex justify-center items-center'></div> */}
-                                                                        </div>
-                                                                    )}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className='text-[20px] text-[#373a42] font-semibold tracking-[1px] mt-11'>
-                                                            <div className='text-sm text-[#373a42] tracking-[1px] mb-3'>Detail</div>
-                                                            <div className='w-full'>
-                                                                <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailEventByMe?.descriptions}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className='w-full flex items-center justify-center md:justify-end mt-11'>
-                                                            <button onClick={handleCloseModalEvent} className='shadow-for-all-button w-[315px] h-[55px] rounded-xl bg-[#4c3f91] text-white text-sm font-semibold tracking-[1px]' type='button'>
-                                                                Close
-                                                            </button>
-                                                        </div>
+                                                        <button className='bg-primary w-16 p-2 rounded-lg text-white' onClick={handleDeleteEvent}>
+                                                            Yes
+                                                        </button>
                                                     </div>
-                                                )}
-                                                {modalAction === 'update' && <div>update</div>}
-                                                {modalAction === 'delete' && (
-                                                    <div className='flex items-center justify-end gap-2'>
-                                                        <div>
-                                                            <button className='bg-primary w-16 p-2 rounded-lg text-white' onClick={handleDeleteEvent}>
-                                                                Yes
-                                                            </button>
-                                                        </div>
-                                                        <div>
-                                                            <button className='bg-secondary w-16 p-2 rounded-lg text-white' onClick={handleCloseModalEvent}>
-                                                                No
-                                                            </button>
-                                                        </div>
+                                                    <div>
+                                                        <button className='bg-secondary w-16 p-2 rounded-lg text-white' onClick={handleCloseModalEvent}>
+                                                            No
+                                                        </button>
                                                     </div>
-                                                )}
-                                            </div>
-                                        </label>
-                                    </label>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             {eventByMe.map((eventMe) => {

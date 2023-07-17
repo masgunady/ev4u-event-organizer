@@ -160,7 +160,7 @@ const EditProfile = () => {
                                                 <div className='lg:w-32 font-semibold capitalize text-sm text-[#373A42] tracking-[1px]'>Profession</div>
                                                 <div className='w-full'>
                                                     <select name='profession' value={values.profession} onChange={handleChange} onBlur={handleBlur} className='select select-bordered w-full px-3 h-[55px] border-secondary'>
-                                                        <option className='hidden'>Select profession</option>
+                                                        <option className='hidden'>{values.profession}</option>
                                                         <option>Enterpreneur</option>
                                                         <option>Programmer</option>
                                                         <option>Gamers</option>
@@ -171,7 +171,7 @@ const EditProfile = () => {
                                                 <div className='lg:w-32 font-semibold capitalize text-sm text-[#373A42] tracking-[1px]'>Nationality</div>
                                                 <div className='w-full'>
                                                     <select name='nationality' value={values.nationality} onChange={handleChange} onBlur={handleBlur} className='select select-bordered w-full px-3 h-[55px] border-secondary'>
-                                                        <option className='hidden'>Select nationality</option>
+                                                        <option className='hidden'>{values.nationality}</option>
                                                         <option>Indonesia</option>
                                                         <option>Malaysia</option>
                                                         <option>Singapore</option>
