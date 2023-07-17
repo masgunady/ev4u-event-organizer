@@ -95,7 +95,19 @@ const ManageEvent = () => {
         setOpenModalEvent(false)
     }
 
-    console.log(detailEventByMe)
+    const handleDeleteEvent = async () => {
+        setOpenModal(true)
+        if (selectedEventId) {
+            const { data } = await http(token).delete(`/event/manage/${selectedEventId}`)
+            console.log(data.message)
+            setModalAction('')
+            setSelectedEventId(null)
+            setOpenModalEvent(false)
+            setOpenModal(false)
+        }
+    }
+
+    // console.log(detailEventByMe)
 
     const createEvent = async (values, { resetForm }) => {
         setOpenModal(true)
@@ -155,20 +167,24 @@ const ManageEvent = () => {
                                     {/* Put this part before </body> tag */}
                                     <input type='checkbox' id='my-modal-4' className='modal-toggle' checked={openModalEvent} />
                                     <label className='modal cursor-pointer'>
-                                        <label className='modal-box relative container-event-modal container w-full md:w-[90%] lg:max-w-[900px] bg-white' htmlFor=''>
+                                        <label className={`modal-box relative container-event-modal container w-full md:w-[90%] ${modalAction !== 'delete' ? 'lg:max-w-[900px]' : 'lg:max-w-[600px]'}  bg-white`}>
                                             <div>
                                                 <div className='flex justify-between items-center mb-7 mt-2'>
                                                     <div className='text-[20px] text-[#373a42] font-semibold tracking-[1px]'>
                                                         {modalAction === 'create' && 'Create Event'}
                                                         {modalAction === 'detail' && 'Detail Event'}
                                                         {modalAction === 'update' && 'Edit Event'}
-                                                        {modalAction === 'delete' && 'Delete Event'}
+                                                        {modalAction === 'delete' && 'Are you sure to delete this event ?'}
                                                     </div>
-                                                    <button className='mr-4' onClick={handleCloseModalEvent}>
-                                                        <i className='text-red-400'>
-                                                            <AiOutlineCloseCircle size={30} />
-                                                        </i>
-                                                    </button>
+                                                    {modalAction !== 'delete' ? (
+                                                        <button className='mr-4' onClick={handleCloseModalEvent}>
+                                                            <i className='text-red-400'>
+                                                                <AiOutlineCloseCircle size={30} />
+                                                            </i>
+                                                        </button>
+                                                    ) : (
+                                                        ''
+                                                    )}
                                                 </div>
                                                 {modalAction === 'create' && (
                                                     <Formik
@@ -397,7 +413,20 @@ const ManageEvent = () => {
                                                     </div>
                                                 )}
                                                 {modalAction === 'update' && <div>update</div>}
-                                                {modalAction === 'delete' && <div>delete</div>}
+                                                {modalAction === 'delete' && (
+                                                    <div className='flex items-center justify-end gap-2'>
+                                                        <div>
+                                                            <button className='bg-primary w-16 p-2 rounded-lg text-white' onClick={handleDeleteEvent}>
+                                                                Yes
+                                                            </button>
+                                                        </div>
+                                                        <div>
+                                                            <button className='bg-secondary w-16 p-2 rounded-lg text-white' onClick={handleCloseModalEvent}>
+                                                                No
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         </label>
                                     </label>
