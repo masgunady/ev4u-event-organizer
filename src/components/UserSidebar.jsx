@@ -1,9 +1,7 @@
 import { FiUser, FiEdit3, FiUnlock, FiPlusCircle, FiList, FiHeart, FiSettings, FiLogOut } from 'react-icons/fi'
 
-import { logout as logoutAction, setWarningMessage } from '../redux/reducers/auth'
+import { logout as logoutAction } from '../redux/reducers/auth'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import http from '../helpers/http'
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Image from '../components/Image'
 import defaultImage from '../assets/img/default.png'
@@ -12,23 +10,8 @@ const UserSidebar = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [profile, setProfile] = React.useState({})
     const pathAcive = location.pathname
-    const token = useSelector((state) => state.auth.token)
-    React.useEffect(() => {
-        async function getProfileData() {
-            const fallback = (message) => {
-                dispatch(logoutAction())
-                dispatch(setWarningMessage(message))
-                navigate('/auth/login')
-            }
-            const { data } = await http(token, fallback).get('/profile')
-            setProfile(data.results)
-        }
-        if (token) {
-            getProfileData()
-        }
-    }, [token, dispatch, navigate])
+    const profile = useSelector((state) => state.profile.dataProfile)
 
     const doLogout = () => {
         dispatch(logoutAction())
@@ -41,20 +24,6 @@ const UserSidebar = () => {
                 <div className='flex gap-3.5 mb-14'>
                     <div>
                         <div className='inline-block rounded-full p-[2px] bg-gradient-to-tr from-[#3366FF] to-[#884DFF]'>
-                            {/* {profile?.picture && (
-                                <img
-                                    className='w-12 h-12  border-4 border-white rounded-full'
-                                    src={
-                                        profile?.picture.startsWith('https')
-                                            ? profile?.picture
-                                            : `${
-                                                import.meta.env
-                                                    .VITE_BACKEND_URL
-                                            }/uploads/${profile?.picture}`
-                                    }
-                                    alt='nav-img-profile'
-                                />
-                            )} */}
                             <Image className='w-12 h-12 border-4 border-white rounded-full' src={profile?.picture || null} defaultImg={defaultImage} />
                         </div>
                     </div>

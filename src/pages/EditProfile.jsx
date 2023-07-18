@@ -4,16 +4,18 @@ import Header from '../components/Header'
 import UserSidebar from '../components/UserSidebar'
 import { Formik, Field } from 'formik'
 import http from '../helpers/http'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import Image from '../components/Image'
 import defaultImage from '../assets/img/default.png'
+import { setDataProfile } from '../redux/reducers/profile'
 
 const EditProfile = () => {
     const token = useSelector((state) => state.auth.token)
-    const [profile, setProfile] = React.useState({})
-
+    const dispatch = useDispatch()
+    // const [profile, setProfile] = React.useState({})
+    const profile = useSelector((state) => state.profile.dataProfile)
     // const [editUsername, setEditUsername] = React.useState(false)
     const [editEmail, setEditEmail] = React.useState(false)
     const [editPhoneNumber, setEditPhoneNumber] = React.useState(false)
@@ -22,13 +24,13 @@ const EditProfile = () => {
     const [openModal, setOpenModoal] = React.useState(false)
     const [pictureURI, setPictureURI] = React.useState('')
 
-    React.useEffect(() => {
-        const getProfile = async () => {
-            const { data } = await http(token).get('/profile')
-            setProfile(data.results)
-        }
-        getProfile()
-    }, [token])
+    // React.useEffect(() => {
+    //     const getProfile = async () => {
+    //         const { data } = await http(token).get('/profile')
+    //         setProfile(data.results)
+    //     }
+    //     getProfile()
+    // }, [token])
 
     const fileToDataUrl = (file) => {
         const reader = new FileReader()
@@ -66,7 +68,7 @@ const EditProfile = () => {
             },
         })
 
-        setProfile(data.results)
+        dispatch(setDataProfile(data.results))
         setEditEmail(false)
         setEditPhoneNumber(false)
         setEditBirthdate(false)
@@ -99,7 +101,7 @@ const EditProfile = () => {
                                 onSubmit={editProfile}
                                 enableReinitialize={true}
                             >
-                                {({ handleChange, handleBlur, handleSubmit, errors, touched, values }) => (
+                                {({ handleChange, handleBlur, handleSubmit, values }) => (
                                     <form onSubmit={handleSubmit} className='flex flex-col-reverse lg:flex-row'>
                                         <div className='basis-3/5 flex flex-col gap-8 text-secondary'>
                                             <div className='flex flex-col items-start lg:flex-row lg:items-center gap-5 xl:gap-12 justify-start '>

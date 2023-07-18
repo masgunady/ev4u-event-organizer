@@ -1,20 +1,20 @@
 import logo from '../assets/img/icon-logo.svg'
 import { Link, useNavigate } from 'react-router-dom'
 import { FiHome, FiPlusSquare, FiList, FiHeart, FiUnlock, FiSettings, FiLogOut, FiAlignJustify } from 'react-icons/fi'
-
 import http from '../helpers/http'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout as logoutAction, setWarningMessage } from '../redux/reducers/auth'
 import Image from '../components/Image'
 import defaultImage from '../assets/img/default.png'
+import { setDataProfile } from '../redux/reducers/profile'
 const Header = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [profile, setProfile] = React.useState({})
     const [menuMobile, setMenuMobile] = React.useState(false)
-
     const token = useSelector((state) => state.auth.token)
+    const profile = useSelector((state) => state.profile.dataProfile)
+
     React.useEffect(() => {
         async function getProfileData() {
             const fallback = (message) => {
@@ -23,8 +23,7 @@ const Header = () => {
                 navigate('/auth/login')
             }
             const { data } = await http(token, fallback).get('/profile')
-            // console.log(data.results.picture)
-            setProfile(data.results)
+            dispatch(setDataProfile(data.results))
         }
         if (token) {
             getProfileData()
