@@ -10,20 +10,40 @@ import { FiSearch, FiMapPin, FiArrowRight } from 'react-icons/fi'
 import { IoHome } from 'react-icons/io5'
 
 const SearchResults = () => {
-    const [searchParams, setSearchParams] = useSearchParams()
     const [searchResults, setSearchResults] = React.useState([])
     const [locations, setLocation] = React.useState([])
+    const [totalPage, setTotalPage] = React.useState('')
+    const [currentPage, setCurrentPage] = React.useState(1)
+    const [searchParams, setSearchParams] = useSearchParams()
 
     React.useEffect(() => {
         const getEventBySearch = async () => {
             const { data } = await http().get('/event', {
                 params: searchParams,
             })
-
+            setTotalPage(data.totalPage)
             setSearchResults(data.results)
         }
         getEventBySearch()
     }, [searchParams])
+
+    console.log(searchParams.toString())
+    // const test = searchParams.set('page', 2)
+
+    const handlePrev = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1)
+            searchParams.set('page', currentPage - 1)
+            setSearchParams(searchParams, '/event/search')
+        }
+    }
+    const handleNext = () => {
+        if (currentPage + 1 <= totalPage) {
+            setCurrentPage(currentPage + 1)
+            searchParams.set('page', currentPage + 1)
+            setSearchParams(searchParams, '/event/search')
+        }
+    }
 
     React.useEffect(() => {
         async function getLocation() {
@@ -52,12 +72,14 @@ const SearchResults = () => {
                                     </i>
                                 </Link>
                             </div>
-                            <div className='w-full lg:max-w-[700px]'>
+                            <div className='w-full lg:max-w-[800px]'>
                                 <div className='h-[80px] border-4  shadow-[0px_4px_10px_rgba(255,255,255,0.1)] flex flex-row items-center justify-between px-[15px] py-0 rounded-[20px]'>
                                     <Formik
                                         initialValues={{
                                             searchName: '',
                                             searchLocation: '',
+                                            limit: 5,
+                                            page: 1,
                                         }}
                                         onSubmit={onSearch}
                                     >
@@ -66,13 +88,13 @@ const SearchResults = () => {
                                                 <i className=''>
                                                     <FiSearch size={20} />
                                                 </i>
-                                                <div className='form-control w-[45%] h-[45px]'>
+                                                <div className='form-control w-[40%] h-[45px]'>
                                                     <input type='text' name='searchName' onBlur={handleBlur} onChange={handleChange} placeholder='Search event...' className='w-full h-full text-secondary px-2.5 py-0 border-0 outline-none' />
                                                 </div>
                                                 <i className=''>
                                                     <FiMapPin size={20} />
                                                 </i>
-                                                <div className='form-control w-[45%] h-[45px]'>
+                                                <div className='form-control w-[40%] h-[45px]'>
                                                     <select name='searchLocation' onBlur={handleBlur} onChange={handleChange} className=' w-full h-full text-secondary capitalize px-2.5 py-0 border-0 outline-none' id=''>
                                                         <option value=''>Select Location</option>
                                                         {locations.map((location) => {
@@ -84,7 +106,13 @@ const SearchResults = () => {
                                                         })}
                                                     </select>
                                                 </div>
-
+                                                <div className='form-control w-28 h-[45px]'>
+                                                    <select name='limit' onBlur={handleBlur} onChange={handleChange} className=' w-full h-full text-secondary capitalize px-2.5 py-0 border-0 outline-none' id=''>
+                                                        <option value='5'>Limit 5</option>
+                                                        <option value='10'>Limit 10</option>
+                                                        <option value='15'>Limit 15</option>
+                                                    </select>
+                                                </div>
                                                 <button type='submit' className='w-[45px] h-[45px] shadow-[0px_8px_10px_rgba(51,102,255,0.15)] cursor-pointer flex items-center justify-center rounded-[10px] border-[none] bg-[#ff3d71]'>
                                                     <i className='text-white'>
                                                         <FiArrowRight size={25} />
@@ -128,14 +156,25 @@ const SearchResults = () => {
                                 )
                             })}
                         </div>
-                        <div>
-                            {searchResults.length < 1 && (
+                        <div className='flex justify-end items-center gap-4'>
+                            <div className='text-secondary'>
+                                Page {currentPage} of {totalPage}
+                            </div>
+                            <button onClick={handlePrev} className='btn btn-secondary text-white capitalize'>
+                                Prev
+                            </button>
+                            <button onClick={handleNext} className='btn btn-primary text-white capitalize'>
+                                Next
+                            </button>
+                        </div>
+                        {searchResults.length < 1 && (
+                            <div>
                                 <div className='flex items-center justify-center font-semibold text-2xl '>
                                     Event &quot;{searchParams.get('searchName')} {` - ${searchParams.get('searchLocation')}`}
                                     &quot; Not found ...
                                 </div>
-                            )}
-                        </div>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <footer className='md:bg-[#F4F7FF] w-[100%] flex flex-col items-start md:items-center justify-start md:justify-center px-9 md:px-11 xl:px-60 2xl:px-80'>

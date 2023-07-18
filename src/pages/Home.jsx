@@ -119,6 +119,8 @@ const Home = () => {
                                         initialValues={{
                                             searchName: '',
                                             searchLocation: '',
+                                            limit: 5,
+                                            page: 1,
                                         }}
                                         onSubmit={onSearch}
                                     >
