@@ -82,10 +82,17 @@ const MyReservation = () => {
                                 {reservationByMe.map((reservation) => {
                                     return (
                                         <div className='flex items-center justify-start gap-6 border-b-2 py-7' key={`reservation-${reservation.id}`}>
-                                            <div>
+                                            <div className='flex flex-col items-center justify-center gap-3'>
                                                 <div className='w-[50px] h-[75px] flex flex-col items-center justify-center rounded-2xl bg-white shadow-lg'>
                                                     <div className='text-sm font-semibold text-[#FF8900]'>{moment(reservation?.date).format('DD')}</div>
                                                     <div className='text-xs font-medium text-[#C1C5D0]'>{moment(reservation?.date).format('LLLL').slice(0, 3)}</div>
+                                                </div>
+                                                <div>
+                                                    {reservation?.paymentMethod === 'Not Defined' ? (
+                                                        <div className='bg-[#ffdcb3] text-[#FF8900] text-xs font-bold p-1 rounded-md capitalize'>pending</div>
+                                                    ) : (
+                                                        <div className='bg-[#b6e5a8] text-[#49be25] text-xs font-bold p-1 rounded-md capitalize'>Success</div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className='flex flex-col items-start justify-start text-[#373A42] gap-[5px]'>
@@ -187,32 +194,36 @@ const MyReservation = () => {
                                                 <div className='text-sm text-[#373a42] tracking-[1px]'>Detail Transaction</div>
                                                 <div className='flex items-center'>
                                                     <div className='w-full '>
-                                                        <div>Section</div>
-                                                        <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailReservation?.ticketSection}</div>
+                                                        <div className='text-sm font-bold'>Section</div>
+                                                        <div className='w-full text-base font-bold text-secondary capitalize'>{detailReservation?.ticketSection}</div>
                                                     </div>
                                                     <div className='w-full'>
-                                                        <div>Ticket Price</div>
-                                                        <div className='w-full text-lg font-semibold text-secondary capitalize'>IDR {detailReservation?.ticketPrice}</div>
+                                                        <div className='text-sm font-bold'>Ticket Price</div>
+                                                        <div className='w-full text-base font-bold text-secondary capitalize'>IDR {detailReservation?.ticketPrice}</div>
                                                     </div>
                                                 </div>
                                                 <div className='flex items-center'>
                                                     <div className='w-full '>
-                                                        <div>Quantity</div>
-                                                        <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailReservation?.quantity}</div>
+                                                        <div className='text-sm font-bold'>Quantity</div>
+                                                        <div className='w-full text-base font-bold text-secondary capitalize'>{detailReservation?.quantity}</div>
                                                     </div>
                                                     <div className='w-full'>
-                                                        <div>Payment Method</div>
-                                                        <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailReservation?.paymentMethod}</div>
+                                                        <div className='text-sm font-bold'>Payment Method</div>
+                                                        <div className='w-full text-base font-bold text-secondary capitalize'>{detailReservation?.paymentMethod}</div>
                                                     </div>
                                                 </div>
                                                 <div className='flex items-center'>
                                                     <div className='w-full '>
-                                                        <div>Grand Todal</div>
-                                                        <div className='w-full text-lg font-semibold text-secondary capitalize'>IDR {detailReservation?.totalPrice}</div>
+                                                        <div className='text-sm font-bold'>Grand Todal</div>
+                                                        <div className='w-full text-base font-bold text-secondary capitalize'>IDR {detailReservation?.totalPrice}</div>
                                                     </div>
                                                     <div className='w-full'>
-                                                        <div>Status</div>
-                                                        <div className='w-24 text-center rounded-lg text-lg font-semibold text-secondary capitalize bg-green-300'>{detailReservation?.paymentStatus}</div>
+                                                        <div className='text-sm font-bold'>Status</div>
+                                                        {detailReservation?.paymentStatus === 'paid' ? (
+                                                            <div className='w-24 text-center rounded-lg text-base font-bold bg-[#b6e5a8] text-[#49be25] capitalize'>{detailReservation?.paymentStatus}</div>
+                                                        ) : (
+                                                            <div className='w-24 text-center rounded-lg text-base font-bold bg-[#ffdcb3] text-[#FF8900] capitaliz'>{detailReservation?.paymentStatus}</div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>

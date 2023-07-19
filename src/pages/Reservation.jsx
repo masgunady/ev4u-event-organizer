@@ -124,99 +124,6 @@ const Reservation = () => {
                                         </div>
                                     </div>
                                 ))}
-                                {/* <div className='flex item-star justify-between gap-5'>
-                                    <div className='w-16'>
-                                        <div className='flex justify-center items-center w-[45px] h-[45px] rounded-[5px] bg-[#F1EAFF] shadow-sm'>
-                                            <i className='text-[#884DFF]'>
-                                                <IoTicket size={27} />
-                                            </i>
-                                        </div>
-                                    </div>
-                                    <div className='flex flex-col gap-1 w-full'>
-                                        <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px] uppercase'>Section reg, Row 1</div>
-                                        <div className='text-xs text-[#bdc0c4] font-medium capitalize'>12 Seats available</div>
-                                        <div className='text-xs text-[#373a42] font-semibold tracking-[1px] capitalize mt-2'>Quantity</div>
-                                    </div>
-                                    <div className='w-[40%] flex flex-col items-end gap-1'>
-                                        <div className='self-center text-base text-[#373a42] font-semibold tracking-[1px]'>$15</div>
-                                        <div className='self-center text-xs text-[#bdc0c4] font-medium tracking-[0.5px]'>per person</div>
-                                        <div className='w-full flex items-center justify-between gap-2'>
-                                            <div className='border-2 rounded-md w-[33px] h-[30px] flex items-center justify-center'>
-                                                <i className='text-[#C1C5D0]'>
-                                                    <HiMinus size={17} />
-                                                </i>
-                                            </div>
-                                            <div className='text-xs text-[#373a42] font-semibold tracking-[1px] capitalize mt-2'>0</div>
-                                            <div className='border-2 rounded-md w-[33px] h-[30px] flex items-center justify-center'>
-                                                <i className='text-[#C1C5D0]'>
-                                                    <HiPlus size={17} />
-                                                </i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> */}
-                                {/* <div className='flex item-star justify-between gap-5'>
-                                    <div className='w-16'>
-                                        <div className='flex justify-center items-center w-[45px] h-[45px] rounded-[5px] bg-[#FFEAEF] shadow-sm'>
-                                            <i className='text-[#FF3D71]'>
-                                                <IoTicket size={27} />
-                                            </i>
-                                        </div>
-                                    </div>
-                                    <div className='flex flex-col gap-1 w-full'>
-                                        <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px] uppercase'>Section reg, Row 1</div>
-                                        <div className='text-xs text-[#bdc0c4] font-medium capitalize'>12 Seats available</div>
-                                        <div className='text-xs text-[#373a42] font-semibold tracking-[1px] capitalize mt-2'>Quantity</div>
-                                    </div>
-                                    <div className='w-[40%] flex flex-col items-end gap-1'>
-                                        <div className='self-center text-base text-[#373a42] font-semibold tracking-[1px]'>$15</div>
-                                        <div className='self-center text-xs text-[#bdc0c4] font-medium tracking-[0.5px]'>per person</div>
-                                        <div className='w-full flex items-center justify-between gap-2'>
-                                            <div className='border-2 rounded-md w-[33px] h-[30px] flex items-center justify-center'>
-                                                <i className='text-[#C1C5D0]'>
-                                                    <HiMinus size={17} />
-                                                </i>
-                                            </div>
-                                            <div className='text-xs text-[#373a42] font-semibold tracking-[1px] capitalize mt-2'>0</div>
-                                            <div className='border-2 rounded-md w-[33px] h-[30px] flex items-center justify-center'>
-                                                <i className='text-[#C1C5D0]'>
-                                                    <HiPlus size={17} />
-                                                </i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> */}
-                                {/* <div className='flex item-star justify-between gap-5'>
-                                    <div className='w-16'>
-                                        <div className='flex justify-center items-center w-[45px] h-[45px] rounded-[5px] bg-[#FFF4E7] shadow-sm'>
-                                            <i className='text-[#FF8900]'>
-                                                <IoTicket size={27} />
-                                            </i>
-                                        </div>
-                                    </div>
-                                    <div className='flex flex-col gap-1 w-full'>
-                                        <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px] uppercase'>Section reg, Row 1</div>
-                                        <div className='text-xs text-[#bdc0c4] font-medium capitalize'>12 Seats available</div>
-                                        <div className='text-xs text-[#373a42] font-semibold tracking-[1px] capitalize mt-2'>Quantity</div>
-                                    </div>
-                                    <div className='w-[40%] flex flex-col items-end gap-1'>
-                                        <div className='self-center text-base text-[#373a42] font-semibold tracking-[1px]'>$15</div>
-                                        <div className='self-center text-xs text-[#bdc0c4] font-medium tracking-[0.5px]'>per person</div>
-                                        <div className='w-full flex items-center justify-between gap-2'>
-                                            <div className='border-2 rounded-md w-[33px] h-[30px] flex items-center justify-center'>
-                                                <i className='text-[#C1C5D0]'>
-                                                    <HiMinus size={17} />
-                                                </i>
-                                            </div>
-                                            <div className='text-xs text-[#373a42] font-semibold tracking-[1px] capitalize mt-2'>0</div>
-                                            <div className='border-2 rounded-md w-[33px] h-[30px] flex items-center justify-center'>
-                                                <i className='text-[#C1C5D0]'>
-                                                    <HiPlus size={17} />
-                                                </i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> */}
                                 <div className='pt-4 border-t-2 flex flex-col gap-3.5'>
                                     <div className='flex items-center justify-between'>
                                         <div className='text-sm text-[#373a42] font-semibold tracking-[0.5px]'>Ticket Section</div>
@@ -233,11 +140,18 @@ const Reservation = () => {
                                 </div>
                             </div>
                             <div className='w-full mt-11'>
-                                <div className='shadow-for-all-button flex items-center justify-center bg-[#4c3f91] w-full md:w-[315px] h-[55px] rounded-2xl text-white text-base font-semibold tracking-[1px]'>
-                                    <button onClick={doReservation} className='h-full w-full flex items-center justify-center'>
-                                        Checkout
-                                    </button>
-                                </div>
+                                {filledSection.quantity >= 1 && (
+                                    <div className='shadow-for-all-button flex items-center justify-center bg-[#4c3f91] w-full md:w-[315px] h-[55px] rounded-2xl text-white text-base font-semibold tracking-[1px]'>
+                                        <button onClick={doReservation} className='h-full w-full flex items-center justify-center'>
+                                            Checkout
+                                        </button>
+                                    </div>
+                                )}
+                                {filledSection.quantity < 1 && (
+                                    <div className='shadow-for-all-button flex items-center justify-center bg-secondary w-full md:w-[315px] h-[55px] rounded-2xl text-white text-base font-semibold tracking-[1px]'>
+                                        <button className='h-full w-full flex items-center justify-center'>Checkout</button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
