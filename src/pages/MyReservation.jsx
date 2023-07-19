@@ -11,16 +11,30 @@ import moment from 'moment'
 const MyReservation = () => {
     const [reservationByMe, setReservationByMe] = React.useState([])
     const token = useSelector((state) => state.auth.token)
+    const [currentPage, setCurrentPage] = React.useState(1)
+    const [totalPage, setTotalPage] = React.useState('')
 
     React.useEffect(() => {
         async function getEventByMe() {
-            const { data } = await http(token).get('/history')
+            const { data } = await http(token).get(`/history?page=${currentPage}&limit=4&sort=id&sortBy=DESC`)
+            setTotalPage(data.totalPage)
             setReservationByMe(data.results)
         }
         if (token) {
             getEventByMe()
         }
-    }, [token, setReservationByMe])
+    }, [token, setReservationByMe, currentPage])
+
+    const handlePrev = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1)
+        }
+    }
+    const handleNext = () => {
+        if (currentPage + 1 <= totalPage) {
+            setCurrentPage(currentPage + 1)
+        }
+    }
     return (
         <>
             <div className='bg-white md:bg-[#F4F7FF]'>
@@ -30,7 +44,7 @@ const MyReservation = () => {
                 <main className='bg-[#F4F7FF] md:px-9 lg:px-16 xl:px-24 2xl:px-52 flex md:gap-3'>
                     <UserSidebar />
                     <div className='md:my-12 flex-1'>
-                        <div className='bg-white px-9 lg:px-12 py-9 lg:py-11 rounded-2xl md:min-h-[650px]'>
+                        <div className='bg-white px-9 lg:px-12 py-9 lg:py-11 rounded-2xl md:min-h-[920px] relative'>
                             <div className='flex flex-col gap-6 md:gap-0 md:flex-row md:items-center md:justify-between mb-7'>
                                 <div className='text-xl text-[#373a42] font-semibold tracking-[1px]'>My Booking</div>
                                 <div className='w-32 h-14 rounded-2xl bg-[#EAF1FF] flex justify-center items-center'>
@@ -63,14 +77,27 @@ const MyReservation = () => {
                                 )
                             })}
 
-                            <div>
-                                {reservationByMe.length < 1 && (
+                            {reservationByMe.length < 1 && (
+                                <div>
                                     <div className=' h-full flex flex-col items-center justify-center gap-7 '>
                                         <div className='font-semibold text-2xl text-secondary'>No Reservation Found</div>
                                         <div className='font-medium text base max-w-[300px] text-center'>It seems that you haven&apos;t added any Reservations yet. Maybe try looking for this?</div>
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
+                            {reservationByMe.length >= 1 && (
+                                <div className='flex justify-end items-center gap-4 absolute right-12 bottom-12'>
+                                    <div className='text-secondary'>
+                                        Page {currentPage} of {totalPage}
+                                    </div>
+                                    <button onClick={handlePrev} className='btn btn-secondary text-white capitalize'>
+                                        Prev
+                                    </button>
+                                    <button onClick={handleNext} className='btn btn-primary text-white capitalize'>
+                                        Next
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </main>
