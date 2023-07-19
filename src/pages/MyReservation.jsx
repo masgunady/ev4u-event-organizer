@@ -8,11 +8,17 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import http from '../helpers/http'
 import moment from 'moment'
+import { AiOutlineCloseCircle } from 'react-icons/ai'
+import Image from '../components/Image'
+import defaultImage from '../assets/img/event-1.png'
 const MyReservation = () => {
     const [reservationByMe, setReservationByMe] = React.useState([])
     const token = useSelector((state) => state.auth.token)
     const [currentPage, setCurrentPage] = React.useState(1)
     const [totalPage, setTotalPage] = React.useState('')
+    const [detailReservation, setDetailReservation] = React.useState({})
+    const [modalAction, setModalAction] = React.useState('')
+    const [openModalEvent, setOpenModalEvent] = React.useState(false)
 
     React.useEffect(() => {
         async function getEventByMe() {
@@ -34,6 +40,22 @@ const MyReservation = () => {
         if (currentPage + 1 <= totalPage) {
             setCurrentPage(currentPage + 1)
         }
+    }
+
+    const handleModalEvent = async (paramId, action) => {
+        setOpenModalEvent(true)
+        setModalAction(action)
+        if (action === 'detail') {
+            const { data } = await http(token).get(`/history/${paramId}`)
+            console.log(data)
+            setDetailReservation(data.results)
+        }
+    }
+
+    const handleCloseModalEvent = () => {
+        setModalAction('')
+        setOpenModalEvent(false)
+        setDetailReservation({})
     }
     return (
         <>
@@ -70,7 +92,7 @@ const MyReservation = () => {
                                             <div className='text-xs tracking-[0.5px] capitalize'>{reservation?.location}, Indonesia</div>
                                             <div className='text-xs tracking-[0.5px]'>{moment(reservation?.date).format('LLLL')}</div>
                                             <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
-                                                <a href='#'>Detail</a>
+                                                <button onClick={() => handleModalEvent(reservation.id, 'detail')}>Detail</button>
                                             </div>
                                         </div>
                                     </div>
@@ -98,6 +120,109 @@ const MyReservation = () => {
                                     </button>
                                 </div>
                             )}
+
+                            <input type='checkbox' id='my_modal_6' className='modal-toggle' checked={openModalEvent} />
+                            <div className='modal'>
+                                <div className={`modal-box mx-4 w-full md:w-[90%] ${modalAction !== 'delete' ? 'lg:max-w-[900px]' : 'lg:max-w-[600px]'}  bg-white`}>
+                                    <div className='flex justify-between items-center'>
+                                        <div className='text-[20px] text-[#373a42] font-semibold tracking-[1px]'>{modalAction === 'detail' && 'Detail Event'}</div>
+                                        <div>
+                                            <button className='' onClick={handleCloseModalEvent}>
+                                                <i className='text-red-400'>
+                                                    <AiOutlineCloseCircle size={30} />
+                                                </i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {modalAction === 'detail' && (
+                                        <div>
+                                            <div className='flex flex-col-reverse md:flex-row justify-center items-center gap-9'>
+                                                <div className='flex items-start w-full flex-1'>
+                                                    <div className='flex flex-col gap-3.5 w-full'>
+                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                            <div className='text-sm text-[#373a42] tracking-[1px]'>Transaction ID</div>
+                                                            <div className='w-full'>
+                                                                <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailReservation?.reservationId}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                            <div className='text-sm text-[#373a42] tracking-[1px]'>Payment Date</div>
+                                                            <div className='w-full'>
+                                                                <div className='w-full text-lg font-semibold text-secondary capitalize'>{moment(detailReservation?.paymentDate).format('DD/MM/YY')}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                            <div className='text-sm text-[#373a42] tracking-[1px]'>Name</div>
+                                                            <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailReservation?.title}</div>
+                                                        </div>
+                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                            <div className='text-sm text-[#373a42] tracking-[1px]'>Location</div>
+                                                            <div className='w-full'>
+                                                                <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailReservation?.location}</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                            <div className='text-sm  tracking-[1px] text-secondary capitalize'>Date Time Show</div>
+                                                            <div className='w-full'>
+                                                                <div className='w-full text-lg font-semibold text-secondary capitalize'>{moment(detailReservation?.date).format('LLLL')}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className='flex items-start w-full flex-1'>
+                                                    <div className='flex flex-col gap-3.5 w-full justify-center items-center'>
+                                                        {detailReservation && (
+                                                            <div className='w-[291px] h-[352px] relative overflow-hidden rounded-xl'>
+                                                                {<Image className='w-full h-full border-4 border-white rounded-xl object-cover' src={detailReservation?.picture || null} defaultImg={defaultImage} />}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className='text-[20px] text-[#373a42] font-semibold tracking-[1px] mt-11 flex flex-col gap-3'>
+                                                <div className='text-sm text-[#373a42] tracking-[1px]'>Detail Transaction</div>
+                                                <div className='flex items-center'>
+                                                    <div className='w-full '>
+                                                        <div>Section</div>
+                                                        <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailReservation?.ticketSection}</div>
+                                                    </div>
+                                                    <div className='w-full'>
+                                                        <div>Ticket Price</div>
+                                                        <div className='w-full text-lg font-semibold text-secondary capitalize'>IDR {detailReservation?.ticketPrice}</div>
+                                                    </div>
+                                                </div>
+                                                <div className='flex items-center'>
+                                                    <div className='w-full '>
+                                                        <div>Quantity</div>
+                                                        <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailReservation?.quantity}</div>
+                                                    </div>
+                                                    <div className='w-full'>
+                                                        <div>Payment Method</div>
+                                                        <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailReservation?.paymentMethod}</div>
+                                                    </div>
+                                                </div>
+                                                <div className='flex items-center'>
+                                                    <div className='w-full '>
+                                                        <div>Grand Todal</div>
+                                                        <div className='w-full text-lg font-semibold text-secondary capitalize'>IDR {detailReservation?.totalPrice}</div>
+                                                    </div>
+                                                    <div className='w-full'>
+                                                        <div>Status</div>
+                                                        <div className='w-24 text-center rounded-lg text-lg font-semibold text-secondary capitalize bg-green-300'>{detailReservation?.paymentStatus}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className='w-full flex items-center justify-center md:justify-end mt-11'>
+                                                <button onClick={handleCloseModalEvent} className='shadow-for-all-button w-[315px] h-[55px] rounded-xl bg-[#4c3f91] text-white text-sm font-semibold tracking-[1px]' type='button'>
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </main>
