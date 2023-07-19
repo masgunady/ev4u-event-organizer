@@ -5,27 +5,20 @@ import UserSidebar from '../components/UserSidebar'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import http from '../helpers/http'
-// import { Link } from 'react-router-dom'
 import moment from 'moment'
-
+import { AiOutlineCloseCircle } from 'react-icons/ai'
+import Image from '../components/Image'
 import { FiHeart } from 'react-icons/fi'
+import defaultImage from '../assets/img/event-1.png'
 
 const MyWishlist = () => {
     const [myWishlist, setMyWishlist] = React.useState([])
     const token = useSelector((state) => state.auth.token)
     const [currentPage, setCurrentPage] = React.useState(1)
     const [totalPage, setTotalPage] = React.useState('')
-
-    // async function getMyWishlist() {
-    //     const { data } = await http(token).get('/wishlist?page=1&limit=4&sort=id&sortBy=desc')
-    //     setMyWishlist(data.results)
-    // }
-
-    // React.useEffect(() => {
-    //     if (token) {
-    //         getMyWishlist()
-    //     }
-    // }, [])
+    const [detailEvent, setDetailEvent] = React.useState({})
+    const [modalAction, setModalAction] = React.useState('')
+    const [openModalEvent, setOpenModalEvent] = React.useState(false)
 
     const getMyWishlist = React.useCallback(async () => {
         const { data } = await http(token).get(`/wishlist?page=${currentPage}&limit=4&sort=id&sortBy=DESC`)
@@ -72,6 +65,21 @@ const MyWishlist = () => {
         }
     }
 
+    const handleModalEvent = async (paramId, action) => {
+        setOpenModalEvent(true)
+        setModalAction(action)
+        if (action === 'detail') {
+            const { data } = await http(token).get(`/event/${paramId}`)
+            setDetailEvent(data.results)
+        }
+    }
+
+    const handleCloseModalEvent = () => {
+        setModalAction('')
+        setOpenModalEvent(false)
+        setDetailEvent({})
+    }
+
     return (
         <>
             <div className='bg-white md:bg-[#F4F7FF]'>
@@ -108,7 +116,7 @@ const MyWishlist = () => {
                                             <div className='text-xs tracking-[0.5px] capitalize'>{wishlist?.location}, Indonesia</div>
                                             <div className='text-xs tracking-[0.5px]'>{moment(wishlist?.date).format('LLLL')}</div>
                                             <div className='text-xs traacking-[0.5px] text-[#3366FF]'>
-                                                <a href='#'>Detail</a>
+                                                <button onClick={() => handleModalEvent(wishlist.eventId, 'detail')}>Detail</button>
                                             </div>
                                         </div>
                                         <div className='hidden md:block'>
@@ -145,6 +153,77 @@ const MyWishlist = () => {
                                     </button>
                                 </div>
                             )}
+
+                            <input type='checkbox' id='my_modal_6' className='modal-toggle' checked={openModalEvent} />
+                            <div className='modal'>
+                                <div className={`modal-box mx-4 w-full md:w-[90%] ${modalAction !== 'delete' ? 'lg:max-w-[900px]' : 'lg:max-w-[600px]'}  bg-white`}>
+                                    <div className='flex justify-between items-center'>
+                                        <div className='text-[20px] text-[#373a42] font-semibold tracking-[1px]'>{modalAction === 'detail' && 'Detail Event'}</div>
+                                        <div>
+                                            <button className='' onClick={handleCloseModalEvent}>
+                                                <i className='text-red-400'>
+                                                    <AiOutlineCloseCircle size={30} />
+                                                </i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {modalAction === 'detail' && (
+                                        <div>
+                                            <div className='flex flex-col-reverse md:flex-row justify-center items-center gap-9'>
+                                                <div className='flex items-start w-full flex-1'>
+                                                    <div className='flex flex-col gap-3.5 w-full'>
+                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                            <div className='text-sm text-[#373a42] tracking-[1px]'>Name</div>
+                                                            <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailEvent?.title}</div>
+                                                        </div>
+                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                            <div className='text-sm text-[#373a42] tracking-[1px]'>Location</div>
+                                                            <div className='w-full'>
+                                                                <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailEvent?.location}</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                            <div className='text-sm text-[#373a42] tracking-[1px]'>Category</div>
+                                                            <div className='w-full'>
+                                                                <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailEvent?.eventCategory}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div className='flex flex-col align-start justify-start gap-3.5 w-full'>
+                                                            <div className='text-sm  tracking-[1px] text-secondary capitalize'>Date Time Show</div>
+                                                            <div className='w-full'>
+                                                                <div className='w-full text-lg font-semibold text-secondary capitalize'>{moment(detailEvent?.date).format('LLLL')}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className='flex items-start w-full flex-1'>
+                                                    <div className='flex flex-col gap-3.5 w-full justify-center items-center'>
+                                                        {detailEvent && (
+                                                            <div className='w-[291px] h-[352px] relative overflow-hidden rounded-xl'>
+                                                                {<Image className='w-full h-full border-4 border-white rounded-xl object-cover' src={detailEvent?.picture || null} defaultImg={defaultImage} />}
+                                                                {/* <div className='absolute bg-gray-400 w-full h-full top-0 left-0 opacity-50 text-white flex justify-center items-center'></div> */}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className='text-[20px] text-[#373a42] font-semibold tracking-[1px] mt-11'>
+                                                <div className='text-sm text-[#373a42] tracking-[1px] mb-3'>Detail</div>
+                                                <div className='w-full'>
+                                                    <div className='w-full text-lg font-semibold text-secondary capitalize'>{detailEvent?.descriptions}</div>
+                                                </div>
+                                            </div>
+                                            <div className='w-full flex items-center justify-center md:justify-end mt-11'>
+                                                <button onClick={handleCloseModalEvent} className='shadow-for-all-button w-[315px] h-[55px] rounded-xl bg-[#4c3f91] text-white text-sm font-semibold tracking-[1px]' type='button'>
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </main>
