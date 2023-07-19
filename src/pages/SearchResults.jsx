@@ -54,6 +54,7 @@ const SearchResults = () => {
     }, [])
 
     const onSearch = (values) => {
+        setCurrentPage(1)
         setSearchParams(values, '/event/search')
     }
     return (

@@ -39,16 +39,30 @@ const ManageEvent = () => {
     const [selectedEventId, setSelectedEventId] = React.useState(null)
     const [modalAction, setModalAction] = React.useState('')
     const [editDate, setEditDate] = React.useState(false)
+    const [currentPage, setCurrentPage] = React.useState(1)
+    const [totalPage, setTotalPage] = React.useState('')
 
     React.useEffect(() => {
         async function getEventByMe() {
-            const { data } = await http(token).get('/event/manage')
+            const { data } = await http(token).get(`/event/manage?page=${currentPage}&limit=4&sort=id&sortBy=desc`)
+            setTotalPage(data.totalPage)
             setEventByMe(data.results)
         }
         if (token) {
             getEventByMe()
         }
-    }, [token, setEventByMe])
+    }, [token, setEventByMe, currentPage])
+
+    const handlePrev = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1)
+        }
+    }
+    const handleNext = () => {
+        if (currentPage + 1 <= totalPage) {
+            setCurrentPage(currentPage + 1)
+        }
+    }
 
     React.useEffect(() => {
         async function getLocations() {
@@ -71,9 +85,9 @@ const ManageEvent = () => {
     }, [token, setCategories])
 
     const updateEventList = React.useCallback(async () => {
-        const { data } = await http(token).get('/event/manage')
+        const { data } = await http(token).get(`/event/manage?page=${currentPage}&limit=4&sort=id&sortBy=desc`)
         setEventByMe(data.results)
-    }, [token])
+    }, [token, currentPage])
 
     const fileToDataUrl = (file) => {
         const reader = new FileReader()
@@ -149,6 +163,7 @@ const ManageEvent = () => {
                 'Content-Type': 'multipart/form-data',
             },
         })
+        setCurrentPage(1)
         updateEventList()
         setModalAction('')
         setSelectedEventId(null)
@@ -207,7 +222,7 @@ const ManageEvent = () => {
                 <main className='bg-[#F4F7FF] md:px-9 lg:px-16 xl:px-24 2xl:px-52 flex md:gap-3'>
                     <UserSidebar />
                     <div className='md:my-12 flex-1'>
-                        <div className='bg-white px-9 lg:px-12 py-9 lg:py-11 rounded-2xl md:min-h-[650px]'>
+                        <div className='bg-white px-9 lg:px-12 py-9 lg:py-11 rounded-2xl md:min-h-[920px] relative'>
                             <div className='flex flex-col gap-6 md:gap-0 md:flex-row md:items-center md:justify-between mb-7'>
                                 <div className='text-xl text-[#373a42] font-semibold tracking-[1px]'>Create Event</div>
                                 <div className='w-32 h-14 rounded-2xl bg-[#EAF1FF] flex justify-center items-center'>
@@ -698,14 +713,27 @@ const ManageEvent = () => {
                                     </div>
                                 )
                             })}
-                            <div>
-                                {eventByMe.length < 1 && (
+                            {eventByMe.length < 1 && (
+                                <div>
                                     <div className=' h-full flex flex-col items-center justify-center gap-7 '>
                                         <div className='font-semibold text-2xl text-secondary'>No Event Found</div>
                                         <div className='font-medium text base max-w-[300px] text-center'>It seems that you haven&apos;t added any Events yet. Maybe try looking for this?</div>
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
+                            {eventByMe.length >= 1 && (
+                                <div className='flex justify-end items-center gap-4 absolute right-12 bottom-12'>
+                                    <div className='text-secondary'>
+                                        Page {currentPage} of {totalPage}
+                                    </div>
+                                    <button onClick={handlePrev} className='btn btn-secondary text-white capitalize'>
+                                        Prev
+                                    </button>
+                                    <button onClick={handleNext} className='btn btn-primary text-white capitalize'>
+                                        Next
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </main>
