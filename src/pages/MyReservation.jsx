@@ -11,7 +11,9 @@ import moment from 'moment'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import Image from '../components/Image'
 import defaultImage from '../assets/img/event-1.png'
+import { useNavigate } from 'react-router-dom'
 const MyReservation = () => {
+    const navigate = useNavigate()
     const [reservationByMe, setReservationByMe] = React.useState([])
     const token = useSelector((state) => state.auth.token)
     const [currentPage, setCurrentPage] = React.useState(1)
@@ -56,6 +58,20 @@ const MyReservation = () => {
         setModalAction('')
         setOpenModalEvent(false)
         setDetailReservation({})
+    }
+
+    const handlePayment = () => {
+        navigate('/event/reservation/payment', {
+            state: {
+                eventId: detailReservation.eventId,
+                eventName: detailReservation.title,
+                reservationId: detailReservation.reservationId,
+                sectionName: detailReservation.ticketSection,
+                quantity: detailReservation.quantity,
+                totalPayment: detailReservation.totalPrice,
+            },
+            replace: true,
+        })
     }
     return (
         <>
@@ -228,9 +244,15 @@ const MyReservation = () => {
                                                 </div>
                                             </div>
                                             <div className='w-full flex items-center justify-center md:justify-end mt-11'>
-                                                <button onClick={handleCloseModalEvent} className='shadow-for-all-button w-[315px] h-[55px] rounded-xl bg-[#4c3f91] text-white text-sm font-semibold tracking-[1px]' type='button'>
-                                                    Close
-                                                </button>
+                                                {detailReservation?.paymentStatus !== 'paid' ? (
+                                                    <button onClick={handlePayment} className='shadow-for-all-button w-[315px] h-[55px] rounded-xl bg-[#4c3f91] text-white text-sm font-semibold tracking-[1px]' type='button'>
+                                                        Pay Now
+                                                    </button>
+                                                ) : (
+                                                    <button onClick={handleCloseModalEvent} className='shadow-for-all-button w-[315px] h-[55px] rounded-xl bg-[#4c3f91] text-white text-sm font-semibold tracking-[1px]' type='button'>
+                                                        Close
+                                                    </button>
+                                                )}
                                             </div>
                                         </div>
                                     )}
